@@ -1,0 +1,22 @@
+import { ReactNode } from "react";
+
+export type PageProps = Readonly<{ params: { slug: string } }>;
+export type LayoutProps = Readonly<{ children: ReactNode }>;
+export type FormProduct = {
+  title: string;
+  price: string;
+  image: string;
+  description: string;
+  slug: string;
+  id: string;
+};
+
+export type Order = {
+  Adress: string;
+  City: string;
+  Name: string;
+  Phone: string;
+  Zipcode: string;
+  email: string;
+  orderNumber: string;
+};
