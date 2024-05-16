@@ -1,5 +1,6 @@
 import CategoryForm from "@/components/CategoryForm";
 import LoginForm from "@/components/LoginForm";
+import OrderForm from "@/components/OrderForm";
 import RegisterForm from "@/components/RegisterForm";
 import Header from "@/components/header/Header";
 
@@ -12,6 +13,8 @@ export default function Home() {
         <RegisterForm />
         <LoginForm />
       </div>
+
+      <OrderForm />
     </main>
   );
 }
