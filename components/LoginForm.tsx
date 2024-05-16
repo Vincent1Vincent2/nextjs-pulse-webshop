@@ -16,6 +16,7 @@ export default function LoginForm() {
   const handleSubmit = async (data: UserLogin) => {
     await loginUser(data);
     form.reset();
+    location.reload();
   };
 
   return (
