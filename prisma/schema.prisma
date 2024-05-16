@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url= env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -24,7 +24,7 @@ model Category {
 }
 
 model Product {
-   id     Int     @id @default(autoincrement())
+  id               Int                @id @default(autoincrement())
   name             String
   description      String?
   price            String
@@ -35,10 +35,10 @@ model Product {
 
 model CategoryProducts {
   id         Int      @id @default(autoincrement())
-  categoryId Int
-  productId  Int
   category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int //FK
   product    Product  @relation(fields: [productId], references: [id])
+  productId  Int // Fk
 
   @@unique([categoryId, productId])
 }
