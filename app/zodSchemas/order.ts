@@ -1,16 +1,17 @@
 import { z } from "zod";
 
-export const ProductOrderSchema = z.object({
-  productId: z.number().int(),
-});
-
-export type ProductOrder = z.infer<typeof ProductOrderSchema>;
-
 export const OrderCreateSchema = z.object({
-  customerId: z.string().min(3).max(80),
-  customerAddress: z.string().min(3).max(80),
-  date: z.date(),
-  ProductOrder: z.array(ProductOrderSchema),
+  ProductOrder: z.array(
+    z.object({
+      productId: z.number().min(1, "Product ID is required"),
+      quantity: z.number().min(1, "Quantity must be at least 1"),
+    })
+  ),
 });
 
 export type OrderCreate = z.infer<typeof OrderCreateSchema>;
+
+export type ProductOrder = {
+  productId: number;
+  quantity: number;
+};
