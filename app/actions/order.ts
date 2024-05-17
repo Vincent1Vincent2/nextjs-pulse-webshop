@@ -55,15 +55,15 @@ export async function orderCreate(formData: OrderCreate, addressId: number) {
 }
 
 // Function to fetch order details
-export async function getOrder(orderId: number) {
-  const order = await db.order.findUnique({
-    where: { id: orderId },
+export async function getOrder(customerId: number | undefined) {
+  const order = await db.order.findMany({
+    where: { customerId: customerId },
   });
   return order;
 }
 
 // Function to fetch products and quantities associated with the order
-export async function getOrderProducts(orderId: number) {
+export async function getOrderProducts(orderId: number | undefined) {
   const productsOrders = await db.productsOrders.findMany({
     where: { orderId: orderId },
     include: {

@@ -1,4 +1,3 @@
-"use client";
 import { addressCreate } from "@/app/actions/adress";
 import { AddressCreate, AddressCreateSchema } from "@/app/zodSchemas/address";
 import { zodResolver } from "@hookform/resolvers/zod";
