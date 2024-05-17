@@ -16,7 +16,7 @@ export function List() {
   return (
     <>
       {list.map((p) => (
-        <li className="hover:underline hover:cursor-pointer " key={p.id}>
+        <li className="hover:underline hover:cursor-pointer" key={p.id}>
           {p.name}
         </li>
       ))}
@@ -32,6 +32,7 @@ export default function Dropdown(props: PropsWithChildren) {
       <span
         onMouseOver={() => setSeen(!seen)}
         onMouseLeave={() => setSeen(seen)}
+        onClick={() => setSeen(!seen)}
       >
         Categories ⬇️
       </span>

@@ -1,5 +1,4 @@
-import { List } from "lucide-react";
-import Dropdown from "../Dropdown";
+import Dropdown, { List } from "../Dropdown";
 
 export default function UserHeader() {
   return (
