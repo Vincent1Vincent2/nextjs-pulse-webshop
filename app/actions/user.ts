@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { db } from "@/prisma/db";
-import bcrypt from "bcrypt";
-import { cookies } from "next/headers";
-import { UserCreate, UserLogin } from "../zodSchemas/user";
+import { db } from '@/prisma/db';
+import bcrypt from 'bcrypt';
+import { cookies } from 'next/headers';
+import { UserCreate, UserLogin } from '../zodSchemas/user';
 
 export async function registerUser(formData: UserCreate) {
   const hashedPassword = await bcrypt.hash(formData.password, 10);
@@ -15,7 +15,6 @@ export async function registerUser(formData: UserCreate) {
       firstName: formData.firstName,
       lastName: formData.lastName,
       phoneNumber: formData.phoneNumber,
-      // isAdmin: formData.admin,
     },
   });
 }
@@ -24,7 +23,7 @@ export async function loginUser(formData: UserLogin) {
   const user = await db.user.findUnique({ where: { email: formData.email } });
 
   if (!user) {
-    console.error("No user found, check email");
+    console.error('No user found, check email');
   }
   const hashedPassword = user?.password;
 
@@ -32,14 +31,14 @@ export async function loginUser(formData: UserLogin) {
 
   if (isMatch) {
     cookies().set({
-      name: "name",
+      name: 'name',
       value: user!.email,
-      path: "/",
+      path: '/',
       maxAge: 60 * 60 * 24 * 7,
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: 'strict',
     });
   } else {
-    console.error("Not Authorized, invalid password");
+    console.error('Not Authorized, invalid password');
   }
 }
