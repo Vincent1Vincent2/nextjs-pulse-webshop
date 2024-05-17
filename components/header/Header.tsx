@@ -6,12 +6,13 @@ import GuestHeader from "./GuestHeader";
 import UserHeader from "./UserHeader";
 
 export interface AuthUser {
-  name: string | null;
-  isAdmin: boolean | null;
+  id: number;
+  firstName: string | null;
+  admin: boolean | null;
 }
 
 export default function Header() {
-  const [user, setUser] = useState<AuthUser>();
+  const [user, setUser] = useState<AuthUser | null>();
 
   useEffect(() => {
     async function fetchAuth() {
@@ -21,15 +22,15 @@ export default function Header() {
     fetchAuth();
   }, []);
 
-  if (!user) {
+  if (!user || user === null) {
     return <GuestHeader />;
   }
 
-  if (user && !user.isAdmin) {
+  if (user && !user.admin) {
     return <UserHeader />;
   }
 
-  if (user && user.isAdmin) {
+  if (user && user.admin) {
     return <AdminHeader />;
   }
 }
