@@ -6,7 +6,6 @@ export const UserCreateSchema = z.object({
   lastName: z.string().min(0).max(80),
   phoneNumber: z.string().min(0).max(10),
   password: z.string().min(0).max(80),
-  admin: z.boolean().default(false),
 });
 
 export type UserCreate = z.infer<typeof UserCreateSchema>;

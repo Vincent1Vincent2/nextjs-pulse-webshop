@@ -6,13 +6,19 @@ import { cookies } from "next/headers";
 export async function authenticateUser() {
   const email = cookies().get("name");
 
+  if (!email) {
+    return null;
+  }
   const user = await db.user.findUnique({ where: { email: email?.value } });
 
   if (user) {
     const authUser = {
-      name: user.firstName,
-      isAdmin: user.admin,
+      id: user.id,
+      firstName: user.firstName,
+      admin: user.admin,
     };
     return authUser;
+  } else {
+    return null;
   }
 }

@@ -15,7 +15,6 @@ export async function registerUser(formData: UserCreate) {
       firstName: formData.firstName,
       lastName: formData.lastName,
       phoneNumber: formData.phoneNumber,
-      admin: formData.admin,
     },
   });
 }
