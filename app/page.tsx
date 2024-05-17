@@ -2,6 +2,7 @@ import CategoryForm from "@/components/CategoryForm";
 import ListProducts from "@/components/ListProducts";
 import LoginForm from "@/components/LoginForm";
 import OrderForm from "@/components/OrderForm";
+import ProductForm from "@/components/ProductForm";
 import RegisterForm from "@/components/RegisterForm";
 import Header from "@/components/header/Header";
 

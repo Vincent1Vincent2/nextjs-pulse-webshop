@@ -16,10 +16,9 @@ export async function saveCategory(formData: CategoryCreate) {
     // Connect the category with each product
     await Promise.all(
       formData.productIds.map(async (productId) => {
-        await db.categoryProducts.create({
+        await db.category.create({
           data: {
-            categoryId: category.id,
-            productId: productId,
+            name: category.name,
           },
         });
       })
