@@ -25,9 +25,9 @@ async function main() {
       name: "Protein powder",
       description: "A delicious shake filled with protein",
       price: "132",
-      CategoryProducts: {
+      categories: {
         create: [
-          { category: { connect: { id: category1.id } } }, // Associate with cat 1
+          { Product: { connect: { id: category1.id } } }, // Associate with cat 1
         ],
       },
     },
@@ -38,7 +38,7 @@ async function main() {
       name: "T-shirt",
       description: "Comfortable shirt to workout in style",
       price: "190",
-      CategoryProducts: {
+      categories: {
         create: [
           { category: { connect: { id: category2.id } } }, // Associate with cat 2
         ],
