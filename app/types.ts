@@ -12,28 +12,27 @@ export type FormProduct = {
   id: string;
 };
 
-export type Order = {
-  Adress: string;
-  City: string;
-  Name: string;
-  Phone: string;
-  Zipcode: string;
-  email: string;
-  orderNumber: string;
-};
-export interface category {
-  categoryId: number;
+export interface Product {
+  id: number;
+  name: string;
+  description: string | null;
+  price: string;
+  image: string | null;
 }
 
-export type productCreate = {
-  name: string;
-  price: number;
-  categoryId: number;
-};
-
-export interface CategoryProducts {
+export interface ProductOrderDetails {
   id: number;
-  category: string;
-  categoryId: number;
+  orderId: number;
+  productId: number;
+  quantity: number;
   product: Product;
+}
+
+export interface Order {
+  id: number;
+}
+
+export interface OrderDetails {
+  order: Order | null;
+  productsOrders: ProductOrderDetails[];
 }
