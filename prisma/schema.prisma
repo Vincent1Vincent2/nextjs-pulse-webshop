@@ -28,7 +28,7 @@ model Product {
   name           String
   description    String
   price          Decimal
-  image          String
+  image          String?
   categories     Category[]
   ProductsOrders ProductsOrders[]
 }
