@@ -3,20 +3,23 @@ import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
 async function main() {
-  // Seedar categories med info
+  // Seedar categories och produkter med data
+  const categories = [];
+
   const category1 = await db.category.create({
     data: {
       name: "Supplements",
     },
   });
+  categories.push(category1);
 
   const category2 = await db.category.create({
     data: {
       name: "Clothing",
     },
   });
+  categories.push(category2);
 
-  // Seedar våra produkter
   const product1 = await db.product.create({
     data: {
       name: "Protein powder",
@@ -24,7 +27,7 @@ async function main() {
       price: "132",
       CategoryProducts: {
         create: [
-          { category: { connect: { id: category1.id } } }, // Associate med cat 1
+          { category: { connect: { id: category1.id } } }, // Associate with cat 1
         ],
       },
     },
@@ -37,13 +40,13 @@ async function main() {
       price: "190",
       CategoryProducts: {
         create: [
-          { category: { connect: { id: category2.id } } }, // Associate med cat 2
+          { category: { connect: { id: category2.id } } }, // Associate with cat 2
         ],
       },
     },
   });
 
-  console.log("Categories seeded:", category1, category2);
+  console.log("Categories seeded:", categories);
   console.log("Products seeded:", product1, product2);
 }
 

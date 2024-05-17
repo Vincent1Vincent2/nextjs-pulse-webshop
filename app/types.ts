@@ -1,3 +1,4 @@
+import { Product } from "@prisma/client";
 import { ReactNode } from "react";
 
 export type PageProps = Readonly<{ params: { slug: string } }>;
@@ -20,3 +21,19 @@ export type Order = {
   email: string;
   orderNumber: string;
 };
+export interface category {
+  categoryId: number;
+}
+
+export type productCreate = {
+  name: string;
+  price: number;
+  categoryId: number;
+};
+
+export interface CategoryProducts {
+  id: number;
+  category: string;
+  categoryId: number;
+  product: Product;
+}
