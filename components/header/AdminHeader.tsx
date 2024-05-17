@@ -1,3 +1,11 @@
+import Dropdown, { List } from "../Dropdown";
+
 export default function AdminHeader() {
-  return <header>Admin</header>;
+  return (
+    <header>
+      <Dropdown>
+        <List />
+      </Dropdown>
+    </header>
+  );
 }
