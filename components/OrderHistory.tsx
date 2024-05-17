@@ -57,6 +57,12 @@ export default function OrderHistory() {
           orders.map((order) => (
             <div key={order.id}>
               <h2>Order #{order.id}</h2>
+              <p>
+                {" "}
+                {order.isSent === true
+                  ? "Order is on it's way!"
+                  : "Order waiting to be shipped"}
+              </p>
               {orderProducts[order.id] ? (
                 <ul>
                   {orderProducts[order.id].map((product) => (
@@ -81,7 +87,7 @@ export default function OrderHistory() {
           <p>No orders made... TIME TO BUY!</p>
         )
       ) : (
-        <p>Loading YOU!</p>
+        <p>Need to sign in</p>
       )}
     </div>
   );
