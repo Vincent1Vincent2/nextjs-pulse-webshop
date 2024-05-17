@@ -15,7 +15,7 @@ export async function authenticateUser() {
     const authUser = {
       id: user.id,
       firstName: user.firstName,
-      admin: user.admin,
+      admin: user.isAdmin,
     };
     return authUser;
   } else {

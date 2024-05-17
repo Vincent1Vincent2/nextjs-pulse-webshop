@@ -20,6 +20,7 @@ const OrderForm = () => {
   const handleSubmit = async (data: OrderCreate) => {
     try {
       const orderDetails = await orderCreate(data);
+
       setOrderDetails(orderDetails);
       clearCart();
     } catch (error) {
@@ -70,12 +71,12 @@ const OrderForm = () => {
           <p className="self-center">Order ID: {orderDetails.order?.id}</p>
           <h3 className="font-medium">Products</h3>
           <ul>
-            {orderDetails.productsOrders.map((po) => {
+            {orderDetails.productOrders.map((po) => {
               const totalForProduct =
-                parseFloat(po.product.price) * po.quantity;
+                parseFloat(po.product.price.toString()) * po.quantity;
 
               return (
-                <ul className="flex justify-between my-2" key={po.id}>
+                <ul className="flex justify-between my-2" key={po.productId}>
                   <li>{po.product.name}</li>
                   <div className="flex gap-5">
                     <li>{po.quantity}x</li>
@@ -88,8 +89,9 @@ const OrderForm = () => {
           <h3>Total</h3>
           <p>
             $
-            {orderDetails.productsOrders.reduce(
-              (acc, po) => acc + parseFloat(po.product.price) * po.quantity,
+            {orderDetails.productOrders.reduce(
+              (acc, po) =>
+                acc + parseFloat(po.product.price.toString()) * po.quantity,
               0
             )}
           </p>
