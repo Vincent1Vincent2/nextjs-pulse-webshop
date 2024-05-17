@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { OrderCreate } from "../zodSchemas/order";
 
 // Function to create an order
-export async function orderCreate(formData: OrderCreate) {
+export async function orderCreate(formData: OrderCreate, addressId: number) {
   const email = cookies().get("name");
 
   const user = await db.user.findUnique({ where: { email: email?.value } });
@@ -15,7 +15,7 @@ export async function orderCreate(formData: OrderCreate) {
   const order = await db.order.create({
     data: {
       orderDate: new Date(),
-      deliveryAddressId: 1,
+      deliveryAddressId: addressId,
       customerId: user.id,
       ProductsOrders: {
         create: formData.ProductOrder.map((po) => ({

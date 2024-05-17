@@ -6,6 +6,7 @@ import { OrderCreate, OrderCreateSchema } from "@/app/zodSchemas/order";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import AddressForm from "./AddressForm";
 
 const OrderForm = () => {
   const { cart, clearCart } = useCart();
@@ -16,10 +17,15 @@ const OrderForm = () => {
     formState: { errors },
   } = form;
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
+  const [addressId, setAddressId] = useState<number | null>(null);
+
+  const onAddressCreated = (createdAddressId: number) => {
+    setAddressId(createdAddressId);
+  };
 
   const handleSubmit = async (data: OrderCreate) => {
     try {
-      const orderDetails = await orderCreate(data);
+      const orderDetails = await orderCreate(data, addressId!);
 
       setOrderDetails(orderDetails);
       clearCart();
@@ -27,6 +33,10 @@ const OrderForm = () => {
       console.error("Error creating order:", error);
     }
   };
+
+  if (addressId === null) {
+    return <AddressForm onAddressCreated={onAddressCreated} />;
+  }
 
   return (
     <div>
