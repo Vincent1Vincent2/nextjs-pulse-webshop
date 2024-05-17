@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 const db = new PrismaClient();
 
@@ -25,9 +25,10 @@ async function main() {
       name: "Protein powder",
       description: "A delicious shake filled with protein",
       price: "132",
+      image: "protein_powder.jpg",
       categories: {
-        create: [
-          { Product: { connect: { id: category1.id } } }, // Associate with cat 1
+        connect: [
+          { id: category1.id }, // Associate with cat 1
         ],
       },
     },
@@ -37,10 +38,11 @@ async function main() {
     data: {
       name: "T-shirt",
       description: "Comfortable shirt to workout in style",
-      price: "190",
+      price: new Prisma.Decimal("190"), // Price as a Decimal
+      image: "protein_powder.jpg",
       categories: {
-        create: [
-          { category: { connect: { id: category2.id } } }, // Associate with cat 2
+        connect: [
+          { id: category2.id }, // Using `connect` to link an existing category directly
         ],
       },
     },
