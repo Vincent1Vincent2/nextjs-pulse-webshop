@@ -37,6 +37,7 @@ model Order {
   id                Int              @id @default(autoincrement())
   orderDate         DateTime
   deliveryAddressId Int
+  customerId        Int
   ProductsOrders    ProductsOrders[]
 }
 
