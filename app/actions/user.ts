@@ -42,3 +42,16 @@ export async function loginUser(formData: UserLogin) {
     console.error("Not Authorized, invalid password");
   }
 }
+
+export async function logoutUser() {
+  cookies().set({
+    name: "name",
+    value: "",
+    path: "/",
+    maxAge: -1,
+    httpOnly: true,
+    sameSite: "strict",
+  });
+
+  return { message: "Logged out successfully" };
+}

@@ -3,6 +3,7 @@ import { loginUser } from "@/app/actions/user";
 import { UserLogin, UserLoginSchema } from "@/app/zodSchemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import LogoutButton from "./LogoutButton";
 
 export default function LoginForm() {
   const form = useForm<UserLogin>({
@@ -30,6 +31,7 @@ export default function LoginForm() {
       />
       {errors.password && <span>{errors.password.message}</span>}
       <button>Login</button>
+      <LogoutButton />
     </form>
   );
 }
