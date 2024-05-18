@@ -1,7 +1,6 @@
 import CategoryForm from "@/components/CategoryForm";
 import ListProducts from "@/components/ListProducts";
 import LoginForm from "@/components/LoginForm";
-import LogoutButton from "@/components/LogoutButton";
 import OrderForm from "@/components/OrderForm";
 import OrderHistory from "@/components/OrderHistory";
 import RegisterForm from "@/components/RegisterForm";
@@ -15,7 +14,6 @@ export default function Home() {
         <CategoryForm />
         <RegisterForm />
         <LoginForm />
-        <LogoutButton />
       </div>
       <OrderForm />
 
