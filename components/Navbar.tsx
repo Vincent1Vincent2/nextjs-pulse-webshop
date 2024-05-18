@@ -13,11 +13,13 @@ import Logo from './ui/logo';
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<AuthUser | null>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchAuth() {
       const userAuthenticated = await authenticateUser();
       setUser(userAuthenticated);
+      setIsLoading(false);
     }
     fetchAuth();
   }, []);
@@ -50,19 +52,23 @@ export default function Navbar() {
         </div>
         <div className='flex items-center gap-5'>
           {/* <DropdownMenu /> */}
-          <div className='hidden lg:flex lg:flex-1 lg:justify-end gap-4'>
-            {user ? (
-              <DropdownMenu user={user} />
-            ) : (
-              <Link
-                href='/login'
-                className=' flex justify-between items-center bg-[#DA2222] gap-4  font-normal leading-6 text-white transition-all text-md hover:text-gray-300  px-3 py-1 rounded-lg'
-              >
-                Login
-                <ArrowRightIcon className=' size-5 hover:translate-x-1 transition-all' />
-              </Link>
-            )}
-          </div>
+          {isLoading ? (
+            <div className='bg-black p-4 '></div>
+          ) : (
+            <div className='hidden lg:flex lg:flex-1 lg:justify-end gap-4'>
+              {user ? (
+                <DropdownMenu user={user} />
+              ) : (
+                <Link
+                  href='/login'
+                  className=' flex justify-between items-center bg-[#DA2222] gap-4  font-normal leading-6 text-white transition-all text-md hover:text-gray-300  px-3 py-1 rounded-lg'
+                >
+                  Login
+                  <ArrowRightIcon className=' size-5 hover:translate-x-1 transition-all' />
+                </Link>
+              )}
+            </div>
+          )}
           <Link data-cy='cart-link' href={'/checkout'}>
             <CartIcon />
           </Link>
