@@ -5,6 +5,7 @@ import { ArrowRightIcon, MenuIcon, XIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import CartIcon from './CartIcon';
+import Dropdown from './Dropdown';
 import DropdownMenu from './DropdownMenu';
 import GuestHeader from './header/GuestHeader';
 import { AuthUser } from './header/Header';
