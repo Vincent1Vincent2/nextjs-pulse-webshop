@@ -1,10 +1,10 @@
-"use server";
+'use server';
 
-import { db } from "@/prisma/db";
-import { cookies } from "next/headers";
+import { db } from '@/prisma/db';
+import { cookies } from 'next/headers';
 
 export async function authenticateUser() {
-  const email = cookies().get("name");
+  const email = cookies().get('name');
 
   if (!email) {
     return null;
@@ -15,7 +15,7 @@ export async function authenticateUser() {
     const authUser = {
       id: user.id,
       firstName: user.firstName,
-      admin: user.admin,
+      admin: user.isAdmin,
     };
     return authUser;
   } else {

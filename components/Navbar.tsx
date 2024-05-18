@@ -22,6 +22,8 @@ export default function Navbar() {
     fetchAuth();
   }, []);
 
+  console.log('Navbar user:', user?.admin);
+
   return (
     <div>
       <header className='bg-black flex justify-between items-center p-4 text-white'>

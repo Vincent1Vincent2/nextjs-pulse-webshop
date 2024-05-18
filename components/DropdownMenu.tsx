@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { Fragment } from 'react';
 
 export default function DropdownMenu({ user }) {
-  console.log('DropdownMenu user:', user);
+  console.log('DropdownMenu user:', user.admin);
   return (
     <Menu as='div' className='relative inline-block text-left'>
       <MenuButton>
@@ -52,7 +52,7 @@ export default function DropdownMenu({ user }) {
                 Item 2
               </Link>
             </MenuItem>
-            {user && user.admin && (
+            {user.admin === true && (
               <MenuItem>
                 <Link
                   href='/admin'
