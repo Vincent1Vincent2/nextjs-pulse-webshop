@@ -25,7 +25,7 @@ export function List() {
 }
 
 export default function Dropdown(props: PropsWithChildren) {
-  const [seen, setSeen] = useState<boolean>(true);
+  const [seen, setSeen] = useState<boolean>(false);
 
   return (
     <div className="hover:cursor-pointer">
