@@ -1,13 +1,27 @@
 'use client';
 
-import { MenuIcon, UserCog2Icon, XIcon } from 'lucide-react';
+import { authenticateUser } from '@/app/actions/authenticate';
+import { ArrowRightIcon, MenuIcon, XIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
-import CartIcon from './cartIcon';
+import { useEffect, useState } from 'react';
+import CartIcon from './CartIcon';
+import DropdownMenu from './DropdownMenu';
+import GuestHeader from './header/GuestHeader';
+import { AuthUser } from './header/Header';
 import Logo from './ui/logo';
 
-export default function Header() {
+export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>();
+
+  useEffect(() => {
+    async function fetchAuth() {
+      const userAuthenticated = await authenticateUser();
+      setUser(userAuthenticated);
+    }
+    fetchAuth();
+  }, []);
+
   return (
     <div>
       <header className='bg-black flex justify-between items-center p-4 text-white'>
@@ -23,9 +37,8 @@ export default function Header() {
           <Link href='/' className='text-white hover:text-gray-300'>
             Shop
           </Link>
-          <Link href='/' className='text-white hover:text-gray-300'>
-            Categories
-          </Link>
+          <GuestHeader />
+          {/* <CategoriesDropdown /> */}
           <Link href='/' className='text-white hover:text-gray-300'>
             Best Sellers
           </Link>
@@ -34,9 +47,20 @@ export default function Header() {
           </Link>
         </div>
         <div className='flex items-center gap-5'>
-          <Link href={'/admin'}>
-            <UserCog2Icon data-cy='admin-link' width={33} height={33} />
-          </Link>
+          {/* <DropdownMenu /> */}
+          <div className='hidden lg:flex lg:flex-1 lg:justify-end gap-4'>
+            {user ? (
+              <DropdownMenu user={user} />
+            ) : (
+              <Link
+                href='/login'
+                className=' flex justify-between items-center bg-[#DA2222] gap-4  font-normal leading-6 text-white transition-all text-md hover:text-gray-300  px-3 py-1 rounded-lg'
+              >
+                Login
+                <ArrowRightIcon className=' size-5 hover:translate-x-1 transition-all' />
+              </Link>
+            )}
+          </div>
           <Link data-cy='cart-link' href={'/checkout'}>
             <CartIcon />
           </Link>
@@ -59,9 +83,8 @@ export default function Header() {
           <Link href='/' className='text-white'>
             Shop
           </Link>
-          <Link href='/' className='text-white'>
-            Categories
-          </Link>
+          <GuestHeader />
+          {/* <CategoriesDropdown /> */}
           <Link href='/' className='text-white'>
             Best Sellers
           </Link>

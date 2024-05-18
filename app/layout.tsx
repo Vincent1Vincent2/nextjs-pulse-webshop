@@ -1,4 +1,5 @@
-import Header from '@/components/Header';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -19,17 +20,15 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang='en'>
-      <body className={inter.className}>
+      <body className={`min-h-screen flex flex-col ${inter.className}`}>
         <CartProvider>
           <ProductProvider>
             <ConfirmProvider>
-              <Header />
-              {children}
-              <footer className='bg-black pt-2 pb-2 flex justify-center'>
-                <span className='text-sm text-gray-500 sm:text-center'>
-                  © Pulse {new Date().getFullYear()}. All Rights Reserved.
-                </span>
-              </footer>
+              <main className=' flex-1'>
+                <Navbar />
+                {children}
+              </main>
+              <Footer />
               <Toaster />
             </ConfirmProvider>
           </ProductProvider>
