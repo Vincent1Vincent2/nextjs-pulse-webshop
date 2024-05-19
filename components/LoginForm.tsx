@@ -3,12 +3,14 @@ import { loginUser } from '@/app/actions/user';
 import { UserLogin, UserLoginSchema } from '@/app/zodSchemas/user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 export default function LoginForm() {
   const form = useForm<UserLogin>({
     resolver: zodResolver(UserLoginSchema),
   });
+  const router = useRouter();
 
   const {
     formState: { errors },
@@ -17,7 +19,7 @@ export default function LoginForm() {
   const handleSubmit = async (data: UserLogin) => {
     await loginUser(data);
     form.reset();
-    location.reload();
+    router.push('/');
   };
 
   return (
