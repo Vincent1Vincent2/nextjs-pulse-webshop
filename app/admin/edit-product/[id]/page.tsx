@@ -42,7 +42,7 @@ export default function EditPage({ params }: PageProps) {
   return user?.admin ? (
     <div className="text-white">
       <div>
-        <h1>Edit Product: {product!.name}</h1>
+        <h1>Edit Product: {product?.name}</h1>
       </div>
     </div>
   ) : (
