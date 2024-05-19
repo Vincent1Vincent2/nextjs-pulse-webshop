@@ -1,4 +1,5 @@
 "use client";
+import ProductForm from "@/components/ProductForm";
 import { AuthUser } from "@/components/header/Header";
 import { Product } from "@prisma/client";
 import Link from "next/link";
@@ -28,6 +29,13 @@ export default function AdminPage() {
 
   return user?.admin ? (
     <main className="bg-[#F4F4F5] p-2 shadow rounded-lg container flex flex-col gap-5">
+      <div>
+        <h2>Add a product</h2>
+        <ProductForm />
+      </div>
+      <Link className="text-black" href={"/admin/orders"}>
+        User Orders
+      </Link>
       {products?.map((p) => (
         <div key={p.id}>
           <ul>

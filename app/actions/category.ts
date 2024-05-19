@@ -10,3 +10,7 @@ export async function saveCategory(formData: CategoryCreate) {
     },
   });
 }
+
+export async function getCategories() {
+  return await db.category.findMany({});
+}

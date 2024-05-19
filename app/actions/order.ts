@@ -3,7 +3,6 @@ import { db } from "@/prisma/db";
 import { cookies } from "next/headers";
 import { OrderCreate } from "../zodSchemas/order";
 
-// Function to create an order
 export async function orderCreate(formData: OrderCreate, addressId: number) {
   const email = cookies().get("name");
 
@@ -54,6 +53,35 @@ export async function orderCreate(formData: OrderCreate, addressId: number) {
   };
 }
 
+export async function getAllOrders() {
+  const order = await db.order.findMany({});
+  return order;
+}
+
+export async function nonSentOrders() {
+  const orders = await db.order.findMany({
+    where: { isSent: false },
+  });
+  return orders;
+}
+
+export async function sentOrders() {
+  const orders = await db.order.findMany({
+    where: { isSent: true },
+  });
+  return orders;
+}
+
+export async function markOrderSent(id: number | undefined) {
+  if (!id) return null;
+
+  const order = await db.order.update({
+    where: { id: id },
+    data: { isSent: true },
+  });
+
+  return order;
+}
 // Function to fetch order details
 export async function getOrder(customerId: number | undefined) {
   const order = await db.order.findMany({
@@ -67,7 +95,7 @@ export async function getOrderProducts(orderId: number | undefined) {
   const productsOrders = await db.productsOrders.findMany({
     where: { orderId: orderId },
     include: {
-      product: true, // This includes product details if needed
+      product: true, // This includes product details
     },
   });
   return productsOrders;

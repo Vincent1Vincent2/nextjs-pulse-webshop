@@ -18,6 +18,11 @@ export interface Product {
   description: string | null;
   price: string;
   image: string | null;
+  deleted?: boolean;
+}
+
+export interface ProductWithQuantity extends Product {
+  quantity: number;
 }
 
 export interface ProductOrderDetails {
@@ -29,6 +34,7 @@ export interface ProductOrderDetails {
     description: string;
     price: Decimal;
     image: string | null;
+    deleted?: boolean | undefined;
   };
 }
 
@@ -49,4 +55,10 @@ export interface Address {
   streetAdress: string;
   zipCode: number;
   city: string;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  products: Product[];
 }
