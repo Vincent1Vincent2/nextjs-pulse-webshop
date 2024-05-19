@@ -5,16 +5,25 @@ import {
   MenuItems,
   Transition,
 } from '@headlessui/react';
-import { UserCog2Icon } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment } from 'react';
+import { AuthUser } from './header/Header';
 
-export default function DropdownMenu({ user }) {
+export default function DropdownMenu({ user }: { user: AuthUser }) {
   console.log('DropdownMenu user:', user.admin);
   return (
     <Menu as='div' className='relative inline-block text-left'>
       <MenuButton>
-        <UserCog2Icon width={33} height={33} />
+        {/* <UserCog2Icon width={33} height={33} /> */}
+        <div className='relative h-10 w-10'>
+          <Image
+            className='h-full w-full rounded-full object-cover object-center m-1'
+            src='/profile-img.jpg'
+            alt='user-image'
+            layout='fill'
+          />
+        </div>
       </MenuButton>
 
       <Transition

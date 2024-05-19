@@ -5,7 +5,6 @@ import { ArrowRightIcon, MenuIcon, XIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import CartIcon from './CartIcon';
-import Dropdown from './Dropdown';
 import DropdownMenu from './DropdownMenu';
 import GuestHeader from './header/GuestHeader';
 import { AuthUser } from './header/Header';
@@ -62,7 +61,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href='/login'
-                  className=' flex justify-between items-center bg-[#DA2222] gap-4  font-normal leading-6 text-white transition-all text-md hover:text-gray-300  px-3 py-1 rounded-lg'
+                  className=' flex justify-between items-center bg-black border border-white gap-4  font-normal leading-6 text-white transition-all text-md hover:text-gray-300  px-3 py-1 rounded-lg'
                 >
                   Login
                   <ArrowRightIcon className=' size-5 hover:translate-x-1 transition-all' />
