@@ -4,8 +4,8 @@ import { authenticateUser } from '@/app/actions/authenticate';
 import { ArrowRightIcon, MenuIcon, XIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import CartIcon from './CartIcon';
 import DropdownMenu from './DropdownMenu';
+import CartIcon from './cartIcon';
 import GuestHeader from './header/GuestHeader';
 import { AuthUser } from './header/Header';
 import Logo from './ui/logo';
@@ -55,7 +55,7 @@ export default function Navbar() {
           {isLoading ? (
             <div className='bg-black p-4 '></div>
           ) : (
-            <div className='hidden lg:flex lg:flex-1 lg:justify-end gap-4'>
+            <div className='lg:flex lg:flex-1 lg:justify-end gap-4'>
               {user ? (
                 <DropdownMenu user={user} />
               ) : (
