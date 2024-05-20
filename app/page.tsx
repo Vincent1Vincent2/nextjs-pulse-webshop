@@ -1,6 +1,7 @@
 import CategoryForm from "@/components/CategoryForm";
 import ListProducts from "@/components/ListProducts";
 import OrderForm from "@/components/OrderForm";
+import OrderHistory from "@/components/OrderHistory";
 import ProductForm from "@/components/ProductForm";
 
 export default function Home() {
