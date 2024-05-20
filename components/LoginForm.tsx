@@ -1,6 +1,7 @@
 'use client';
 import { loginUser } from '@/app/actions/user';
 import { UserLogin, UserLoginSchema } from '@/app/zodSchemas/user';
+import { signIn } from '@/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

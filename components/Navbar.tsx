@@ -1,30 +1,16 @@
-'use client';
-
-import { authenticateUser } from '@/app/actions/authenticate';
-import { ArrowRightIcon, MenuIcon, XIcon } from 'lucide-react';
+import { auth, signIn } from '@/auth';
+import { MenuIcon, XIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import DropdownMenu from './DropdownMenu';
+import { useState } from 'react';
 import CartIcon from './cartIcon';
 import GuestHeader from './header/GuestHeader';
-import { AuthUser } from './header/Header';
 import Logo from './ui/logo';
 
-export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [user, setUser] = useState<AuthUser | null>();
-  const [isLoading, setIsLoading] = useState(true);
+export default async function Navbar() {
+  const session = await auth();
 
-  useEffect(() => {
-    async function fetchAuth() {
-      const userAuthenticated = await authenticateUser();
-      setUser(userAuthenticated);
-      setIsLoading(false);
-    }
-    fetchAuth();
-  }, []);
-
-  console.log('Navbar user:', user?.admin);
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const [isLoading, setIsLoading] = useState(true);
 
   return (
     <div>
@@ -56,7 +42,14 @@ export default function Navbar() {
             <div className='bg-black p-4 '></div>
           ) : (
             <div className='lg:flex lg:flex-1 lg:justify-end gap-4'>
-              {user ? (
+              {session?.user ? (
+                'I am logged in!'
+              ) : (
+                <form action='submit'>
+                  <button onClick={() => signIn()}>Sign in</button>
+                </form>
+              )}
+              {/* {user ? (
                 <DropdownMenu user={user} />
               ) : (
                 <Link
@@ -66,14 +59,15 @@ export default function Navbar() {
                   Login
                   <ArrowRightIcon className=' size-5 hover:translate-x-1 transition-all' />
                 </Link>
-              )}
+               
+              )} */}
             </div>
           )}
           <Link data-cy='cart-link' href={'/checkout'}>
             <CartIcon />
           </Link>
           <div className='md:hidden'>
-            <button
+            {/* <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className='focus:outline-none'
             >
@@ -82,7 +76,7 @@ export default function Navbar() {
               ) : (
                 <MenuIcon data-cy='menu-open-icon' width={24} height={24} />
               )}
-            </button>
+            </button> */}
           </div>
         </div>
       </header>
