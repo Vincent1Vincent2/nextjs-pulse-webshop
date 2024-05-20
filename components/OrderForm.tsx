@@ -39,10 +39,15 @@ const OrderForm = () => {
   useEffect(() => {
     async function fetchAuth() {
       const hasAddress = await checkAddress();
-      const addressID = hasAddress[0].id;
-      setAddressId(addressID);
-      if (addressID) {
-        setAddress(hasAddress);
+      if (hasAddress.length >= 0) {
+        console.log("No address");
+      } else {
+        console.log(hasAddress);
+        const addressID = hasAddress[0].id;
+        setAddressId(addressID);
+        if (addressID) {
+          setAddress(hasAddress);
+        }
       }
     }
 

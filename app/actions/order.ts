@@ -11,35 +11,57 @@ export async function orderCreate(formData: OrderCreate, addressId: number) {
     throw new Error("User not found");
   }
 
-  const order = await db.order.create({
-    data: {
-      orderDate: new Date(),
-      deliveryAddressId: addressId,
-      customerId: user.id,
-      ProductsOrders: {
-        create: formData.ProductOrder.map((po) => ({
-          productId: po.productId,
-          quantity: po.quantity,
-        })),
-      },
-    },
-    include: {
-      ProductsOrders: {
-        include: {
-          product: true,
+  // Use a transaction to ensure atomicity
+  const result = await db.$transaction(async (prisma) => {
+    // Create the order and its associated product orders
+    const order = await prisma.order.create({
+      data: {
+        orderDate: new Date(),
+        deliveryAddressId: addressId,
+        customerId: user.id,
+        ProductsOrders: {
+          create: formData.ProductOrder.map((po) => ({
+            productId: po.productId,
+            quantity: po.quantity,
+          })),
         },
       },
-    },
+      include: {
+        ProductsOrders: {
+          include: {
+            product: true,
+          },
+        },
+      },
+    });
+
+    for (const po of formData.ProductOrder) {
+      const product = await prisma.product.findUnique({
+        where: { id: po.productId },
+      });
+      if (!product) {
+        throw new Error(`Product with ID ${po.productId} not found`);
+      }
+      if (product.stock < po.quantity) {
+        throw new Error(`Insufficient stock for product ${product.name}`);
+      }
+      await prisma.product.update({
+        where: { id: po.productId },
+        data: { stock: product.stock - po.quantity },
+      });
+    }
+
+    return order;
   });
 
   return {
     order: {
-      id: order.id,
-      orderDate: order.orderDate,
-      deliveryAddressId: order.deliveryAddressId,
-      customerId: order.customerId,
+      id: result.id,
+      orderDate: result.orderDate,
+      deliveryAddressId: result.deliveryAddressId,
+      customerId: result.customerId,
     },
-    productOrders: order.ProductsOrders.map((po) => ({
+    productOrders: result.ProductsOrders.map((po) => ({
       productId: po.productId,
       quantity: po.quantity,
       product: {

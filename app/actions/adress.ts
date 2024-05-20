@@ -33,5 +33,10 @@ export async function checkAddress() {
   const address = await db.address.findMany({
     where: { customerId: user.id },
   });
+
+  if (address === undefined) {
+    console.log("Register Address");
+  }
+
   return address;
 }
