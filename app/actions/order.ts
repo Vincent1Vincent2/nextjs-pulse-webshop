@@ -1,10 +1,9 @@
 "use server";
 import { db } from "@/prisma/db";
 import { cookies } from "next/headers";
-import { OrderCreate, ProductOrder } from "../zodSchemas/order";
+import { OrderCreate } from "../zodSchemas/order";
 
-// Function to create an order
-export async function orderCreate(formData: OrderCreate) {
+export async function orderCreate(formData: OrderCreate, addressId: number) {
   const email = cookies().get("name");
 
   const user = await db.user.findUnique({ where: { email: email?.value } });
@@ -12,48 +11,113 @@ export async function orderCreate(formData: OrderCreate) {
     throw new Error("User not found");
   }
 
-  // Create the order and get the order ID
-  const order = await db.order.create({
-    data: {
-      ProductsOrders: {
-        create: formData.ProductOrder.map((po: ProductOrder) => ({
-          productId: po.productId,
-          quantity: po.quantity,
-        })),
+  // Use a transaction to ensure atomicity
+  const result = await db.$transaction(async (prisma) => {
+    // Create the order and its associated product orders
+    const order = await prisma.order.create({
+      data: {
+        orderDate: new Date(),
+        deliveryAddressId: addressId,
+        customerId: user.id,
+        ProductsOrders: {
+          create: formData.ProductOrder.map((po) => ({
+            productId: po.productId,
+            quantity: po.quantity,
+          })),
+        },
       },
-    },
+      include: {
+        ProductsOrders: {
+          include: {
+            product: true,
+          },
+        },
+      },
+    });
+
+    for (const po of formData.ProductOrder) {
+      const product = await prisma.product.findUnique({
+        where: { id: po.productId },
+      });
+      if (!product) {
+        throw new Error(`Product with ID ${po.productId} not found`);
+      }
+      if (product.stock < po.quantity) {
+        throw new Error(`Insufficient stock for product ${product.name}`);
+      }
+      await prisma.product.update({
+        where: { id: po.productId },
+        data: { stock: product.stock - po.quantity },
+      });
+    }
+
+    return order;
   });
 
-  // Fetch and return the complete order details
-  const orderDetails = await getOrderDetails(order.id);
-  return orderDetails;
-}
-
-// Function to fetch the complete order details
-async function getOrderDetails(orderId: number) {
-  const order = await getOrder(orderId);
-  const productsOrders = await getOrderProducts(orderId);
-
   return {
-    order,
-    productsOrders,
+    order: {
+      id: result.id,
+      orderDate: result.orderDate,
+      deliveryAddressId: result.deliveryAddressId,
+      customerId: result.customerId,
+    },
+    productOrders: result.ProductsOrders.map((po) => ({
+      productId: po.productId,
+      quantity: po.quantity,
+      product: {
+        id: po.product.id,
+        name: po.product.name,
+        description: po.product.description,
+        price: po.product.price,
+        image: po.product.image,
+      },
+    })),
   };
 }
 
+export async function getAllOrders() {
+  const order = await db.order.findMany({});
+  return order;
+}
+
+export async function nonSentOrders() {
+  const orders = await db.order.findMany({
+    where: { isSent: false },
+  });
+  return orders;
+}
+
+export async function sentOrders() {
+  const orders = await db.order.findMany({
+    where: { isSent: true },
+  });
+  return orders;
+}
+
+export async function markOrderSent(id: number | undefined) {
+  if (!id) return null;
+
+  const order = await db.order.update({
+    where: { id: id },
+    data: { isSent: true },
+  });
+
+  return order;
+}
 // Function to fetch order details
-export async function getOrder(orderId: number) {
-  const order = await db.order.findUnique({
-    where: { id: orderId },
+export async function getOrder(customerId: number | undefined) {
+  const order = await db.order.findMany({
+    where: { customerId: customerId },
   });
   return order;
 }
 
 // Function to fetch products and quantities associated with the order
-export async function getOrderProducts(orderId: number) {
+export async function getOrderProducts(orderId: number | undefined) {
   const productsOrders = await db.productsOrders.findMany({
     where: { orderId: orderId },
     include: {
-      product: true, // This includes product details if needed
+      product: true, // This includes product details
     },
   });
   return productsOrders;

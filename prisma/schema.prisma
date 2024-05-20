@@ -29,6 +29,8 @@ model Product {
   description    String
   price          Decimal
   image          String?
+  stock          Int 
+  deleted        Boolean          @default(false)
   categories     Category[]
   ProductsOrders ProductsOrders[]
 }
@@ -38,11 +40,13 @@ model Order {
   orderDate         DateTime
   deliveryAddressId Int
   customerId        Int
+  isSent            Boolean @default(false)
   ProductsOrders    ProductsOrders[]
 }
 
 model Address {
   id           Int    @id @default(autoincrement())
+  customerId   Int
   streetAdress String
   zipCode      Int
   city         String
