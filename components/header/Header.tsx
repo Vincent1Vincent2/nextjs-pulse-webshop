@@ -1,9 +1,9 @@
-"use client";
-import { authenticateUser } from "@/app/actions/authenticate";
-import { useEffect, useState } from "react";
-import AdminHeader from "./AdminHeader";
-import GuestHeader from "./GuestHeader";
-import UserHeader from "./UserHeader";
+'use client';
+import { authenticateUser } from '@/app/actions/authenticate';
+import { useEffect, useState } from 'react';
+import AdminHeader from './AdminHeader';
+import GuestHeader from './GuestHeader';
+import UserHeader from './UserHeader';
 
 export interface AuthUser {
   id: number;
