@@ -37,21 +37,19 @@ const OrderForm = () => {
     }
   };
   useEffect(() => {
-    async function fetchAuth() {
+    async function fetchAddress() {
       const hasAddress = await checkAddress();
-      if (hasAddress.length >= 0) {
+      if (hasAddress.length < 1) {
         console.log("No address");
       } else {
-        console.log(hasAddress);
         const addressID = hasAddress[0].id;
         setAddressId(addressID);
-        if (addressID) {
-          setAddress(hasAddress);
-        }
+
+        setAddress(hasAddress);
       }
     }
 
-    fetchAuth();
+    fetchAddress();
   }, []);
 
   if (addressId === null) {

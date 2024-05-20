@@ -34,7 +34,7 @@ export async function checkAddress() {
     where: { customerId: user.id },
   });
 
-  if (address === undefined) {
+  if (address === undefined || address.length < 0) {
     console.log("Register Address");
   }
 
