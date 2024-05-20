@@ -34,6 +34,7 @@ export interface ProductOrderDetails {
     description: string;
     price: Decimal;
     image: string | null;
+    stock?: number;
     deleted?: boolean | undefined;
   };
 }

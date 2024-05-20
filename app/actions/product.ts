@@ -10,6 +10,7 @@ export async function productCreate(formData: ProductCreate) {
   if (user?.isAdmin !== true) {
     throw new Error("User not Authorized");
   }
+
   const existingCategories = await db.category.findMany({
     where: {
       name: {
@@ -29,6 +30,7 @@ export async function productCreate(formData: ProductCreate) {
       description: formData.description,
       price: parseFloat(formData.price),
       image: formData.image,
+      stock: formData.stock,
       categories: {
         connect: connectCategories,
         create: createCategories,

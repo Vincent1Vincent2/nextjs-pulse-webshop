@@ -39,6 +39,7 @@ export default function OrderHistory() {
               price: po.product.price,
               image: po.product.image,
               deleted: po.product.deleted!,
+              stock: po.product.stock!,
             }));
           }
 

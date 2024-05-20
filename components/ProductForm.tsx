@@ -54,6 +54,13 @@ const ProductForm = () => {
       <input {...form.register("image")} type="text" placeholder="Image URL" />
       {errors.image && <span>{errors.image?.message}</span>}
 
+      <input
+        {...form.register("stock", { valueAsNumber: true })}
+        type="number"
+        placeholder="Stock"
+      />
+      {errors.stock && <span>{errors.stock?.message}</span>}
+
       <div>
         {fields.map((field, index) => (
           <div key={field.id}>

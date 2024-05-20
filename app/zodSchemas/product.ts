@@ -14,6 +14,7 @@ export const ProductCreateSchema = z.object({
   description: z.string().min(0).max(80),
   price: z.string().min(0).max(80),
   image: z.string().min(0).max(10),
+  stock: z.number().int().min(0),
   categories: z.array(
     z.object({
       name: z.string(),
