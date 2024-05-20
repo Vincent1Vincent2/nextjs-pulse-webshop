@@ -36,7 +36,7 @@ export default function Header({ session }: { session: any }) {
           </Link>
         </div>
         <div className='flex items-center gap-5'>
-          {session ? <DropdownMenu user={session.user} /> : <SignInButton />}
+          {session ? <DropdownMenu session={session} /> : <SignInButton />}
           <Link data-cy='cart-link' href={'/checkout'}>
             <CartIcon />
           </Link>

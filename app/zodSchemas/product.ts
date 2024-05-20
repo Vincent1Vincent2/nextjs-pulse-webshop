@@ -8,6 +8,7 @@ export const ProductCreateSchema = z.object({
     z.number().positive('Please enter a positive number')
   ),
   image: z.string().url(),
+  stock: z.number().int().positive(),
 });
 
 export type ProductCreate = z.infer<typeof ProductCreateSchema>;

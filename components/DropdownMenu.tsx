@@ -8,10 +8,9 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment } from 'react';
-import { AuthUser } from './header/Header';
 
-export default function DropdownMenu({ user }: { user: AuthUser }) {
-  console.log('DropdownMenu user:', user.admin);
+export default function DropdownMenu({ session }: { session: any }) {
+  const isAdmin = session?.user.isAdmin;
   return (
     <Menu as='div' className='relative inline-block text-left'>
       <MenuButton>
@@ -61,7 +60,7 @@ export default function DropdownMenu({ user }: { user: AuthUser }) {
                 Item 2
               </Link>
             </MenuItem>
-            {user.admin === true && (
+            {isAdmin && (
               <MenuItem>
                 <Link
                   href='/admin'
