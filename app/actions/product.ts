@@ -78,6 +78,7 @@ export async function productUpdate(
       description: formData.description,
       price: parseFloat(formData.price),
       image: formData.image,
+      stock: formData.stock,
       categories: {
         disconnect: disconnectCategories,
         connect: connectCategories,

@@ -74,6 +74,7 @@ export default function EditPage({ params }: PageProps) {
             description: fetchedProduct.description,
             price: fetchedProduct.price.toString(),
             image: fetchedProduct.image || "",
+            stock: fetchedProduct.stock,
             categories: fetchedProduct.categories.map((c) => ({
               name: c.name,
             })),
@@ -88,6 +89,7 @@ export default function EditPage({ params }: PageProps) {
   }, [id, reset]);
 
   const handleSubmit = async (data: ProductCreate) => {
+    console.log("in");
     await productUpdate(data, product?.id);
     form.reset();
   };
@@ -121,10 +123,18 @@ export default function EditPage({ params }: PageProps) {
           />
           {errors.image && <span>{errors.image?.message}</span>}
 
-          <div>
+          <input
+            {...form.register("stock", { valueAsNumber: true })}
+            type="number"
+            placeholder="Stock"
+          />
+          {errors.stock && <span>{errors.stock?.message}</span>}
+
+          <div className="text-white">
             {fields.map((field, index) => (
               <div key={field.id}>
                 <select
+                  className="text-black"
                   {...form.register(`categories.${index}.name` as const)}
                   defaultValue={field.name || ""}
                 >
@@ -135,7 +145,11 @@ export default function EditPage({ params }: PageProps) {
                     </option>
                   ))}
                 </select>
-                <button type="button" onClick={() => remove(index)}>
+                <button
+                  className="text-white"
+                  type="button"
+                  onClick={() => remove(index)}
+                >
                   Remove
                 </button>
               </div>
@@ -146,7 +160,9 @@ export default function EditPage({ params }: PageProps) {
           </div>
           {errors.categories && <span>{errors.categories.message}</span>}
 
-          <button type="submit">Submit</button>
+          <button className="text-white" type="submit">
+            Submit
+          </button>
         </form>
       </div>
     </div>
