@@ -18,8 +18,9 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
   isAdmin       Boolean   @default(false)
-  phoneNumber   String
+  phoneNumber   String?
  
+  accounts Account[]
   sessions Session[]
 }
 model Session {
@@ -27,9 +28,36 @@ model Session {
   userId       String
   expires      DateTime
   createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  updatedAt    DateTime @default(now()) @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String 
+  expires    DateTime
+
+  @@id([identifier, token])
 }
 
 model Category {
@@ -44,6 +72,9 @@ model Product {
   description    String
   price          Decimal
   image          String?
+  stock          Int
+  deleted        Boolean          @default(false)
+
   categories     Category[]
   ProductsOrders ProductsOrders[]
 }
@@ -53,11 +84,13 @@ model Order {
   orderDate         DateTime
   deliveryAddressId Int
   customerId        Int
+  isSent            Boolean          @default(false)
   ProductsOrders    ProductsOrders[]
 }
 
 model Address {
   id           Int    @id @default(autoincrement())
+  customerId   Int
   streetAdress String
   zipCode      Int
   city         String
