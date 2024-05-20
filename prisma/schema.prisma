@@ -29,6 +29,7 @@ model Product {
   description    String
   price          Decimal
   image          String?
+  stock          Int 
   deleted        Boolean          @default(false)
   categories     Category[]
   ProductsOrders ProductsOrders[]
