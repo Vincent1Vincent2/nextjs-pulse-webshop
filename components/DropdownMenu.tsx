@@ -1,3 +1,4 @@
+import SignOutUser from '@/app/actions/user';
 import {
   Menu,
   MenuButton,
@@ -11,6 +12,7 @@ import { Fragment } from 'react';
 
 export default function DropdownMenu({ session }: { session: any }) {
   const isAdmin = session?.user.isAdmin;
+
   return (
     <Menu as='div' className='relative inline-block text-left'>
       <MenuButton>
@@ -71,12 +73,11 @@ export default function DropdownMenu({ session }: { session: any }) {
               </MenuItem>
             )}
             <MenuItem>
-              <Link
-                href='#'
-                className='hover:bg-gray-100 text-gray-900 block px-4 py-2 text-sm'
-              >
-                Sign out
-              </Link>
+              <form action={SignOutUser}>
+                <button className='bg-gray-100 hover:bg-gray-200 text-gray-900 block px-4 py-2 text-sm w-full text-left'>
+                  Sign Out
+                </button>
+              </form>
             </MenuItem>
           </div>
         </MenuItems>
