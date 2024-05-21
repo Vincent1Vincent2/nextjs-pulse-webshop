@@ -1,11 +1,14 @@
 'use client';
+import { checkAddress } from '@/app/actions/adress';
 import { orderCreate } from '@/app/actions/order';
 import { useCart } from '@/app/contexts/CartContext';
 import { OrderDetails } from '@/app/types';
 import { OrderCreate, OrderCreateSchema } from '@/app/zodSchemas/order';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { Address } from '@prisma/client';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import AddressForm from './AddressForm';
 
 const OrderForm = () => {
   const { cart, clearCart } = useCart();
@@ -16,19 +19,55 @@ const OrderForm = () => {
     formState: { errors },
   } = form;
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
+  const [addressId, setAddressId] = useState<number | null>(null);
+  const [address, setAddress] = useState<Address[] | null>(null);
+
+  const onAddressCreated = (createdAddressId: number) => {
+    setAddressId(createdAddressId);
+  };
 
   const handleSubmit = async (data: OrderCreate) => {
     try {
-      const orderDetails = await orderCreate(data);
+      const orderDetails = await orderCreate(data, addressId!);
+
       setOrderDetails(orderDetails);
       clearCart();
     } catch (error) {
       console.error('Error creating order:', error);
     }
   };
+  useEffect(() => {
+    async function fetchAddress() {
+      const hasAddress = await checkAddress();
+      if (hasAddress.length < 1) {
+        console.log('No address');
+      } else {
+        const addressID = hasAddress[0].id;
+        setAddressId(addressID);
+
+        setAddress(hasAddress);
+      }
+    }
+
+    fetchAddress();
+  }, []);
+
+  if (addressId === null) {
+    return <AddressForm onAddressCreated={onAddressCreated} />;
+  }
 
   return (
     <div>
+      <div>
+        <h2>Delivery Address</h2>
+        {address?.map((a) => (
+          <ul key={a.id}>
+            <li>Street Name - {a.streetAdress}</li>
+            <li>Zip Code - {a.zipCode}</li>
+            <li>City - {a.city}</li>
+          </ul>
+        ))}
+      </div>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
         <div className='flex flex-col '>
           {cart.map((product, index) => (
@@ -70,12 +109,12 @@ const OrderForm = () => {
           <p className='self-center'>Order ID: {orderDetails.order?.id}</p>
           <h3 className='font-medium'>Products</h3>
           <ul>
-            {orderDetails.productsOrders.map((po) => {
+            {orderDetails.productOrders.map((po) => {
               const totalForProduct =
-                parseFloat(po.product.price) * po.quantity;
+                parseFloat(po.product.price.toString()) * po.quantity;
 
               return (
-                <ul className='flex justify-between my-2' key={po.id}>
+                <ul className='flex justify-between my-2' key={po.productId}>
                   <li>{po.product.name}</li>
                   <div className='flex gap-5'>
                     <li>{po.quantity}x</li>
@@ -88,8 +127,9 @@ const OrderForm = () => {
           <h3>Total</h3>
           <p>
             $
-            {orderDetails.productsOrders.reduce(
-              (acc, po) => acc + parseFloat(po.product.price) * po.quantity,
+            {orderDetails.productOrders.reduce(
+              (acc, po) =>
+                acc + parseFloat(po.product.price.toString()) * po.quantity,
               0
             )}
           </p>

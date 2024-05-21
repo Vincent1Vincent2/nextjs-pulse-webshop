@@ -10,8 +10,3 @@ export const OrderCreateSchema = z.object({
 });
 
 export type OrderCreate = z.infer<typeof OrderCreateSchema>;
-
-export type ProductOrder = {
-  productId: number;
-  quantity: number;
-};
