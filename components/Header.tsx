@@ -4,7 +4,7 @@ import { MenuIcon, XIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import DropdownMenu from './DropdownMenu';
-import SignInButton from './SignInButton'; // Import SignInButton
+import SignInButton from './SignInButton';
 import CartIcon from './cartIcon';
 import GuestHeader from './header/GuestHeader';
 import Logo from './ui/logo';
