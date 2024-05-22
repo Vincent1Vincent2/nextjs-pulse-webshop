@@ -89,7 +89,7 @@ model Order {
 
 model Address {
   id           Int    @id @default(autoincrement())
-  customerId   String
+  customerId   Int
   streetAdress String
   zipCode      Int
   city         String
