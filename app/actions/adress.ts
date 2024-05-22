@@ -1,12 +1,11 @@
 "use server";
-import { db } from "@/prisma/db";
-import { cookies } from "next/headers";
-import { AddressCreate } from "../zodSchemas/address";
+import {auth} from "@/auth";
+import {db} from "@/prisma/db";
+import {AddressCreate} from "../zodSchemas/address";
 
 export async function addressCreate(formData: AddressCreate) {
-  const email = cookies().get("name");
-
-  const user = await db.user.findUnique({ where: { email: email?.value } });
+  const session = await auth();
+  const user = await db.user.findUnique({where: {id: session?.user.id}});
   if (!user) {
     throw new Error("User not found");
   }
@@ -23,15 +22,14 @@ export async function addressCreate(formData: AddressCreate) {
 }
 
 export async function checkAddress() {
-  const email = cookies().get("name");
-
-  const user = await db.user.findUnique({ where: { email: email?.value } });
+  const session = await auth();
+  const user = await db.user.findUnique({where: {id: session?.user.id}});
   if (!user) {
     throw new Error("User not found");
   }
 
   const address = await db.address.findMany({
-    where: { customerId: user.id },
+    where: {customerId: user.id},
   });
 
   if (address === undefined || address.length < 0) {

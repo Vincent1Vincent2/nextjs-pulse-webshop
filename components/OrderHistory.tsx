@@ -1,13 +1,12 @@
 "use client";
-import { authenticateUser } from "@/app/actions/authenticate";
-import { getOrder, getOrderProducts } from "@/app/actions/order";
-import { ProductOrderDetails } from "@/app/types";
-import { Order, Product } from "@prisma/client";
-import { useEffect, useState } from "react";
-import { AuthUser } from "./header/Header";
+import {authenticateUser} from "@/app/actions/authenticate";
+import {getOrder, getOrderProducts} from "@/app/actions/order";
+import {ProductOrderDetails} from "@/app/types";
+import {Order, Product, User} from "@prisma/client";
+import {useEffect, useState} from "react";
 
 export default function OrderHistory() {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [orderProducts, setOrderProducts] = useState<{
     [orderID: number]: Product[];
@@ -24,15 +23,15 @@ export default function OrderHistory() {
         if (fetchedOrders) {
           setOrders(fetchedOrders);
 
-          const productsByOrder: { [orderID: number]: Product[] } = {};
+          const productsByOrder: {[orderID: number]: Product[]} = {};
 
           for (const order of fetchedOrders) {
             const productOrders: ProductOrderDetails[] = await getOrderProducts(
-              order.id
+              order.id,
             );
 
             // Map the ProductOrderDetails to the Product type
-            productsByOrder[order.id] = productOrders.map((po) => ({
+            productsByOrder[order.id] = productOrders.map(po => ({
               id: po.product.id,
               name: po.product.name,
               description: po.product.description,
@@ -56,7 +55,7 @@ export default function OrderHistory() {
       <h1>Order History</h1>
       {user ? (
         orders.length > 0 ? (
-          orders.map((order) => (
+          orders.map(order => (
             <div key={order.id}>
               <h2>Order #{order.id}</h2>
               <p>
@@ -68,7 +67,7 @@ export default function OrderHistory() {
 
               {orderProducts[order.id] ? (
                 <ul>
-                  {orderProducts[order.id].map((product) => (
+                  {orderProducts[order.id].map(product => (
                     <li key={product.id}>
                       <div>
                         <strong>{product.name}</strong>

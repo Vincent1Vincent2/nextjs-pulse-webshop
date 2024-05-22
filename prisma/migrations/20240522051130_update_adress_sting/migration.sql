@@ -1,14 +1,49 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT,
     "email" TEXT NOT NULL,
-    "firstName" TEXT,
-    "lastName" TEXT,
-    "phoneNumber" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "emailVerified" TIMESTAMP(3),
+    "image" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "isAdmin" BOOLEAN NOT NULL DEFAULT false,
+    "phoneNumber" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Session" (
+    "sessionToken" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "expires" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- CreateTable
+CREATE TABLE "Account" (
+    "userId" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "provider" TEXT NOT NULL,
+    "providerAccountId" TEXT NOT NULL,
+    "refresh_token" TEXT,
+    "access_token" TEXT,
+    "expires_at" INTEGER,
+    "token_type" TEXT,
+    "scope" TEXT,
+    "id_token" TEXT,
+    "session_state" TEXT
+);
+
+-- CreateTable
+CREATE TABLE "VerificationToken" (
+    "identifier" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "expires" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "VerificationToken_pkey" PRIMARY KEY ("identifier","token")
 );
 
 -- CreateTable
@@ -26,6 +61,8 @@ CREATE TABLE "Product" (
     "description" TEXT NOT NULL,
     "price" DECIMAL(65,30) NOT NULL,
     "image" TEXT,
+    "stock" INTEGER NOT NULL,
+    "deleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
@@ -36,6 +73,7 @@ CREATE TABLE "Order" (
     "orderDate" TIMESTAMP(3) NOT NULL,
     "deliveryAddressId" INTEGER NOT NULL,
     "customerId" INTEGER NOT NULL,
+    "isSent" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
@@ -43,6 +81,7 @@ CREATE TABLE "Order" (
 -- CreateTable
 CREATE TABLE "Address" (
     "id" SERIAL NOT NULL,
+    "customerId" TEXT NOT NULL,
     "streetAdress" TEXT NOT NULL,
     "zipCode" INTEGER NOT NULL,
     "city" TEXT NOT NULL,
@@ -70,6 +109,12 @@ CREATE TABLE "_CategoryToProduct" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "ProductsOrders_orderId_productId_key" ON "ProductsOrders"("orderId", "productId");
 
 -- CreateIndex
@@ -77,6 +122,12 @@ CREATE UNIQUE INDEX "_CategoryToProduct_AB_unique" ON "_CategoryToProduct"("A", 
 
 -- CreateIndex
 CREATE INDEX "_CategoryToProduct_B_index" ON "_CategoryToProduct"("B");
+
+-- AddForeignKey
+ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ProductsOrders" ADD CONSTRAINT "ProductsOrders_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

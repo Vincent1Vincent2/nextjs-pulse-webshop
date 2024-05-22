@@ -1,24 +1,13 @@
-'use server';
+"use server";
 
-import { db } from '@/prisma/db';
-import { cookies } from 'next/headers';
+import {auth} from "@/auth";
+import {db} from "@/prisma/db";
 
 export async function authenticateUser() {
-  const email = cookies().get('name');
-
-  if (!email) {
-    return null;
+  const session = await auth();
+  const user = await db.user.findUnique({where: {id: session?.user.id}});
+  if (!user) {
+    throw new Error("User not found");
   }
-  const user = await db.user.findUnique({ where: { email: email?.value } });
-
-  if (user) {
-    const authUser = {
-      id: user.id,
-      firstName: user.firstName,
-      admin: user.isAdmin,
-    };
-    return authUser;
-  } else {
-    return null;
-  }
+  return user;
 }

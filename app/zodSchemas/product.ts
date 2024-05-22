@@ -7,7 +7,7 @@ deleted        Boolean          @default(false)
 categories     Category[]
 ProductsOrders ProductsOrders[] */
 
-import { z } from "zod";
+import { z } from 'zod';
 
 export const ProductCreateSchema = z.object({
   name: z.string().min(0).max(80),

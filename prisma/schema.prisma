@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -8,13 +9,54 @@ datasource db {
 }
 
 model User {
-  id          Int     @id @default(autoincrement())
-  email       String  @unique
-  firstName   String?
-  lastName    String?
-  phoneNumber String
-  password    String
-  isAdmin     Boolean @default(false)
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
+  isAdmin       Boolean   @default(false)
+  phoneNumber   String?
+
+  accounts Account[]
+  sessions Session[]
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String 
+  expires    DateTime
+
+  @@id([identifier, token])
 }
 
 model Category {
@@ -29,8 +71,9 @@ model Product {
   description    String
   price          Decimal
   image          String?
-  stock          Int 
+  stock          Int
   deleted        Boolean          @default(false)
+
   categories     Category[]
   ProductsOrders ProductsOrders[]
 }
@@ -39,14 +82,14 @@ model Order {
   id                Int              @id @default(autoincrement())
   orderDate         DateTime
   deliveryAddressId Int
-  customerId        Int
-  isSent            Boolean @default(false)
+  customerId        String
+  isSent            Boolean          @default(false)
   ProductsOrders    ProductsOrders[]
 }
 
 model Address {
   id           Int    @id @default(autoincrement())
-  customerId   Int
+  customerId   String
   streetAdress String
   zipCode      Int
   city         String

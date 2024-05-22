@@ -8,6 +8,7 @@ export const SaveProduct = async (formData: ProductCreate) => {
       data: {
         name: formData.name,
         description: formData.description,
+        stock: formData.stock,
         price: formData.price,
         image: formData.image,
       },

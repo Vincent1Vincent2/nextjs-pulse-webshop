@@ -1,15 +1,14 @@
 "use client";
 
-import { authenticateUser } from "@/app/actions/authenticate";
-import { getCategories } from "@/app/actions/category";
-import { getProduct, productUpdate } from "@/app/actions/product";
-import { ProductCreate, ProductCreateSchema } from "@/app/zodSchemas/product";
-import { AuthUser } from "@/components/header/Header";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Category, Product } from "@prisma/client";
+import {authenticateUser} from "@/app/actions/authenticate";
+import {getCategories} from "@/app/actions/category";
+import {getProduct, productUpdate} from "@/app/actions/product";
+import {ProductCreate, ProductCreateSchema} from "@/app/zodSchemas/product";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Category, Product, User} from "@prisma/client";
 
-import { useEffect, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import {useEffect, useState} from "react";
+import {useFieldArray, useForm} from "react-hook-form";
 
 interface PageProps {
   params: {
@@ -17,8 +16,8 @@ interface PageProps {
   };
 }
 
-export default function EditPage({ params }: PageProps) {
-  const { id } = params;
+export default function EditPage({params}: PageProps) {
+  const {id} = params;
   const form = useForm<ProductCreate>({
     resolver: zodResolver(ProductCreateSchema),
     defaultValues: {
@@ -30,29 +29,65 @@ export default function EditPage({ params }: PageProps) {
     },
   });
   const {
-    formState: { errors },
+    formState: {errors},
     control,
     reset,
   } = form;
 
-  const { fields, append, remove } = useFieldArray({
+  const {fields, append, remove} = useFieldArray({
     control,
     name: "categories",
   });
 
   const [categories, setCategories] = useState<Category[] | null>(null);
   const [product, setProduct] = useState<
-    (Product & { categories: Category[] }) | null
+    (Product & {categories: Category[]}) | null
   >(null);
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    async function fetchAuth() {
+    async function fetchCategories() {
       const fetchedUser = await authenticateUser();
       setUser(fetchedUser);
+      const fetchedCategories = await getCategories();
+      setCategories(fetchedCategories);
     }
-    fetchAuth();
+    fetchCategories();
   }, []);
+
+  useEffect(() => {
+    async function fetchProduct() {
+      const productId = Number(id);
+      try {
+        const fetchedProduct = await getProduct(productId);
+        setProduct(fetchedProduct);
+        if (fetchedProduct) {
+          reset({
+            name: fetchedProduct.name,
+            description: fetchedProduct.description,
+            price: fetchedProduct.price.toString(),
+            image: fetchedProduct.image || "",
+            stock: fetchedProduct.stock,
+            categories: fetchedProduct.categories.map(c => ({
+              name: c.name,
+            })),
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    }
+
+    fetchProduct();
+  }, [id, reset]);
+
+  console.log(user?.isAdmin);
+
+  const handleSubmit = async (data: ProductCreate) => {
+    console.log("in");
+    await productUpdate(data, product?.id);
+    form.reset();
+  };
 
   useEffect(() => {
     async function fetchCategories() {
@@ -75,7 +110,7 @@ export default function EditPage({ params }: PageProps) {
             price: fetchedProduct.price.toString(),
             image: fetchedProduct.image || "",
             stock: fetchedProduct.stock,
-            categories: fetchedProduct.categories.map((c) => ({
+            categories: fetchedProduct.categories.map(c => ({
               name: c.name,
             })),
           });
@@ -88,13 +123,7 @@ export default function EditPage({ params }: PageProps) {
     fetchProduct();
   }, [id, reset]);
 
-  const handleSubmit = async (data: ProductCreate) => {
-    console.log("in");
-    await productUpdate(data, product?.id);
-    form.reset();
-  };
-
-  return user?.admin ? (
+  return user?.isAdmin ? (
     <div className="text-white">
       <div>
         <h1>Edit Product: {product?.name}</h1>
@@ -124,7 +153,7 @@ export default function EditPage({ params }: PageProps) {
           {errors.image && <span>{errors.image?.message}</span>}
 
           <input
-            {...form.register("stock", { valueAsNumber: true })}
+            {...form.register("stock", {valueAsNumber: true})}
             type="number"
             placeholder="Stock"
           />
@@ -139,7 +168,7 @@ export default function EditPage({ params }: PageProps) {
                   defaultValue={field.name || ""}
                 >
                   <option value="">Select a category</option>
-                  {categories?.map((category) => (
+                  {categories?.map(category => (
                     <option key={category.id} value={category.name}>
                       {category.name}
                     </option>
@@ -154,7 +183,7 @@ export default function EditPage({ params }: PageProps) {
                 </button>
               </div>
             ))}
-            <button type="button" onClick={() => append({ name: "" })}>
+            <button type="button" onClick={() => append({name: ""})}>
               Add Category
             </button>
           </div>
