@@ -82,7 +82,7 @@ model Order {
   id                Int              @id @default(autoincrement())
   orderDate         DateTime
   deliveryAddressId Int
-  customerId        Int
+  customerId        String
   isSent            Boolean          @default(false)
   ProductsOrders    ProductsOrders[]
 }

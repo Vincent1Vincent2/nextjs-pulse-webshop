@@ -5,7 +5,7 @@ import {getCategories} from "@/app/actions/category";
 import {getProduct, productUpdate} from "@/app/actions/product";
 import {ProductCreate, ProductCreateSchema} from "@/app/zodSchemas/product";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Category, Product} from "@prisma/client";
+import {Category, Product, User} from "@prisma/client";
 
 import {useEffect, useState} from "react";
 import {useFieldArray, useForm} from "react-hook-form";
@@ -15,18 +15,6 @@ interface PageProps {
     id: string;
   };
 }
-
-type User = {
-  id: string;
-  name: string | null;
-  email: string;
-  emailVerified: Date | null;
-  image: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  isAdmin: boolean;
-  phoneNumber: string | null;
-};
 
 export default function EditPage({params}: PageProps) {
   const {id} = params;
@@ -101,6 +89,40 @@ export default function EditPage({params}: PageProps) {
     form.reset();
   };
 
+  useEffect(() => {
+    async function fetchCategories() {
+      const fetchedCategories = await getCategories();
+      setCategories(fetchedCategories);
+    }
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    async function fetchProduct() {
+      const productId = Number(id);
+      try {
+        const fetchedProduct = await getProduct(productId);
+        setProduct(fetchedProduct);
+        if (fetchedProduct) {
+          reset({
+            name: fetchedProduct.name,
+            description: fetchedProduct.description,
+            price: fetchedProduct.price.toString(),
+            image: fetchedProduct.image || "",
+            stock: fetchedProduct.stock,
+            categories: fetchedProduct.categories.map(c => ({
+              name: c.name,
+            })),
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    }
+
+    fetchProduct();
+  }, [id, reset]);
+
   return user?.isAdmin ? (
     <div className="text-white">
       <div>
@@ -173,5 +195,7 @@ export default function EditPage({params}: PageProps) {
         </form>
       </div>
     </div>
-  ) : null;
+  ) : (
+    <p>Loading...</p>
+  );
 }
