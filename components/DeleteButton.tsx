@@ -1,21 +1,18 @@
 "use client";
 
-import { useCart } from "@/app/contexts/CartContext";
-import { Product } from "@/data";
-import { Button } from "./ui/button";
+import {deleteProduct} from "@/app/actions/product";
+import {Button} from "./ui/button";
 
 interface Props {
-  product: Product;
+  id: number;
 }
 
-function DeleteButton(props: Props) {
-  const { removeFromCart } = useCart();
-
-  function handleRemoaval() {
-    removeFromCart(props.product);
+function DeleteProduct(props: Props) {
+  function handleRemoval() {
+    deleteProduct(props.id);
   }
 
-  return <Button onClick={handleRemoaval}>Ta bort</Button>;
+  return <Button onClick={handleRemoval}>Ta bort</Button>;
 }
 
-export default DeleteButton;
+export default DeleteProduct;

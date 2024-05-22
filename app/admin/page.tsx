@@ -1,33 +1,15 @@
-"use client";
+import {auth} from "@/auth";
+import DeleteButton from "@/components/DeleteButton";
 import ProductForm from "@/components/ProductForm";
-import { AuthUser } from "@/components/header/Header";
-import { Product } from "@prisma/client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { authenticateUser } from "../actions/authenticate";
-import { deleteProduct, getCurrentProducts } from "../actions/product";
+import {getCurrentProducts} from "../actions/product";
 
-export default function AdminPage() {
-  const [products, setProducts] = useState<Product[]>();
-  const [user, setUser] = useState<AuthUser | null>(null);
+export default async function AdminPage() {
+  const session = await auth();
 
-  useEffect(() => {
-    async function fetchAuth() {
-      const fetchedUser = await authenticateUser();
-      setUser(fetchedUser);
-    }
-    fetchAuth();
-  }, []);
+  const products = await getCurrentProducts();
 
-  useEffect(() => {
-    async function fetchProducts() {
-      const fetchedProducts = await getCurrentProducts();
-      setProducts(fetchedProducts);
-    }
-    fetchProducts();
-  }, []);
-
-  return user?.admin ? (
+  return session?.user.isAdmin ? (
     <main className="bg-[#F4F4F5] p-2 shadow rounded-lg container flex flex-col gap-5">
       <div>
         <h2>Add a product</h2>
@@ -36,14 +18,14 @@ export default function AdminPage() {
       <Link className="text-black" href={"/admin/orders"}>
         User Orders
       </Link>
-      {products?.map((p) => (
+      {products?.map(p => (
         <div key={p.id}>
           <ul>
             <li>ID - {p.id}</li>
             <li>{p.name}</li>
             <li>{p.description}</li>
           </ul>
-          <button onClick={() => deleteProduct(p.id)}>Do a lil delete</button>
+          <DeleteButton id={p.id} />
           <Link href={`/admin/edit-product/${p.id}`}>
             <button>We do a lil editing?</button>
           </Link>
