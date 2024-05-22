@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 import {getCategories} from "@/app/actions/category";
 import {getProductsByCategory} from "@/app/actions/product";
 import {useEffect, useState} from "react";
