@@ -1,16 +1,14 @@
 "use server";
+import {auth} from "@/auth";
 import {db} from "@/prisma/db";
-import {cookies} from "next/headers";
 import {OrderCreate} from "../zodSchemas/order";
 
 export async function orderCreate(formData: OrderCreate, addressId: number) {
-  const email = cookies().get("name");
-
-  const user = await db.user.findUnique({where: {email: email?.value}});
+  const session = await auth();
+  const user = await db.user.findUnique({where: {id: session?.user.id}});
   if (!user) {
     throw new Error("User not found");
   }
-
   // Use a transaction to ensure atomicity
   const result = await db.$transaction(async prisma => {
     // Create the order and its associated product orders
