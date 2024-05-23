@@ -1,14 +1,16 @@
 "use client";
-import {checkAddress} from "@/app/actions/adress";
+import {addressCreate, checkAddress, editAddress} from "@/app/actions/adress";
 import {orderCreate} from "@/app/actions/order";
 import {useCart} from "@/app/contexts/CartContext";
 import {OrderDetails} from "@/app/types";
+import {AddressCreate} from "@/app/zodSchemas/address";
 import {OrderCreate, OrderCreateSchema} from "@/app/zodSchemas/order";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Address} from "@prisma/client";
 import {useEffect, useState} from "react";
 import {Controller, useForm} from "react-hook-form";
 import AddressForm from "./AddressForm";
+import EditAddressForm from "./EditAddressFrom";
 import SignInButton from "./SignInButton";
 
 const OrderForm = () => {
@@ -23,6 +25,7 @@ const OrderForm = () => {
   const [addressId, setAddressId] = useState<number | null>(null);
   const [address, setAddress] = useState<Address[] | null>(null);
   const [errorType, setErrorType] = useState<string | null>(null);
+  const [edit, setEdit] = useState<boolean>(false);
 
   const onAddressCreated = (createdAddressId: number) => {
     setAddressId(createdAddressId);
@@ -38,6 +41,22 @@ const OrderForm = () => {
       console.error("Error creating order:", error);
     }
   };
+
+  const handleAddressSubmit = async (data: AddressCreate) => {
+    try {
+      if (edit) {
+        await editAddress(data);
+      } else {
+        const address = await addressCreate(data);
+        onAddressCreated(address.address.id);
+      }
+      setEdit(false);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error updating address:", error);
+    }
+  };
+
   useEffect(() => {
     async function fetchAddress() {
       try {
@@ -86,18 +105,34 @@ const OrderForm = () => {
 
   return (
     <div>
-      <div>
-        <h2>Delivery Address</h2>
-        {address?.map(a => (
-          <ul key={a.id}>
-            <li>Street Name - {a.streetAdress}</li>
-            <li>Zip Code - {a.zipCode}</li>
-            <li>City - {a.city}</li>
-          </ul>
-        ))}
+      <div className="flex flex-col items-center py-5">
+        {edit ? (
+          <EditAddressForm
+            address={address![0]}
+            onSubmit={handleAddressSubmit}
+            onCancel={() => setEdit(false)}
+          />
+        ) : (
+          <div className="flex flex-col items-center py-5">
+            <h2 className="py-5 text-2xl">Delivery Address</h2>
+            {address && (
+              <ul className="flex flex-col items-center gap-3 text-xl">
+                <li>{address[0].streetAdress}</li>
+                <li>{address[0].zipCode}</li>
+                <li>{address[0].city}</li>
+              </ul>
+            )}
+            <button
+              className=" rounded-xl my-5 bg-neutral-200 hover:bg-neutral-100 py-0.5 px-6"
+              onClick={() => setEdit(true)}
+            >
+              Edit Address
+            </button>
+          </div>
+        )}
       </div>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <div className="flex flex-col ">
+        <div className="flex flex-col">
           {cart.map((product, index) => (
             <div key={product.id}>
               <input

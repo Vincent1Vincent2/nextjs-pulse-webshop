@@ -44,3 +44,34 @@ export async function checkAddress() {
 
   return address;
 }
+
+export async function editAddress(formData: AddressCreate) {
+  const session = await auth();
+  if (!session) {
+    throw new Error("SignInRequired");
+  }
+
+  const user = await db.user.findUnique({where: {id: session?.user.id}});
+  if (!user) {
+    throw new Error("UserNotFound");
+  }
+
+  const address = await db.address.findMany({
+    where: {customerId: user.id},
+  });
+
+  if (!address || address.length === 0) {
+    throw new Error("NoAddressRegistered");
+  }
+
+  const updateAddress = await db.address.update({
+    where: {id: address[0].id},
+    data: {
+      streetAdress: formData.streetAdress,
+      zipCode: formData.zipCode,
+      city: formData.city,
+    },
+  });
+
+  return updateAddress;
+}
