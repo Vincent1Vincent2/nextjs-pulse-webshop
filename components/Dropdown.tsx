@@ -1,5 +1,7 @@
 "use client";
 import {getProductsByCategory} from "@/app/actions/product";
+
+import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {List} from "./List";
 
@@ -12,11 +14,14 @@ export default function Dropdown() {
   const [seen, setSeen] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
 
+  const router = useRouter();
+
   const handleCategoryClick = async (categoryName: string) => {
     setSeen(false);
     try {
       const products = await getProductsByCategory(categoryName);
       setProducts(products);
+      router.push(`/category/${categoryName}`);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
