@@ -1,26 +1,28 @@
-'use client';
-import { checkAddress } from '@/app/actions/adress';
-import { orderCreate } from '@/app/actions/order';
-import { useCart } from '@/app/contexts/CartContext';
-import { OrderDetails } from '@/app/types';
-import { OrderCreate, OrderCreateSchema } from '@/app/zodSchemas/order';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Address } from '@prisma/client';
-import { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import AddressForm from './AddressForm';
+"use client";
+import {checkAddress} from "@/app/actions/adress";
+import {orderCreate} from "@/app/actions/order";
+import {useCart} from "@/app/contexts/CartContext";
+import {OrderDetails} from "@/app/types";
+import {OrderCreate, OrderCreateSchema} from "@/app/zodSchemas/order";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Address} from "@prisma/client";
+import {useEffect, useState} from "react";
+import {Controller, useForm} from "react-hook-form";
+import AddressForm from "./AddressForm";
+import SignInButton from "./SignInButton";
 
 const OrderForm = () => {
-  const { cart, clearCart } = useCart();
+  const {cart, clearCart} = useCart();
   const form = useForm<OrderCreate>({
     resolver: zodResolver(OrderCreateSchema),
   });
   const {
-    formState: { errors },
+    formState: {errors},
   } = form;
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
   const [addressId, setAddressId] = useState<number | null>(null);
   const [address, setAddress] = useState<Address[] | null>(null);
+  const [errorType, setErrorType] = useState<string | null>(null);
 
   const onAddressCreated = (createdAddressId: number) => {
     setAddressId(createdAddressId);
@@ -33,24 +35,50 @@ const OrderForm = () => {
       setOrderDetails(orderDetails);
       clearCart();
     } catch (error) {
-      console.error('Error creating order:', error);
+      console.error("Error creating order:", error);
     }
   };
   useEffect(() => {
     async function fetchAddress() {
-      const hasAddress = await checkAddress();
-      if (hasAddress.length < 1) {
-        console.log('No address');
-      } else {
-        const addressID = hasAddress[0].id;
-        setAddressId(addressID);
-
-        setAddress(hasAddress);
+      try {
+        const hasAddress = await checkAddress();
+        if (hasAddress.length > 0) {
+          const addressID = hasAddress[0].id;
+          setAddressId(addressID);
+          setAddress(hasAddress);
+        }
+      } catch (error: any) {
+        if (error.message === "SignInRequired") {
+          setErrorType("SignInRequired");
+        } else if (error.message === "NoAddressRegistered") {
+          setErrorType("NoAddressRegistered");
+        } else {
+          setErrorType("GenericError");
+        }
+        console.error("Error fetching address:", error);
       }
     }
 
     fetchAddress();
   }, []);
+
+  if (errorType === "SignInRequired") {
+    return (
+      <div className="text-red-700 flex justify-center items-center h-96 flex-col gap-5">
+        <p>Please sign in to continue.</p>
+        <SignInButton />
+      </div>
+    );
+  }
+
+  if (errorType === "NoAddressRegistered") {
+    return (
+      <div className=" flex justify-center items-center h-96 flex-col gap-5">
+        <p className="text-red-700">Register a delivery address to order.</p>
+        <AddressForm onAddressCreated={onAddressCreated} />
+      </div>
+    );
+  }
 
   if (addressId === null) {
     return <AddressForm onAddressCreated={onAddressCreated} />;
@@ -60,7 +88,7 @@ const OrderForm = () => {
     <div>
       <div>
         <h2>Delivery Address</h2>
-        {address?.map((a) => (
+        {address?.map(a => (
           <ul key={a.id}>
             <li>Street Name - {a.streetAdress}</li>
             <li>Zip Code - {a.zipCode}</li>
@@ -69,23 +97,23 @@ const OrderForm = () => {
         ))}
       </div>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <div className='flex flex-col '>
+        <div className="flex flex-col ">
           {cart.map((product, index) => (
             <div key={product.id}>
               <input
-                type='hidden'
+                type="hidden"
                 value={product.id}
                 {...form.register(`ProductOrder.${index}.productId`, {
                   valueAsNumber: true,
                 })}
               />
-              <div className='flex justify-between mx-5 my-2'>
+              <div className="flex justify-between mx-5 my-2">
                 <label>{product.title}</label>
                 <Controller
                   name={`ProductOrder.${index}.quantity`}
                   control={form.control}
                   defaultValue={product.quantity}
-                  render={({ field }) => <input type='hidden' {...field} />}
+                  render={({field}) => <input type="hidden" {...field} />}
                 />
                 <span>{product.quantity}x</span>
               </div>
@@ -94,8 +122,8 @@ const OrderForm = () => {
           {errors.ProductOrder && <span>{errors.ProductOrder.message}</span>}
           {cart.length > 0 ? (
             <button
-              className='border self-center border-black w-1/3 my-4 hover:bg-black hover:bg-opacity-5'
-              type='submit'
+              className="border self-center border-black w-1/3 my-4 hover:bg-black hover:bg-opacity-5"
+              type="submit"
             >
               Buy
             </button>
@@ -104,19 +132,19 @@ const OrderForm = () => {
       </form>
 
       {orderDetails && (
-        <div className='flex flex-col mx-5'>
-          <h2 className='self-center'>Order Details</h2>
-          <p className='self-center'>Order ID: {orderDetails.order?.id}</p>
-          <h3 className='font-medium'>Products</h3>
+        <div className="flex flex-col mx-5">
+          <h2 className="self-center">Order Details</h2>
+          <p className="self-center">Order ID: {orderDetails.order?.id}</p>
+          <h3 className="font-medium">Products</h3>
           <ul>
-            {orderDetails.productOrders.map((po) => {
+            {orderDetails.productOrders.map(po => {
               const totalForProduct =
                 parseFloat(po.product.price.toString()) * po.quantity;
 
               return (
-                <ul className='flex justify-between my-2' key={po.productId}>
+                <ul className="flex justify-between my-2" key={po.productId}>
                   <li>{po.product.name}</li>
-                  <div className='flex gap-5'>
+                  <div className="flex gap-5">
                     <li>{po.quantity}x</li>
                     <p>${totalForProduct}</p>
                   </div>
@@ -130,7 +158,7 @@ const OrderForm = () => {
             {orderDetails.productOrders.reduce(
               (acc, po) =>
                 acc + parseFloat(po.product.price.toString()) * po.quantity,
-              0
+              0,
             )}
           </p>
         </div>
