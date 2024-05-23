@@ -5,16 +5,19 @@ import {useCart} from "@/app/contexts/CartContext";
 import {OrderDetails} from "@/app/types";
 import {AddressCreate} from "@/app/zodSchemas/address";
 import {OrderCreate, OrderCreateSchema} from "@/app/zodSchemas/order";
+import {CartItem} from "@/data";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Address} from "@prisma/client";
+import Image from "next/image";
 import {useEffect, useState} from "react";
 import {Controller, useForm} from "react-hook-form";
 import AddressForm from "./AddressForm";
 import EditAddressForm from "./EditAddressFrom";
+import {QuantityArrows} from "./QuantityArrows";
 import SignInButton from "./SignInButton";
 
 const OrderForm = () => {
-  const {cart, clearCart} = useCart();
+  const {cart, addToCart, removeFromCart, clearCart} = useCart();
   const form = useForm<OrderCreate>({
     resolver: zodResolver(OrderCreateSchema),
   });
@@ -103,6 +106,12 @@ const OrderForm = () => {
     return <AddressForm onAddressCreated={onAddressCreated} />;
   }
 
+  function totalForProduct(cart: CartItem[]) {
+    return cart.reduce((total, product) => {
+      return total + parseFloat(product.price.toString()) * product.quantity;
+    }, 0);
+  }
+
   return (
     <div>
       <div className="flex flex-col items-center py-5">
@@ -113,10 +122,10 @@ const OrderForm = () => {
             onCancel={() => setEdit(false)}
           />
         ) : (
-          <div className="flex flex-col items-center py-5">
-            <h2 className="py-5 text-2xl">Delivery Address</h2>
+          <div className="flex flex-col py-5">
+            <h2 className="py-5 text-xl">Delivery Address</h2>
             {address && (
-              <ul className="flex flex-col items-center gap-3 text-xl">
+              <ul className="flex flex-col items-center gap-3 ">
                 <li>{address[0].streetAdress}</li>
                 <li>{address[0].zipCode}</li>
                 <li>{address[0].city}</li>
@@ -132,7 +141,7 @@ const OrderForm = () => {
         )}
       </div>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <div className="flex flex-col">
+        <div className="flex flex-col ">
           {cart.map((product, index) => (
             <div key={product.id}>
               <input
@@ -142,22 +151,45 @@ const OrderForm = () => {
                   valueAsNumber: true,
                 })}
               />
-              <div className="flex justify-between mx-5 my-2">
-                <label>{product.title}</label>
+              <div className="flex justify-between mx-5 my-2 items-center bg-neutral-100 p-10 rounded-lg">
+                <div className="flex gap-5 flex-wrap">
+                  <Image
+                    src={product.image!}
+                    alt="product image"
+                    width={150}
+                    height={150}
+                    className="rounded-md"
+                  />
+                  <span className="flex flex-col py-4">
+                    <label className="text-xl">{product.name}</label>
+                    <label>
+                      {product.price.toString() + " "}
+                      SEK
+                    </label>
+                  </span>
+                </div>
                 <Controller
                   name={`ProductOrder.${index}.quantity`}
                   control={form.control}
                   defaultValue={product.quantity}
                   render={({field}) => <input type="hidden" {...field} />}
                 />
-                <span>{product.quantity}x</span>
+
+                <QuantityArrows cart={product}>
+                  <span>{product.quantity}x</span>
+                </QuantityArrows>
               </div>
             </div>
           ))}
+          <p className="mx-10 mt-5">
+            {" "}
+            Totalt {" " + totalForProduct(cart) + " "}SEK
+          </p>
+
           {errors.ProductOrder && <span>{errors.ProductOrder.message}</span>}
           {cart.length > 0 ? (
             <button
-              className="border self-center border-black w-1/3 my-4 hover:bg-black hover:bg-opacity-5"
+              className="border self-center border-black w-1/3 my-4 hover:bg-black hover:bg-opacity-5 "
               type="submit"
             >
               Buy
@@ -173,28 +205,36 @@ const OrderForm = () => {
           <h3 className="font-medium">Products</h3>
           <ul>
             {orderDetails.productOrders.map(po => {
-              const totalForProduct =
-                parseFloat(po.product.price.toString()) * po.quantity;
-
               return (
-                <ul className="flex justify-between my-2" key={po.productId}>
-                  <li>{po.product.name}</li>
-                  <div className="flex gap-5">
-                    <li>{po.quantity}x</li>
-                    <p>${totalForProduct}</p>
+                <div className="flex justify-between mx-5 my-2 items-center">
+                  <div className="flex items-center">
+                    <Image
+                      src={po.product.image!}
+                      alt="product image"
+                      width={150}
+                      height={150}
+                    />
+                    <span className="flex flex-col self-baseline">
+                      <label className="text-xl">{po.product.name}</label>
+                      <label>
+                        {po.product.price.toString() + " "}
+                        SEK
+                      </label>
+                      <label className="w-3/4">{po.product.description}</label>
+                    </span>
                   </div>
-                </ul>
+                </div>
               );
             })}
           </ul>
           <h3>Total</h3>
           <p>
-            $
             {orderDetails.productOrders.reduce(
               (acc, po) =>
                 acc + parseFloat(po.product.price.toString()) * po.quantity,
               0,
-            )}
+            ) + " "}
+            sek
           </p>
         </div>
       )}
