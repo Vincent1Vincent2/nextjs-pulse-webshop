@@ -121,3 +121,21 @@ export async function generateStaticParams() {
     product: product.id.toString(),
   }));
 }
+
+// Filter products by categoryId
+export async function getProductsByCategory(categoryName: string) {
+  const products = await db.product.findMany({
+    where: {
+      categories: {
+        some: {
+          name: categoryName,
+        },
+      },
+      // deleted: false,
+    },
+    include: {
+      categories: true,
+    },
+  });
+  return products;
+}
