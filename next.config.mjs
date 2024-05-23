@@ -3,16 +3,16 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "i.ibb.co",
+        protocol: 'https',
+        hostname: 'i.ibb.co',
       },
       {
-        protocol: "http",
-        hostname: "127.0.0.1",
+        protocol: 'http',
+        hostname: '127.0.0.1',
       },
       {
-        protocol: "https",
-        hostname: "cdn.mmsports.se",
+        protocol: 'https',
+        hostname: 'images.pexels.com',
       },
     ],
   },
@@ -20,3 +20,5 @@ const nextConfig = {
     typedRoutes: true,
   },
 };
+
+export default nextConfig;

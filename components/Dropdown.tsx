@@ -44,15 +44,6 @@ export default function Dropdown() {
           <List onCategoryClick={handleCategoryClick} />
         </ul>
       )}
-      <div>
-        {products.length > 0 && (
-          <ul>
-            {products.map(product => (
-              <li key={product.id}>{product.name}</li>
-            ))}
-          </ul>
-        )}
-      </div>
     </div>
   );
 }

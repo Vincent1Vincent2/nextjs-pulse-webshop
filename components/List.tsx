@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import {getCategories} from "@/app/actions/category";
 import {useEffect, useState} from "react";
 
