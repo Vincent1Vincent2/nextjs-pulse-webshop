@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Dropdown, { List } from "../Dropdown";
+import Dropdown from "../Dropdown";
 
 export default function AdminHeader() {
   return (
@@ -11,9 +11,7 @@ export default function AdminHeader() {
           </Link>
         </ul>
       </nav>
-      <Dropdown>
-        <List />
-      </Dropdown>
+      <Dropdown />
     </header>
   );
 }
