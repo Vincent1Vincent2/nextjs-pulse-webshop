@@ -1,5 +1,6 @@
 "use client";
 import {getProductsByCategory} from "@/app/actions/product";
+
 import {
   Card,
   CardContent,
@@ -7,26 +8,28 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {Product} from "@prisma/client";
+import Image from "next/image";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 
-type PageProps = {params: {categoryName: string}};
-
-interface Product {
-  id: number;
-  name: string;
-  //   image: string;
-  description: string;
-  price: number;
+interface PageProps {
+  params: {category: string};
 }
 
 export default function CategoryPage({params}: PageProps) {
+  const {category} = params;
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const products = await getProductsByCategory(params.categoryName);
+        const fetchedProducts = await getProductsByCategory(params.category);
+        const products = fetchedProducts.map(product => ({
+          ...product,
+          price: product.price,
+          // convert Decimal to number
+        }));
         setProducts(products);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -34,10 +37,11 @@ export default function CategoryPage({params}: PageProps) {
     };
 
     fetchProducts();
-  }, [params.categoryName]);
+  }, [params.category]);
 
   return (
     <main className="bg-[#F4F4F5] p-2 shadow rounded-lg container flex flex-col">
+      {/* <h1 className="text-4xl text-center mb-4">{params.categoryName}</h1> */}
       {products.map(product => (
         <Card key={product.id}>
           <CardHeader>
@@ -46,12 +50,12 @@ export default function CategoryPage({params}: PageProps) {
             </Link>
           </CardHeader>
           <CardContent className="flex items-center flex-col">
-            {/* <Image
-              src={product.image}
+            <Image
+              src={product.image!}
               alt="product image"
               width={300}
               height={300}
-            /> */}
+            />
             <div className="flex w-full justify-between items-center">
               <div className="pe-10">
                 <CardTitle
@@ -67,8 +71,9 @@ export default function CategoryPage({params}: PageProps) {
                   {product.description}
                 </CardDescription>
                 <CardDescription className="self-start" data-cy="product-price">
-                  ${product.price}
+                  ${product.price.toString()}
                 </CardDescription>
+                {/*    <AddToCartButton product={product} /> */}
               </div>
             </div>
           </CardContent>

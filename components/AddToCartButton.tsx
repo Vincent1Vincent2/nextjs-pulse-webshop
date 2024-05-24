@@ -1,15 +1,15 @@
 "use client";
 
-import { useCart } from "@/app/contexts/CartContext";
-import { Product } from "@/data";
-import { Button } from "./ui/button";
+import {useCart} from "@/app/contexts/CartContext";
+import {Product} from "@/data";
+import {Button} from "./ui/button";
 
 interface Props {
   product: Product;
 }
 
 function AddToCartButton(props: Props) {
-  const { addToCart } = useCart();
+  const {addToCart} = useCart();
 
   function handleBuy() {
     addToCart(props.product);

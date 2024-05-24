@@ -1,5 +1,4 @@
 {
-    "cSpell.words": [
-        "zipcode"
-    ]
+  "cSpell.words": ["zipcode"],
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
