@@ -27,7 +27,10 @@ export function List() {
   return (
     <>
       {categories.map(category => (
-        <Link href={`/category/${category.name}`} key={category.id}>
+        <Link
+          href={`/category/${category.name}/${category.id}`}
+          key={category.id}
+        >
           <li className="hover:cursor-pointer text-black py-2 px-5 border-b border-gray-200 hover:bg-gray-200 transition-all">
             {category.name}
           </li>

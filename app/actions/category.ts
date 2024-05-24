@@ -12,6 +12,5 @@ export async function saveCategory(formData: CategoryCreate) {
 }
 
 export async function getCategories() {
-  const categories = await db.category.findMany();
-  return categories;
+  return await db.category.findMany();
 }

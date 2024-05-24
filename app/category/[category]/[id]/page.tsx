@@ -1,4 +1,3 @@
-"use client";
 import {getProductsByCategory} from "@/app/actions/product";
 
 import {
@@ -8,37 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {Product} from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import {useEffect, useState} from "react";
 
 interface PageProps {
   params: {category: string};
 }
 
-export default function CategoryPage({params}: PageProps) {
-  const {category} = params;
-  const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const fetchedProducts = await getProductsByCategory(params.category);
-        console.log("Fetched products:", fetchedProducts);
-        const products = fetchedProducts.map(product => ({
-          ...product,
-          price: product.price,
-          description: product.description,
-        }));
-        setProducts(products);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
-  }, [params.category]);
+export default async function CategoryPage({params}: PageProps) {
+  const products = await getProductsByCategory(params.category);
 
   return (
     <main className="bg-[#F4F4F5] p-2 shadow rounded-lg container flex flex-col">
