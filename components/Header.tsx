@@ -2,7 +2,7 @@
 
 import {MenuIcon, XIcon} from "lucide-react";
 import Link from "next/link";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import DropdownMenu from "./DropdownMenu";
 import SignInButton from "./SignInButton";
 import CartIcon from "./cartIcon";
@@ -11,10 +11,30 @@ import Logo from "./ui/logo";
 
 export default function Header({session}: {session: any}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <div>
-      <header className="bg-black flex justify-between items-center p-4 text-white">
+      <header
+        className={`fixed z-50 w-full flex justify-between items-center p-4 text-white md:px-10 transition-all duration-300 ${
+          isScrolled ? "bg-black/80" : "bg-transparent"
+        }`}
+      >
         <div className="flex gap-4 items-center">
           <Link href={"/"}>
             <Logo />
@@ -55,8 +75,8 @@ export default function Header({session}: {session: any}) {
         </div>
       </header>
       {isMenuOpen && (
-        <nav className="md:hidden bg-black text-white p-4 flex flex-col space-y-8">
-          <Link href="/" className="text-white">
+        <nav className=" md:hidden text-white p-4 flex flex-col space-y-8">
+          <Link href="/" className="text-white mt-20">
             Shop
           </Link>
           <GuestHeader />
