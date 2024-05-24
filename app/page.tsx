@@ -2,7 +2,7 @@ import PromoBanner from "@/components/PromoBanner";
 
 export default function Home() {
   return (
-    <div className=" w-full">
+    <div className=" w-full -mt-20">
       <div className="relative h-screen">
         <video
           className="absolute md:-top-10 left-0 w-full h-full object-cover "

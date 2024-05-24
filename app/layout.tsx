@@ -22,7 +22,7 @@ export default function RootLayout({children}: LayoutProps) {
       <body className={`min-h-screen flex flex-col ${inter.className}`}>
         <CartProvider>
           <Navbar />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 mt-20">{children}</main>
           <Footer />
           <Toaster />
         </CartProvider>
