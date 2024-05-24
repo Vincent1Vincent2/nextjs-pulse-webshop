@@ -1,6 +1,3 @@
-"use client";
-
-import {getCategories} from "@/app/actions/category";
 import {getProduct} from "@/app/actions/product";
 import AddToCartButton from "@/components/AddToCartButton";
 import {
@@ -10,11 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {Category, Product} from "@prisma/client";
 import {ChevronLeft} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {useEffect, useState} from "react";
 
 interface PageProps {
   params: {
@@ -22,35 +17,8 @@ interface PageProps {
   };
 }
 
-export default function ProductPage({params}: PageProps) {
-  const {id} = params;
-
-  const [categories, setCategories] = useState<Category[] | null>(null);
-  const [product, setProduct] = useState<
-    (Product & {categories: Category[]}) | null
-  >(null);
-
-  useEffect(() => {
-    async function fetchCategories() {
-      const fetchedCategories = await getCategories();
-      setCategories(fetchedCategories);
-    }
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    async function fetchProduct() {
-      const productId = Number(id);
-      try {
-        const fetchedProduct = await getProduct(productId);
-        setProduct(fetchedProduct);
-      } catch (error) {
-        console.error("Error fetching product:", error);
-      }
-    }
-
-    fetchProduct();
-  }, [id]);
+export default async function ProductPage({params}: PageProps) {
+  const product = await getProduct(Number(params.id));
 
   if (!product) {
     return (

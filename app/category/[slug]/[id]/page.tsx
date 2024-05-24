@@ -1,5 +1,5 @@
 import {getProductsByCategory} from "@/app/actions/product";
-
+import AddToCartButton from "@/components/AddToCartButton";
 import {
   Card,
   CardContent,
@@ -11,18 +11,18 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface PageProps {
-  params: {category: string};
+  params: {slug: string};
 }
 
 export default async function CategoryPage({params}: PageProps) {
-  const products = await getProductsByCategory(params.category);
+  const products = await getProductsByCategory(params.slug);
 
   return (
     <main className="bg-[#F4F4F5] p-2 shadow rounded-lg container flex flex-col">
       {products.map(product => (
         <Card key={product.id}>
           <CardHeader>
-            <Link href={`/product/${product.id}`}>
+            <Link href={`/product/${product.name}/${product.id}`}>
               <p>View Product</p>
             </Link>
           </CardHeader>
@@ -50,7 +50,7 @@ export default async function CategoryPage({params}: PageProps) {
                 <CardDescription className="self-start" data-cy="product-price">
                   ${product.price.toString()}
                 </CardDescription>
-                {/*    <AddToCartButton product={product} /> */}
+                <AddToCartButton product={product} />
               </div>
             </div>
           </CardContent>
