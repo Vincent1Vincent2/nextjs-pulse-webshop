@@ -22,9 +22,10 @@ function ListProducts() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const fetchedProducts = selectedCategory
-          ? await getProductsByCategory(selectedCategory)
-          : await getCurrentProducts();
+        const fetchedProducts =
+          selectedCategory && selectedCategory !== "All Products"
+            ? await getProductsByCategory(selectedCategory)
+            : await getCurrentProducts();
         setProducts(fetchedProducts);
       } catch (error) {
         console.error("Error fetching products:", error);

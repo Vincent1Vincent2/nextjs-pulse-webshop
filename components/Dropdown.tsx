@@ -18,7 +18,7 @@ export function List({
     const fetchCategories = async () => {
       try {
         const categories = await getCategories();
-        setCategories(categories);
+        setCategories([{id: 0, name: "All Products"}, ...categories]);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
