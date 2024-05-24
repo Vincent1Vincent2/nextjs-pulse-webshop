@@ -139,3 +139,12 @@ export async function getProductsByCategory(categoryName: string) {
   });
   return products;
 }
+
+export async function getProductsByPrice(productPrice: number) {
+  const products = await db.product.findMany({
+    where: {
+      price: productPrice,
+    },
+  });
+  return products;
+}
