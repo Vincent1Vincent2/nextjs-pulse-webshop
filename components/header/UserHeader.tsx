@@ -1,11 +1,9 @@
-import Dropdown, { List } from "../Dropdown";
+import Dropdown from "../Dropdown";
 
 export default function UserHeader() {
   return (
     <header>
-      <Dropdown>
-        <List />
-      </Dropdown>
+      <Dropdown />
     </header>
   );
 }

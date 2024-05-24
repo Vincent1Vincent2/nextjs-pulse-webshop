@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
 }
 
@@ -53,7 +53,7 @@ model Account {
 
 model VerificationToken {
   identifier String
-  token      String 
+  token      String
   expires    DateTime
 
   @@id([identifier, token])
@@ -61,18 +61,20 @@ model VerificationToken {
 
 model Category {
   id       Int       @id @default(autoincrement())
-  name     String
+  name     String    @unique
+  slug     String    @unique
   products Product[]
 }
 
 model Product {
-  id             Int              @id @default(autoincrement())
-  name           String
-  description    String
-  price          Decimal
-  image          String?
-  stock          Int
-  deleted        Boolean          @default(false)
+  id          Int     @id @default(autoincrement())
+  name        String
+  slug        String
+  description String
+  price       Float
+  image       String?
+  stock       Int
+  deleted     Boolean @default(false)
 
   categories     Category[]
   ProductsOrders ProductsOrders[]
