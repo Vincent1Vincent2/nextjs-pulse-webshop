@@ -12,10 +12,7 @@ export default function Home() {
           preload="auto"
           playsInline
         >
-          <source
-            src="https://cdn.pixabay.com/video/2017/01/12/7251-199191069_large.mp4"
-            type="video/mp4"
-          />
+          <source src="/homePage.mp4" type="video/mp4" />
         </video>
         <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
           <div className="flex flex-col items-start text-left w-full text-white px-8 md:px-40 mt-44 md:mt-0 py-20 md:py-56">
