@@ -14,7 +14,7 @@ export default function Header({session}: {session: any}) {
 
   return (
     <div>
-      <header className="bg-black flex justify-between items-center p-4 text-white">
+      <header className=" md:fixed z-50 w-full bg-gradient-to-r from-violet-900/90 to-slate-900/90 flex justify-between items-center p-4 text-white px-6">
         <div className="flex gap-4 items-center">
           <Link href={"/"}>
             <Logo />
@@ -55,7 +55,7 @@ export default function Header({session}: {session: any}) {
         </div>
       </header>
       {isMenuOpen && (
-        <nav className="md:hidden bg-black text-white p-4 flex flex-col space-y-8">
+        <nav className=" md:hidden text-white p-4 flex flex-col space-y-8">
           <Link href="/" className="text-white">
             Shop
           </Link>

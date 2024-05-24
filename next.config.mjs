@@ -14,6 +14,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "cdn.mmsports.se",
       },
+      {
+        protocol: "https",
+        hostname: "cdn-fsly.yottaa.net",
+      },
     ],
   },
   experimental: {

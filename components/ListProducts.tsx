@@ -1,6 +1,6 @@
 "use client";
-import {getCurrentProducts} from "@/app/actions/product";
-
+import {getCurrentProducts, getProductsByCategory} from "@/app/actions/product";
+import {useCategory} from "@/app/contexts/CategoryContext";
 import {Product} from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,25 +17,35 @@ import {
 
 function ListProducts() {
   const [products, setProducts] = useState<Product[]>([]);
+  const {selectedCategory} = useCategory();
 
   useEffect(() => {
     async function fetchProducts() {
-      const fetchedProducts = await getCurrentProducts();
-      setProducts(fetchedProducts);
+      try {
+        const fetchedProducts = selectedCategory
+          ? await getProductsByCategory(selectedCategory)
+          : await getCurrentProducts();
+        setProducts(fetchedProducts);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
     }
     fetchProducts();
-  }, []);
+  }, [selectedCategory]);
 
   return (
-    <div className=" md:grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+    <div className="md:grid md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-20 mx-auto">
       {products.map((product: Product) => (
-        <Card key={product.id} className="flex flex-col" data-cy="product">
+        <Card
+          key={product.id}
+          className=" flex flex-col w-96 mb-4 md:w-80 lg:w-72 lg:h-96 hover:opacity-90 transition-all rounded-sm"
+          data-cy="product"
+        >
           <CardHeader>
             <CardTitle className="flex justify-center" data-cy="product-title">
               {product.name}
             </CardTitle>
           </CardHeader>
-          <div className="flex-1"></div>
           <Link href={`/product/${product.id}`}>
             <CardContent className="flex justify-center">
               <Image
@@ -51,7 +61,6 @@ function ListProducts() {
             <CardDescription data-cy="product-price">
               {product.price.toString()} SEK
             </CardDescription>
-
             <AddToCartButton product={product} />
           </CardFooter>
         </Card>

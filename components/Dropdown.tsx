@@ -1,14 +1,8 @@
-"use client";
 import {getCategories} from "@/app/actions/category";
-import {getProductsByCategory} from "@/app/actions/product";
+import {useCategory} from "@/app/contexts/CategoryContext";
 import {useEffect, useState} from "react";
 
 interface Category {
-  id: number;
-  name: string;
-}
-
-interface Product {
   id: number;
   name: string;
 }
@@ -37,7 +31,7 @@ export function List({
     <>
       {categories.map(category => (
         <li
-          className="hover:cursor-pointer text-black py-2 px-5 border-b border-gray-200 hover:bg-gray-200 transition-all"
+          className="hover:cursor-pointer text-black py-2 px-5 border-b border-gray-200 hover:bg-gray-200 transition-all min-w-64"
           key={category.id}
           onClick={() => onCategoryClick(category.name)}
         >
@@ -49,17 +43,12 @@ export function List({
 }
 
 export default function Dropdown() {
+  const {setSelectedCategory} = useCategory();
   const [seen, setSeen] = useState(false);
-  const [products, setProducts] = useState<Product[]>([]);
 
-  const handleCategoryClick = async (categoryName: string) => {
+  const handleCategoryClick = (categoryName: string) => {
+    setSelectedCategory(categoryName);
     setSeen(false);
-    try {
-      const products = await getProductsByCategory(categoryName);
-      setProducts(products);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
   };
 
   return (
@@ -79,15 +68,6 @@ export default function Dropdown() {
           <List onCategoryClick={handleCategoryClick} />
         </ul>
       )}
-      <div>
-        {products.length > 0 && (
-          <ul>
-            {products.map(product => (
-              <li key={product.id}>{product.name}</li>
-            ))}
-          </ul>
-        )}
-      </div>
     </div>
   );
 }
