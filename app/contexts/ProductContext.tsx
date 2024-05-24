@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 
 import { Product, products as mockedProducts } from "@/data";
 import {
@@ -67,3 +67,4 @@ function ProductProvider(props: PropsWithChildren) {
 export const useProducts = () => useContext(ProductContext);
 
 export default ProductProvider;
+ */

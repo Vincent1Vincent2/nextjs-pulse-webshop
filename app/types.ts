@@ -1,8 +1,8 @@
-import { Decimal } from "@prisma/client/runtime/library";
-import { ReactNode } from "react";
+import {Decimal} from "@prisma/client/runtime/library";
+import {ReactNode} from "react";
 
-export type PageProps = Readonly<{ params: { slug: string } }>;
-export type LayoutProps = Readonly<{ children: ReactNode }>;
+export type PageProps = Readonly<{params: {slug: string}}>;
+export type LayoutProps = Readonly<{children: ReactNode}>;
 export type FormProduct = {
   title: string;
   price: string;
@@ -43,7 +43,7 @@ export interface Order {
   id: number;
   orderDate: Date;
   deliveryAddressId: number;
-  customerId: number;
+  customerId: string;
 }
 
 export interface OrderDetails {

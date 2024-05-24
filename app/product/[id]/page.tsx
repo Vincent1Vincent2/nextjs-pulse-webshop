@@ -1,6 +1,7 @@
 "use client";
 
-import { useProducts } from "@/app/contexts/ProductContext";
+import {getCategories} from "@/app/actions/category";
+import {getProduct} from "@/app/actions/product";
 import AddToCartButton from "@/components/AddToCartButton";
 import {
   Card,
@@ -9,23 +10,47 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ChevronLeft } from "lucide-react";
+import {Category, Product} from "@prisma/client";
+import {ChevronLeft} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import {useEffect, useState} from "react";
 
-type PageProps = { params: { id: string } };
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
 
-type Props = {
-  params: { id: string };
-};
+export default function ProductPage({params}: PageProps) {
+  const {id} = params;
 
-export default function ProductPage({ params }: PageProps) {
-  const { products: isProducts } = useProducts();
-  const product = getProductById(params.id);
+  const [categories, setCategories] = useState<Category[] | null>(null);
+  const [product, setProduct] = useState<
+    (Product & {categories: Category[]}) | null
+  >(null);
 
-  function getProductById(id: string) {
-    return isProducts.find((product) => product.id === id);
-  }
+  useEffect(() => {
+    async function fetchCategories() {
+      const fetchedCategories = await getCategories();
+      setCategories(fetchedCategories);
+    }
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    async function fetchProduct() {
+      const productId = Number(id);
+      try {
+        const fetchedProduct = await getProduct(productId);
+        setProduct(fetchedProduct);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    }
+
+    fetchProduct();
+  }, [id]);
 
   if (!product) {
     return (
@@ -46,7 +71,7 @@ export default function ProductPage({ params }: PageProps) {
         </CardHeader>
         <CardContent className="flex items-center flex-col">
           <Image
-            src={product.image}
+            src={product.image!}
             alt="product image"
             width={300}
             height={300}
@@ -57,7 +82,7 @@ export default function ProductPage({ params }: PageProps) {
                 className="text-3xl self-start"
                 data-cy="product-title"
               >
-                {product.title}
+                {product.name}
               </CardTitle>
               <CardDescription
                 className="self-start"
@@ -66,7 +91,7 @@ export default function ProductPage({ params }: PageProps) {
                 {product.description}
               </CardDescription>
               <CardDescription className="self-start" data-cy="product-price">
-                ${product.price}
+                ${product.price.toString()}
               </CardDescription>
             </div>
 
