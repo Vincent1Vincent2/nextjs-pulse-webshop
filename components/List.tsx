@@ -1,5 +1,6 @@
-// "use client";
+"use client";
 import {getCategories} from "@/app/actions/category";
+import Link from "next/link";
 import {useEffect, useState} from "react";
 
 interface Category {
@@ -7,11 +8,7 @@ interface Category {
   name: string;
 }
 
-interface Props {
-  onCategoryClick: (categoryName: string) => void;
-}
-
-export function List({onCategoryClick}: Props) {
+export function List() {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -30,13 +27,11 @@ export function List({onCategoryClick}: Props) {
   return (
     <>
       {categories.map(category => (
-        <li
-          className="hover:cursor-pointer text-black py-2 px-5 border-b border-gray-200 hover:bg-gray-200 transition-all"
-          key={category.id}
-          onClick={() => onCategoryClick(category.name)}
-        >
-          {category.name}
-        </li>
+        <Link href={`/category/${category.name}`} key={category.id}>
+          <li className="hover:cursor-pointer text-black py-2 px-5 border-b border-gray-200 hover:bg-gray-200 transition-all">
+            {category.name}
+          </li>
+        </Link>
       ))}
     </>
   );

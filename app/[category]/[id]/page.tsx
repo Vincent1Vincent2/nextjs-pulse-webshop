@@ -25,10 +25,11 @@ export default function CategoryPage({params}: PageProps) {
     const fetchProducts = async () => {
       try {
         const fetchedProducts = await getProductsByCategory(params.category);
+        console.log("Fetched products:", fetchedProducts);
         const products = fetchedProducts.map(product => ({
           ...product,
           price: product.price,
-          // convert Decimal to number
+          description: product.description,
         }));
         setProducts(products);
       } catch (error) {
@@ -41,7 +42,6 @@ export default function CategoryPage({params}: PageProps) {
 
   return (
     <main className="bg-[#F4F4F5] p-2 shadow rounded-lg container flex flex-col">
-      {/* <h1 className="text-4xl text-center mb-4">{params.categoryName}</h1> */}
       {products.map(product => (
         <Card key={product.id}>
           <CardHeader>
