@@ -1,17 +1,16 @@
 "use client";
-import { authenticateUser } from "@/app/actions/authenticate";
+import {authenticateUser} from "@/app/actions/authenticate";
 import {
   getAllOrders,
   getOrderProducts,
   markOrderSent,
 } from "@/app/actions/order";
-import { ProductOrderDetails, ProductWithQuantity } from "@/app/types";
-import { AuthUser } from "@/components/header/Header";
-import { Order } from "@prisma/client";
-import { useEffect, useState } from "react";
+import {ProductOrderDetails, ProductWithQuantity} from "@/app/types";
+import {Order, User} from "@prisma/client";
+import {useEffect, useState} from "react";
 
 export default function Orders() {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [orderProducts, setOrderProducts] = useState<{
     [orderID: number]: ProductWithQuantity[];
@@ -20,8 +19,8 @@ export default function Orders() {
 
   useEffect(() => {
     async function fetchAuth() {
-      const user = await authenticateUser();
-      setUser(user);
+      const fetchedUser = await authenticateUser();
+      setUser(fetchedUser);
 
       if (user) {
         const fetchedOrders = await getAllOrders();
@@ -29,16 +28,16 @@ export default function Orders() {
         if (fetchedOrders) {
           setOrders(fetchedOrders);
 
-          const productsByOrder: { [orderID: number]: ProductWithQuantity[] } =
+          const productsByOrder: {[orderID: number]: ProductWithQuantity[]} =
             {};
 
           for (const order of fetchedOrders) {
             const productOrders: ProductOrderDetails[] = await getOrderProducts(
-              order.id
+              order.id,
             );
 
             // Map the ProductOrderDetails to the Product type
-            productsByOrder[order.id] = productOrders.map((po) => ({
+            productsByOrder[order.id] = productOrders.map(po => ({
               id: po.product.id,
               name: po.product.name,
               description: po.product.description,
@@ -60,13 +59,14 @@ export default function Orders() {
   return (
     <div className="bg-white">
       <h1>Order History</h1>
+
       {user ? (
         orders.length > 0 ? (
-          orders.map((order) => (
+          orders.map(order => (
             <div key={order.id}>
               {orderProducts[order.id] ? (
                 <ul>
-                  {orderProducts[order.id].map((product) => (
+                  {orderProducts[order.id].map(product => (
                     <li key={product.id}>
                       <div className="flex justify-between">
                         <strong>{product.name}</strong>
@@ -102,7 +102,9 @@ export default function Orders() {
             </div>
           ))
         ) : (
-          <p>No orders made... TIME TO BUY!</p>
+          <div>
+            <p>No orders made... TIME TO BUY!</p>
+          </div>
         )
       ) : (
         <p>Need to sign in</p>

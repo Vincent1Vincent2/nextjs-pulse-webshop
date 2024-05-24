@@ -1,4 +1,4 @@
-import { QuantityArrows } from "@/components/QuantityArrows";
+import {QuantityArrows} from "@/components/QuantityArrows";
 import {
   Table,
   TableBody,
@@ -8,16 +8,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Trash2Icon } from "lucide-react";
+import {Trash2Icon} from "lucide-react";
 import Image from "next/image";
-import { useCart } from "../contexts/CartContext";
+import {useCart} from "../contexts/CartContext";
 
 export default function Cart() {
-  const { cart } = useCart();
+  const {cart} = useCart();
 
   const totalPrice = cart.reduce(
-    (total, product) => total + product.price * product.quantity,
-    0
+    (total, product) => total + Number(product.price) * product.quantity,
+    0,
   );
   return (
     <Table>
@@ -31,19 +31,19 @@ export default function Cart() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {cart.map((cartItem) => (
+        {cart.map(cartItem => (
           <TableRow key={cartItem.id} data-cy="cart-item">
             <TableCell className="font-medium">
               <Image
-                src={cartItem.image}
+                src={cartItem.image!}
                 alt="product image"
                 width={80}
                 height={80}
               />
             </TableCell>
-            <TableCell data-cy="product-title">{cartItem.title}</TableCell>
+            <TableCell data-cy="product-title">{cartItem.name}</TableCell>
             <TableCell data-cy="product-price">
-              $ {cartItem.price * cartItem.quantity}
+              $ {Number(cartItem.price) * cartItem.quantity}
             </TableCell>
 
             <TableCell className="text-center">

@@ -6,7 +6,6 @@ import {getProduct, productUpdate} from "@/app/actions/product";
 import {ProductCreate, ProductCreateSchema} from "@/app/zodSchemas/product";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Category, Product, User} from "@prisma/client";
-
 import {useEffect, useState} from "react";
 import {useFieldArray, useForm} from "react-hook-form";
 
