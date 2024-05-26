@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -18,44 +19,34 @@ export default async function CategoryPage({params}: PageProps) {
   const products = await getProductsByCategory(params.slug);
 
   return (
-    <main className="bg-[#F4F4F5] p-2 shadow rounded-lg container flex flex-col">
+    <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-2">
       {products.map(product => (
-        <Card key={product.id}>
+        <Card key={product.id} className="flex flex-col" data-cy="product">
           <CardHeader>
-            <Link href={`/product/${product.name}/${product.id}`}>
-              <p>View Product</p>
-            </Link>
+            <CardTitle className="flex justify-center" data-cy="product-title">
+              {product.name}
+            </CardTitle>
           </CardHeader>
-          <CardContent className="flex items-center flex-col">
-            <Image
-              src={product.image!}
-              alt="product image"
-              width={300}
-              height={300}
-            />
-            <div className="flex w-full justify-between items-center">
-              <div className="pe-10">
-                <CardTitle
-                  className="text-3xl self-start"
-                  data-cy="product-title"
-                >
-                  {product.name}
-                </CardTitle>
-                <CardDescription
-                  className="self-start"
-                  data-cy="product-description"
-                >
-                  {product.description}
-                </CardDescription>
-                <CardDescription className="self-start" data-cy="product-price">
-                  ${product.price.toString()}
-                </CardDescription>
-                <AddToCartButton product={product} />
-              </div>
-            </div>
-          </CardContent>
+          <div className="flex-1"></div>
+          <Link href={`/product/${product.name}/${product.id}`}>
+            <CardContent className="flex justify-center">
+              <Image
+                src={product.image!}
+                alt="product image"
+                width={150}
+                height={150}
+              />
+            </CardContent>
+          </Link>
+          <div className="flex-1"></div>
+          <CardFooter className="flex justify-between items-center">
+            <CardDescription data-cy="product-price">
+              ${product.price.toString()}
+            </CardDescription>
+            <AddToCartButton product={product} />
+          </CardFooter>
         </Card>
       ))}
-    </main>
+    </div>
   );
 }
