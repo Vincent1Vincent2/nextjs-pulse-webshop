@@ -21,7 +21,7 @@ function CartIcon() {
           className="flex absolute justify-center -top-2 -right-3 animate-accordion-up"
           data-cy="cart-items-count-badge"
         >
-          <div className="flex  size-6 rounded-full justify-center items-center bg-orange-500 text-white">
+          <div className="flex  size-6 rounded-full justify-center items-center bg-orange-100 text-black">
             {cartQuantity}
           </div>
         </div>

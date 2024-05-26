@@ -31,7 +31,7 @@ export default function Header({session}: {session: any}) {
   return (
     <div>
       <header
-        className={`fixed z-50 w-full flex justify-between items-center p-4 text-white md:px-10 transition-all duration-300 ${
+        className={`fixed z-50 w-full flex justify-between items-center p-5 text-white md:px-10 transition-all duration-300 ${
           isScrolled ? "bg-black/80" : "bg-transparent"
         }`}
       >
@@ -75,15 +75,15 @@ export default function Header({session}: {session: any}) {
         </div>
       </header>
       {isMenuOpen && (
-        <nav className=" md:hidden text-white p-4 flex flex-col space-y-8">
-          <Link href="/" className="text-white mt-20">
+        <nav className="sm:hidden fixed top-0 left-0 w-full h-auto bg-gray-900/90 flex flex-col items-left p-4 justify-center space-y-8 z-40 text">
+          <Link href="/" className="text-white mt-32 text-lg">
             Shop
           </Link>
           <GuestHeader />
-          <Link href="/" className="text-white">
+          <Link href="/" className="text-white text-lg">
             Best Sellers
           </Link>
-          <Link href="/" className="text-white">
+          <Link href="/" className="text-white text-lg">
             Join Our Club
           </Link>
         </nav>
