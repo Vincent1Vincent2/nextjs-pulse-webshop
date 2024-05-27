@@ -7,6 +7,7 @@ import {
 } from "@/app/actions/order";
 import {ProductOrderDetails, ProductWithQuantity} from "@/app/types";
 import {Order, User} from "@prisma/client";
+import Image from "next/image";
 import {useEffect, useState} from "react";
 
 export default function Orders() {
@@ -40,7 +41,7 @@ export default function Orders() {
             id: po.product.id,
             name: po.product.name,
             description: po.product.description,
-            price: po.product.price.toString(),
+            price: po.product.price,
             image: po.product.image,
             deleted: po.product.deleted!,
             quantity: po.quantity,
@@ -73,7 +74,12 @@ export default function Orders() {
                       <div>
                         <p>${product.price.toString()}</p>
                         {product.image && (
-                          <img src={product.image} alt={product.name} />
+                          <Image
+                            width={100}
+                            height={100}
+                            src={product.image}
+                            alt={product.name}
+                          />
                         )}
                         <div className="flex gap-5">
                           <p>

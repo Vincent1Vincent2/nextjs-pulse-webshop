@@ -19,6 +19,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "cdn-fsly.yottaa.net",
       },
+      {
+        protocol: "https",
+        hostname: "img.freepik.com",
+      },
     ],
   },
   experimental: {

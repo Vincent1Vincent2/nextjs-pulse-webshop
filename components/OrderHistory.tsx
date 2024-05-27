@@ -3,6 +3,7 @@ import {authenticateUser} from "@/app/actions/authenticate";
 import {getOrder, getOrderProducts} from "@/app/actions/order";
 import {ProductOrderDetails} from "@/app/types";
 import {Order, Product, User} from "@prisma/client";
+import Image from "next/image";
 import {useEffect, useState} from "react";
 
 export default function OrderHistory() {
@@ -35,6 +36,7 @@ export default function OrderHistory() {
               id: po.product.id,
               name: po.product.name,
               description: po.product.description,
+              slug: po.product.slug,
               price: po.product.price,
               image: po.product.image,
               deleted: po.product.deleted!,
@@ -74,7 +76,12 @@ export default function OrderHistory() {
                         <p>{product.description}</p>
                         <p>Price: {product.price.toString()}</p>
                         {product.image && (
-                          <img src={product.image} alt={product.name} />
+                          <Image
+                            width={100}
+                            height={100}
+                            src={product.image}
+                            alt={product.name}
+                          />
                         )}
                       </div>
                     </li>

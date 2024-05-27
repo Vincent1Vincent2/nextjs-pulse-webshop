@@ -22,7 +22,7 @@ export default function EditPage({params}: PageProps) {
     defaultValues: {
       name: "",
       description: "",
-      price: "",
+      price: 0,
       image: "",
       categories: [],
     },
@@ -64,7 +64,7 @@ export default function EditPage({params}: PageProps) {
           reset({
             name: fetchedProduct.name,
             description: fetchedProduct.description,
-            price: fetchedProduct.price.toString(),
+            price: fetchedProduct.price,
             image: fetchedProduct.image || "",
             stock: fetchedProduct.stock,
             categories: fetchedProduct.categories.map(c => ({
@@ -106,7 +106,7 @@ export default function EditPage({params}: PageProps) {
           reset({
             name: fetchedProduct.name,
             description: fetchedProduct.description,
-            price: fetchedProduct.price.toString(),
+            price: fetchedProduct.price,
             image: fetchedProduct.image || "",
             stock: fetchedProduct.stock,
             categories: fetchedProduct.categories.map(c => ({
@@ -182,7 +182,7 @@ export default function EditPage({params}: PageProps) {
                 </button>
               </div>
             ))}
-            <button type="button" onClick={() => append({name: ""})}>
+            <button type="button" onClick={() => append({name: "", slug: ""})}>
               Add Category
             </button>
           </div>

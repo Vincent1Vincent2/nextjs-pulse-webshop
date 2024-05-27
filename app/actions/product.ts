@@ -22,14 +22,15 @@ export async function productCreate(formData: ProductCreate) {
   const connectCategories = existingCategories.map(c => ({id: c.id}));
   const createCategories = formData.categories
     .filter(c => !existingCategories.find(ec => ec.name === c.name))
-    .map(c => ({name: c.name}));
+    .map(c => ({name: c.name, slug: c.slug}));
 
   const products = await db.product.create({
     data: {
       name: formData.name,
       description: formData.description,
-      price: parseFloat(formData.price),
+      price: formData.price,
       image: formData.image,
+      slug: formData.name,
       stock: formData.stock,
       categories: {
         connect: connectCategories,
@@ -58,7 +59,7 @@ export async function productUpdate(
   const connectCategories = existingCategories.map(c => ({id: c.id}));
   const createCategories = formData.categories
     .filter(c => !existingCategories.find(ec => ec.name === c.name))
-    .map(c => ({name: c.name}));
+    .map(c => ({name: c.name, slug: c.slug}));
 
   // Fetch the current categories of the product
   const currentProduct = await db.product.findUnique({
@@ -76,7 +77,7 @@ export async function productUpdate(
     data: {
       name: formData.name,
       description: formData.description,
-      price: parseFloat(formData.price),
+      price: formData.price,
       image: formData.image,
       stock: formData.stock,
       categories: {
@@ -135,6 +136,15 @@ export async function getProductsByCategory(categoryName: string) {
     },
     include: {
       categories: true,
+    },
+  });
+  return products;
+}
+
+export async function getProductsByPrice(productPrice: number) {
+  const products = await db.product.findMany({
+    where: {
+      price: productPrice,
     },
   });
   return products;

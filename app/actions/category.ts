@@ -7,11 +7,11 @@ export async function saveCategory(formData: CategoryCreate) {
   await db.category.create({
     data: {
       name: formData.name,
+      slug: formData.name,
     },
   });
 }
 
 export async function getCategories() {
-  const categories = await db.category.findMany();
-  return categories;
+  return await db.category.findMany();
 }
