@@ -21,10 +21,8 @@ export default function RootLayout({children}: LayoutProps) {
     <html lang="en">
       <body className={`min-h-screen flex flex-col ${inter.className}`}>
         <CartProvider>
-          <main className=" flex-1">
-            <Navbar />
-            {children}
-          </main>
+          <Navbar />
+          <main className="flex-1 mt-20">{children}</main>
           <Footer />
           <Toaster />
         </CartProvider>

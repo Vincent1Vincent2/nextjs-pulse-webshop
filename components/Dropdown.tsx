@@ -15,6 +15,7 @@ export default function Dropdown() {
   return (
     <div className="hover:cursor-pointer relative">
       <span
+        className=" text-white text-lg sm:text-base hover:cursor-pointer"
         onMouseOver={() => setSeen(!seen)}
         onMouseLeave={() => setSeen(seen)}
         onClick={() => setSeen(!seen)}
