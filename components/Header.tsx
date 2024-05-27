@@ -3,10 +3,10 @@
 import {MenuIcon, XIcon} from "lucide-react";
 import Link from "next/link";
 import {useEffect, useState} from "react";
-import DropdownMenu from "./DropdownMenu";
+import GuestHeader from "./GuestHeader";
 import SignInButton from "./SignInButton";
+import DropdownMenu from "./UserMenu";
 import CartIcon from "./cartIcon";
-import GuestHeader from "./header/GuestHeader";
 import Logo from "./ui/logo";
 
 export default function Header({session}: {session: any}) {

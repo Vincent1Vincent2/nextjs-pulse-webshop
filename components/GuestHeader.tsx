@@ -1,4 +1,4 @@
-import Dropdown from "../Dropdown";
+import Dropdown from "./DropdownCategories";
 
 export default function GuestHeader() {
   return <Dropdown />;

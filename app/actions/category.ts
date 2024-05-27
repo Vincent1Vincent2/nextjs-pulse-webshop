@@ -7,6 +7,7 @@ export async function saveCategory(formData: CategoryCreate) {
   await db.category.create({
     data: {
       name: formData.name,
+      slug: formData.name,
     },
   });
 }
