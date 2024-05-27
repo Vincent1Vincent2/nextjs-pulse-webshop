@@ -89,6 +89,9 @@ export default function Orders() {
                 key={order.id}
                 className="mt-8 mx-auto w-full md:w-3/4 bg-white text-black p-4 md:p-6 rounded-sm"
               >
+                <h3 className="text-xl font-bold mb-4 border-b border-gray-200">
+                  Order ID: {order.id}
+                </h3>
                 {orderProducts[order.id] ? (
                   <div className="overflow-x-auto">
                     <div className="min-w-[600px]">

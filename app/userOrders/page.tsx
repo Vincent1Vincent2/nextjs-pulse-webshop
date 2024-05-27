@@ -76,6 +76,9 @@ export default function Orders() {
                   <div className="overflow-x-auto">
                     <div className="min-w-[600px]">
                       <ul>
+                        <h3 className="text-xl font-bold mb-4 border-b border-gray-200">
+                          Order ID: {order.id}
+                        </h3>
                         {orderProducts[order.id].map(product => (
                           <li key={product.id} className="mb-4">
                             <div className="flex items-center mb-2">
