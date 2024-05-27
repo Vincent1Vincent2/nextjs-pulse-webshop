@@ -10,46 +10,44 @@ import {Order, User} from "@prisma/client";
 import {useEffect, useState} from "react";
 
 export default function Orders() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>();
   const [orders, setOrders] = useState<Order[]>([]);
   const [orderProducts, setOrderProducts] = useState<{
     [orderID: number]: ProductWithQuantity[];
   }>({});
-  const pageView = ["all", "sent", "notSent"];
 
   useEffect(() => {
     async function fetchAuth() {
       const fetchedUser = await authenticateUser();
       setUser(fetchedUser);
 
-      if (user) {
-        const fetchedOrders = await getAllOrders();
+      console.log(user);
 
-        if (fetchedOrders) {
-          setOrders(fetchedOrders);
+      const fetchedOrders = await getAllOrders();
 
-          const productsByOrder: {[orderID: number]: ProductWithQuantity[]} =
-            {};
+      if (fetchedOrders) {
+        setOrders(fetchedOrders);
 
-          for (const order of fetchedOrders) {
-            const productOrders: ProductOrderDetails[] = await getOrderProducts(
-              order.id,
-            );
+        const productsByOrder: {[orderID: number]: ProductWithQuantity[]} = {};
 
-            // Map the ProductOrderDetails to the Product type
-            productsByOrder[order.id] = productOrders.map(po => ({
-              id: po.product.id,
-              name: po.product.name,
-              description: po.product.description,
-              price: po.product.price.toString(),
-              image: po.product.image,
-              deleted: po.product.deleted!,
-              quantity: po.quantity,
-            }));
-          }
+        for (const order of fetchedOrders) {
+          const productOrders: ProductOrderDetails[] = await getOrderProducts(
+            order.id,
+          );
 
-          setOrderProducts(productsByOrder);
+          // Map the ProductOrderDetails to the Product type
+          productsByOrder[order.id] = productOrders.map(po => ({
+            id: po.product.id,
+            name: po.product.name,
+            description: po.product.description,
+            price: po.product.price.toString(),
+            image: po.product.image,
+            deleted: po.product.deleted!,
+            quantity: po.quantity,
+          }));
         }
+
+        setOrderProducts(productsByOrder);
       }
     }
 
