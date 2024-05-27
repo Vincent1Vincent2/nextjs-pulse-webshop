@@ -87,7 +87,7 @@ export default function Orders() {
             return (
               <div
                 key={order.id}
-                className="mt-8 mx-auto w-full md:w-3/4 bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg"
+                className="mt-8 mx-auto w-full md:w-3/4 bg-white text-black p-4 md:p-6 rounded-sm"
               >
                 {orderProducts[order.id] ? (
                   <div className="overflow-x-auto">
@@ -96,7 +96,7 @@ export default function Orders() {
                         {orderProducts[order.id].map(product => (
                           <li key={product.id} className="mb-4">
                             <div className="flex justify-between items-center mb-2">
-                              <p className="text-sm sm:text-xl text-orange-400">
+                              <p className="text-sm sm:text-xl text-black">
                                 {product.name}
                               </p>
                               <p className="text-sm">{product.quantity}x</p>
