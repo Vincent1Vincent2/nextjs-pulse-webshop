@@ -16,14 +16,14 @@ export default function Orders() {
   const [orderProducts, setOrderProducts] = useState<{
     [orderID: number]: ProductWithQuantity[];
   }>({});
-  const pageView = ["all", "sent", "notSent"];
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchAuth() {
       const fetchedUser = await authenticateUser();
       setUser(fetchedUser);
 
-      if (user) {
+      if (fetchedUser) {
         const fetchedOrders = await getAllOrders();
 
         if (fetchedOrders) {
@@ -52,68 +52,111 @@ export default function Orders() {
           setOrderProducts(productsByOrder);
         }
       }
+      setLoading(false);
     }
 
     fetchAuth();
   }, []);
 
+  const handleMarkOrderSent = async (orderId: number) => {
+    await markOrderSent(orderId);
+
+    setOrders(
+      orders.map(order =>
+        order.id === orderId ? {...order, isSent: true} : order,
+      ),
+    );
+  };
+
+  if (loading) {
+    return <p className="text-center text-white">Loading...</p>;
+  }
+
   return (
-    <div className="bg-white">
-      <h1>Order History</h1>
+    <div className="bg-black min-h-screen text-white p-4">
+      <h1 className="text-3xl font-bold text-center mt-10">Order History</h1>
 
       {user ? (
         orders.length > 0 ? (
-          orders.map(order => (
-            <div key={order.id}>
-              {orderProducts[order.id] ? (
-                <ul>
-                  {orderProducts[order.id].map(product => (
-                    <li key={product.id}>
-                      <div className="flex justify-between">
-                        <strong>{product.name}</strong>
-                        <p>{product.quantity}x</p>
+          orders.map(order => {
+            const total =
+              orderProducts[order.id]?.reduce(
+                (sum, product) => sum + product.price * product.quantity,
+                0,
+              ) || 0;
+            return (
+              <div
+                key={order.id}
+                className="mt-8 mx-auto w-full md:w-3/4 bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg"
+              >
+                {orderProducts[order.id] ? (
+                  <div className="overflow-x-auto">
+                    <div className="min-w-[600px]">
+                      <ul>
+                        {orderProducts[order.id].map(product => (
+                          <li key={product.id} className="mb-4">
+                            <div className="flex justify-between items-center mb-2">
+                              <p className="text-sm sm:text-xl text-orange-400">
+                                {product.name}
+                              </p>
+                              <p className="text-sm">{product.quantity}x</p>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <p className="text-sm">
+                                {product.price.toFixed(2)} {"\u00A0"}Kr
+                              </p>
+                              {product.image && (
+                                <Image
+                                  width={100}
+                                  height={100}
+                                  src={product.image}
+                                  alt={product.name}
+                                  className="rounded-sm"
+                                />
+                              )}
+                              <div className="flex  flex-col gap-5 items-right">
+                                <p className="text-sm">
+                                  {order.isSent
+                                    ? "Order is on its way!"
+                                    : "Order waiting to be shipped"}
+                                </p>
+                                {!order.isSent && (
+                                  <button
+                                    className="bg-orange-400 text-white py-2 px-4 rounded-sm text-sm"
+                                    onClick={() =>
+                                      handleMarkOrderSent(order.id)
+                                    }
+                                  >
+                                    MARK AS SENT
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-700">
+                        <p className="text-xl">Total:</p>
+                        <p className="text-lg">
+                          {" "}
+                          {total.toFixed(2)} {"\u00A0"} Kr
+                        </p>
                       </div>
-                      <div>
-                        <p>${product.price.toString()}</p>
-                        {product.image && (
-                          <Image
-                            width={100}
-                            height={100}
-                            src={product.image}
-                            alt={product.name}
-                          />
-                        )}
-                        <div className="flex gap-5">
-                          <p>
-                            {" "}
-                            {order.isSent === true
-                              ? "Order is on it's way!"
-                              : "Order waiting to be shipped"}
-                          </p>
-
-                          <button
-                            className="bg-slate-900 text-yellow-50 py-0 px-3 rounded-md text-sm"
-                            onClick={() => markOrderSent(order.id)}
-                          >
-                            MARK AS SENT
-                          </button>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>We do a lil loading</p>
-              )}
-            </div>
-          ))
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-center">Loading order details...</p>
+                )}
+              </div>
+            );
+          })
         ) : (
-          <div>
+          <div className="text-center mt-10">
             <p>No orders made... TIME TO BUY!</p>
           </div>
         )
       ) : (
-        <p>Need to sign in</p>
+        <p className="text-center mt-10">Need to sign in</p>
       )}
     </div>
   );
