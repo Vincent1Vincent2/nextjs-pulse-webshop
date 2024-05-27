@@ -11,9 +11,9 @@ import {z} from "zod";
 
 export const ProductCreateSchema = z.object({
   name: z.string().min(0).max(80),
-  description: z.string().min(0).max(80),
+  description: z.string().min(0).max(300),
   price: z.number().min(0).max(80),
-  image: z.string().min(0).max(10),
+  image: z.string().min(0).max(800),
   stock: z.number().int().min(0),
   categories: z.array(
     z.object({
