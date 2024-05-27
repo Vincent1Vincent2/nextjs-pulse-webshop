@@ -50,6 +50,7 @@ CREATE TABLE "VerificationToken" (
 CREATE TABLE "Category" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
 
     CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
 );
@@ -58,8 +59,9 @@ CREATE TABLE "Category" (
 CREATE TABLE "Product" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "price" DECIMAL(65,30) NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL,
     "image" TEXT,
     "stock" INTEGER NOT NULL,
     "deleted" BOOLEAN NOT NULL DEFAULT false,
@@ -72,7 +74,7 @@ CREATE TABLE "Order" (
     "id" SERIAL NOT NULL,
     "orderDate" TIMESTAMP(3) NOT NULL,
     "deliveryAddressId" INTEGER NOT NULL,
-    "customerId" INTEGER NOT NULL,
+    "customerId" TEXT NOT NULL,
     "isSent" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
@@ -113,6 +115,12 @@ CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Category_name_key" ON "Category"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Category_slug_key" ON "Category"("slug");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ProductsOrders_orderId_productId_key" ON "ProductsOrders"("orderId", "productId");
