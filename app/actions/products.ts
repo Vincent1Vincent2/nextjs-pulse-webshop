@@ -1,6 +1,6 @@
-'use server';
-import { db } from '@/prisma/db';
-import { ProductCreate } from '../zodSchemas/product';
+"use server";
+import {db} from "@/prisma/db";
+import {ProductCreate} from "../zodSchemas/product";
 
 export const SaveProduct = async (formData: ProductCreate) => {
   try {
@@ -11,11 +11,12 @@ export const SaveProduct = async (formData: ProductCreate) => {
         stock: formData.stock,
         price: formData.price,
         image: formData.image,
+        slug: formData.name,
       },
     });
     return product;
   } catch (error) {
-    console.error('Error saving product:', error);
-    throw new Error('Error saving product');
+    console.error("Error saving product:", error);
+    throw new Error("Error saving product");
   }
 };

@@ -38,7 +38,7 @@ const OrderForm = () => {
     try {
       const orderDetails = await orderCreate(data, addressId!);
 
-      setOrderDetails(orderDetails);
+      // setOrderDetails(orderDetails);
       clearCart();
     } catch (error) {
       console.error("Error creating order:", error);
@@ -206,7 +206,10 @@ const OrderForm = () => {
           <ul>
             {orderDetails.productOrders.map(po => {
               return (
-                <div className="flex justify-between mx-5 my-2 items-center">
+                <div
+                  key={po.productId}
+                  className="flex justify-between mx-5 my-2 items-center"
+                >
                   <div className="flex items-center">
                     <Image
                       src={po.product.image!}
