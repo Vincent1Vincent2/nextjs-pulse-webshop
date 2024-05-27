@@ -30,9 +30,9 @@ export default function Home() {
         </div>
       </div>
       <PromoBanner />
-      <div className="bg-white py-16 h-[400px]">
+      <div className="bg-black py-16 h-[400px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-orange-400">
             More Content Section / Categories
           </h2>
         </div>

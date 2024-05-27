@@ -26,7 +26,7 @@ export default function Banner() {
                 className="focus:outline-none text-black"
               />
             </div>
-            <div className="flex items-center space-x-2 px-4 py-4 sm:py-0">
+            <div className="flex items-center space-x-2 px-4 sm:py-0">
               <PhoneIcon className="size-4 md:size-6 text-gray-500" />
               <input
                 type="tel"
@@ -34,7 +34,7 @@ export default function Banner() {
                 className="focus:outline-none text-black "
               />
             </div>
-            <button className=" bg-orange-500 text-white md:px-6 py-2 md:py-4 rounded-b-sm sm:rounded-l-none sm:rounded-r-sm">
+            <button className=" bg-orange-500 text-white md:px-6 py-2 md:py-3 rounded-b-sm sm:rounded-l-none sm:rounded-r-sm">
               Sign Up
             </button>
           </div>
