@@ -48,7 +48,7 @@ export default function DropdownMenu({session}: {session: any}) {
             </MenuItem>
             <MenuItem>
               <Link
-                href="#"
+                href={"/admin/orders"}
                 className="hover:bg-gray-100 text-gray-900 block px-4 py-2 text-sm"
               >
                 Order History
