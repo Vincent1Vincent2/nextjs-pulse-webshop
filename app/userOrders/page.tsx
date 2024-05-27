@@ -43,13 +43,11 @@ export default function Orders() {
               quantity: po.quantity,
             }));
           }
-
           setOrderProducts(productsByOrder);
         }
       }
       setLoading(false);
     }
-
     fetchAuth();
   }, []);
 
@@ -76,7 +74,7 @@ export default function Orders() {
               >
                 {orderProducts[order.id] ? (
                   <div className="overflow-x-auto">
-                    <div className="min-w-max">
+                    <div className="min-w-[600px]">
                       <ul>
                         {orderProducts[order.id].map(product => (
                           <li key={product.id} className="mb-4">
