@@ -80,7 +80,7 @@ const ProductForm = () => {
             </button>
           </div>
         ))}
-        <button type="button" onClick={() => append({ name: "" })}>
+        <button type="button" onClick={() => append({ name: "", slug: "" })}>
           Add Category
         </button>
       </div>
