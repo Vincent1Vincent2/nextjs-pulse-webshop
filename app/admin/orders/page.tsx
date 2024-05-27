@@ -95,52 +95,52 @@ export default function Orders() {
                       <ul>
                         {orderProducts[order.id].map(product => (
                           <li key={product.id} className="mb-4">
-                            <div className="flex justify-between items-center mb-2">
-                              <p className="text-sm sm:text-xl text-black">
-                                {product.name}
-                              </p>
-                              <p className="text-sm">{product.quantity}x</p>
-                            </div>
-                            <div className="flex justify-between items-center">
-                              <p className="text-sm">
-                                {product.price.toFixed(2)} {"\u00A0"}Kr
-                              </p>
+                            <div className="flex items-center mb-2">
                               {product.image && (
                                 <Image
                                   width={100}
                                   height={100}
                                   src={product.image}
                                   alt={product.name}
-                                  className="rounded-sm"
+                                  className="rounded-sm mr-4"
                                 />
                               )}
-                              <div className="flex  flex-col gap-5 items-right">
+                              <div className="flex-1">
+                                <div className="flex justify-between items-center">
+                                  <p className="text-sm sm:text-xl text-black">
+                                    {product.name}
+                                  </p>
+                                  <p className="text-sm">{product.quantity}x</p>
+                                </div>
                                 <p className="text-sm">
-                                  {order.isSent
-                                    ? "Order is on its way!"
-                                    : "Order waiting to be shipped"}
+                                  {product.price.toFixed(2)} {"\u00A0"}Kr
                                 </p>
-                                {!order.isSent && (
-                                  <button
-                                    className="bg-orange-400 text-white py-2 px-4 rounded-sm text-sm"
-                                    onClick={() =>
-                                      handleMarkOrderSent(order.id)
-                                    }
-                                  >
-                                    MARK AS SENT
-                                  </button>
-                                )}
                               </div>
                             </div>
                           </li>
                         ))}
                       </ul>
-                      <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-700">
+                      <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
                         <p className="text-xl">Total:</p>
                         <p className="text-lg">
                           {" "}
                           {total.toFixed(2)} {"\u00A0"} Kr
                         </p>
+                      </div>
+                      <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
+                        <p className="text-sm">
+                          {order.isSent
+                            ? "Order is on its way!"
+                            : "Order waiting to be shipped"}
+                        </p>
+                        {!order.isSent && (
+                          <button
+                            className="bg-orange-400 text-white py-2 px-4 rounded-sm text-sm"
+                            onClick={() => handleMarkOrderSent(order.id)}
+                          >
+                            MARK AS SENT
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
