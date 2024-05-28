@@ -32,11 +32,24 @@ export default function ProductList({slug}: ProductListProps) {
 
   return (
     <>
-      <div>
-        <label htmlFor="sortOrder">Price: </label>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          fontFamily: "Times New Roman",
+          padding: "10px",
+        }}
+      >
+        <label htmlFor="sortOrder" style={{marginRight: "10px"}}>
+          Price:{" "}
+        </label>
         <select
           id="sortOrder"
           onChange={e => setSortOrder(e.target.value as "asc" | "desc")}
+          style={{
+            fontFamily: "Times New Roman",
+            padding: "5px",
+          }}
         >
           <option value="asc">Lowest to Highest</option>
           <option value="desc">Highest to Lowest</option>
