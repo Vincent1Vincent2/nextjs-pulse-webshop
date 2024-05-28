@@ -28,7 +28,7 @@ export default async function CategoryPage({params}: PageProps) {
             </CardTitle>
           </CardHeader>
           <div className="flex-1"></div>
-          <Link href={`/product/${product.name}/${product.id}`}>
+          <Link href={`/product/${product.slug}/${product.id}`}>
             <CardContent className="flex justify-center">
               <Image
                 src={product.image!}
