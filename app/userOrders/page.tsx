@@ -1,17 +1,13 @@
 "use client";
 import {authenticateUser} from "@/app/actions/authenticate";
-import {
-  getAllOrders,
-  getOrderProducts,
-  markOrderSent,
-} from "@/app/actions/order";
+import {getOrder, getOrderProducts} from "@/app/actions/order";
 import {ProductOrderDetails, ProductWithQuantity} from "@/app/types";
 import {Order, User} from "@prisma/client";
 import Image from "next/image";
 import {useEffect, useState} from "react";
 
 export default function Orders() {
-  const [user, setUser] = useState<User | null>();
+  const [user, setUser] = useState<User | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [orderProducts, setOrderProducts] = useState<{
     [orderID: number]: ProductWithQuantity[];
@@ -24,7 +20,7 @@ export default function Orders() {
       setUser(fetchedUser);
 
       if (fetchedUser) {
-        const fetchedOrders = await getAllOrders();
+        const fetchedOrders = await getOrder(fetchedUser.id);
 
         if (fetchedOrders) {
           setOrders(fetchedOrders);
@@ -37,7 +33,6 @@ export default function Orders() {
               order.id,
             );
 
-            // Map the ProductOrderDetails to the Product type
             productsByOrder[order.id] = productOrders.map(po => ({
               id: po.product.id,
               name: po.product.name,
@@ -48,25 +43,13 @@ export default function Orders() {
               quantity: po.quantity,
             }));
           }
-
           setOrderProducts(productsByOrder);
         }
       }
       setLoading(false);
     }
-
     fetchAuth();
   }, []);
-
-  const handleMarkOrderSent = async (orderId: number) => {
-    await markOrderSent(orderId);
-
-    setOrders(
-      orders.map(order =>
-        order.id === orderId ? {...order, isSent: true} : order,
-      ),
-    );
-  };
 
   if (loading) {
     return <p className="text-center text-white">Loading...</p>;
@@ -74,7 +57,7 @@ export default function Orders() {
 
   return (
     <div className="bg-black min-h-screen text-white p-4">
-      <h1 className="text-3xl font-bold text-center mt-10">Order History</h1>
+      <h1 className="text-4xl font-bold text-center mt-10">Your Orders</h1>
 
       {user ? (
         orders.length > 0 ? (
@@ -89,13 +72,13 @@ export default function Orders() {
                 key={order.id}
                 className="mt-8 mx-auto w-full md:w-3/4 bg-white text-black p-4 md:p-6 rounded-sm"
               >
-                <h3 className="text-xl font-bold mb-4 border-b border-gray-200">
-                  Order ID: {order.id}
-                </h3>
                 {orderProducts[order.id] ? (
                   <div className="overflow-x-auto">
                     <div className="min-w-[600px]">
                       <ul>
+                        <h3 className="text-xl font-bold mb-4 border-b border-gray-200">
+                          Order ID: {order.id}
+                        </h3>
                         {orderProducts[order.id].map(product => (
                           <li key={product.id} className="mb-4">
                             <div className="flex items-center mb-2">
@@ -110,7 +93,7 @@ export default function Orders() {
                               )}
                               <div className="flex-1">
                                 <div className="flex justify-between items-center">
-                                  <p className="text-sm sm:text-xl text-black">
+                                  <p className="text-xl text-black">
                                     {product.name}
                                   </p>
                                   <p className="text-sm">{product.quantity}x</p>
@@ -136,14 +119,6 @@ export default function Orders() {
                             ? "Order is on its way!"
                             : "Order waiting to be shipped"}
                         </p>
-                        {!order.isSent && (
-                          <button
-                            className="bg-orange-400 text-white py-2 px-4 rounded-sm text-sm"
-                            onClick={() => handleMarkOrderSent(order.id)}
-                          >
-                            MARK AS SENT
-                          </button>
-                        )}
                       </div>
                     </div>
                   </div>
