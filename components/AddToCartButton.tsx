@@ -1,7 +1,7 @@
 "use client";
 
 import {useCart} from "@/app/contexts/CartContext";
-import {Product} from "@/data";
+import {Product} from "@prisma/client";
 import {Button} from "./ui/button";
 
 interface Props {
