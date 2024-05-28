@@ -38,7 +38,7 @@ const OrderForm = () => {
     try {
       const orderDetails = await orderCreate(data, addressId!);
 
-      // setOrderDetails(orderDetails);
+      setOrderDetails(orderDetails);
       clearCart();
     } catch (error) {
       console.error("Error creating order:", error);
@@ -112,6 +112,7 @@ const OrderForm = () => {
     }, 0);
   }
 
+  console.log(orderDetails);
   return (
     <div className=" ">
       <div className="flex  flex-col justify-between my-2 items-center bg-neutral-100 p-10 rounded-sm max-w-5xl mx-auto">
