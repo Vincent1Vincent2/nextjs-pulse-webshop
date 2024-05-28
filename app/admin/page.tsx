@@ -10,31 +10,45 @@ export default async function AdminPage() {
   const products = await getCurrentProducts();
 
   return session?.user.isAdmin ? (
-    <main className="bg-[#F4F4F5] p-2 shadow rounded-lg container flex flex-col gap-5">
-      <div>
-        <h2>Add a product</h2>
-        <ProductForm />
-      </div>
-      <Link className="text-black" href={"/admin/orders"}>
+    <main className="bg-black min-h-screen text-white p-4 max-w-5xl mx-auto">
+      <h2 className=" text-white text-2xl font-bold mt-4 block p-4 rounded-sm text-center">
+        Admin Dashboard
+      </h2>
+      <Link
+        href={"/admin/orders"}
+        className=" text-white text-xl font-bold mt-4 block bg-orange-400 p-4 rounded-sm hover:bg-orange-300 text-center"
+      >
         User Orders
       </Link>
+      <div className=" bg-slate-100 p-4 rounded-sm mt-4">
+        <h2 className=" text-black text-xl font-bold m-4 text-center">
+          Add a Product
+        </h2>
+        <ProductForm />
+      </div>
       {products?.map(p => (
-        <div key={p.id}>
+        <div key={p.id} className="bg-white text-black p-6 rounded-sm mt-4">
           <ul>
-            <li>ID - {p.id}</li>
-            <li>{p.name}</li>
-            <li>{p.description}</li>
+            <li className="text-xl font-semibold border-b border-gray-200">
+              ID: {p.id}
+            </li>
+            <li className="text-lg font-bold my-4 ">{p.name}</li>
+            <li className="text-md">{p.description}</li>
           </ul>
-          <DeleteButton id={p.id} />
-          <Link href={`/admin/edit-product/${p.id}`}>
-            <button>We do a lil editing?</button>
-          </Link>
+          <div className="flex gap-4 mt-4">
+            <DeleteButton id={p.id} />
+            <Link href={`/admin/edit-product/${p.id}`}>
+              <button className="bg-orange-400 text-white py-2 px-10 rounded-sm hover:bg-orange-300">
+                Edit
+              </button>
+            </Link>
+          </div>
         </div>
       ))}
     </main>
   ) : (
-    <main className="bg-[#F4F4F5] p-2 shadow rounded-lg container flex flex-col gap-5">
-      <p>Loading!</p>
+    <main className="bg-black min-h-screen text-white p-4 flex items-center justify-center">
+      <p className="text-center">Loading...</p>
     </main>
   );
 }
