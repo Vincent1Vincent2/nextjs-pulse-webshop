@@ -1,22 +1,23 @@
 "use client";
-import { getCategories } from "@/app/actions/category";
-import { productCreate } from "@/app/actions/product";
-import { ProductCreate, ProductCreateSchema } from "@/app/zodSchemas/product";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Category } from "@prisma/client";
-import { useEffect, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import {getCategories} from "@/app/actions/category";
+import {productCreate} from "@/app/actions/product";
+import {ProductCreate, ProductCreateSchema} from "@/app/zodSchemas/product";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Category} from "@prisma/client";
+import {XIcon} from "lucide-react";
+import {useEffect, useState} from "react";
+import {useFieldArray, useForm} from "react-hook-form";
 
 const ProductForm = () => {
   const form = useForm<ProductCreate>({
     resolver: zodResolver(ProductCreateSchema),
   });
   const {
-    formState: { errors },
+    formState: {errors},
     control,
   } = form;
 
-  const { fields, append, remove } = useFieldArray({
+  const {fields, append, remove} = useFieldArray({
     control,
     name: "categories",
   });
@@ -37,56 +38,111 @@ const ProductForm = () => {
   };
 
   return (
-    <form onSubmit={form.handleSubmit(handleSubmit)}>
-      <input {...form.register("name")} type="text" placeholder="Name" />
-      {errors.name && <span>{errors.name.message}</span>}
+    <form
+      onSubmit={form.handleSubmit(handleSubmit)}
+      className="space-y-4 max-w-5xl bg-white shadow-md p-4 "
+    >
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+        <div className="flex flex-col ">
+          <input
+            {...form.register("name")}
+            type="text"
+            placeholder="Name"
+            className="p-2 border rounded text-black"
+          />
+          {errors.name && (
+            <span className="text-red-500">{errors.name.message}</span>
+          )}
+        </div>
 
-      <input
-        {...form.register("description")}
-        type="text"
-        placeholder="Description"
-      />
-      {errors.description && <span>{errors.description?.message}</span>}
+        <div className="flex flex-col">
+          <input
+            {...form.register("description")}
+            type="text"
+            placeholder="Description"
+            className="p-2 border rounded text-black"
+          />
+          {errors.description && (
+            <span className="text-red-500">{errors.description?.message}</span>
+          )}
+        </div>
 
-      <input {...form.register("price")} type="number" placeholder="Price" />
-      {errors.price && <span>{errors.price?.message}</span>}
+        <div className="flex flex-col">
+          <input
+            {...form.register("price", {valueAsNumber: true})}
+            type="number"
+            placeholder="Price"
+            className="p-2 border rounded text-black"
+          />
+          {errors.price && (
+            <span className="text-red-500">{errors.price?.message}</span>
+          )}
+        </div>
 
-      <input {...form.register("image")} type="text" placeholder="Image URL" />
-      {errors.image && <span>{errors.image?.message}</span>}
+        <div className="flex flex-col">
+          <input
+            {...form.register("image")}
+            type="text"
+            placeholder="Image URL"
+            className="p-2 border rounded text-black"
+          />
+          {errors.image && (
+            <span className="text-red-500">{errors.image?.message}</span>
+          )}
+        </div>
 
-      <input
-        {...form.register("stock", { valueAsNumber: true })}
-        type="number"
-        placeholder="Stock"
-      />
-      {errors.stock && <span>{errors.stock?.message}</span>}
+        <div className="flex flex-col">
+          <input
+            {...form.register("stock", {valueAsNumber: true})}
+            type="number"
+            placeholder="Stock"
+            className="p-2 border rounded text-black"
+          />
+          {errors.stock && (
+            <span className="text-red-500">{errors.stock?.message}</span>
+          )}
+        </div>
+      </div>
 
       <div>
+        <button
+          type="button"
+          onClick={() => append({name: "", slug: ""})}
+          className="bg-black text-white px-4 py-2 rounded w-48"
+        >
+          Add Category
+        </button>
         {fields.map((field, index) => (
-          <div key={field.id}>
+          <div key={field.id} className="flex items-center space-x-4 my-2">
             <select
               {...form.register(`categories.${index}.name` as const)}
               defaultValue=""
+              className="p-2 border rounded text-black w-48 mt-2"
             >
               <option value="">Select a category</option>
-              {categories?.map((category) => (
+              {categories?.map(category => (
                 <option key={category.id} value={category.name}>
                   {category.name}
                 </option>
               ))}
             </select>
-            <button type="button" onClick={() => remove(index)}>
-              Remove
-            </button>
+            <XIcon
+              className="text-red-500 size-6 cursor-pointer hover:scale-110"
+              onClick={() => remove(index)}
+            />
           </div>
         ))}
-        <button type="button" onClick={() => append({ name: "" })}>
-          Add Category
-        </button>
       </div>
-      {errors.categories && <span>{errors.categories.message}</span>}
+      {errors.categories && (
+        <span className="text-red-500">{errors.categories.message}</span>
+      )}
 
-      <button type="submit">Submit</button>
+      <button
+        type="submit"
+        className="bg-orange-400 text-white py-2 px-10 rounded hover:bg-orange-300 w-48"
+      >
+        Submit
+      </button>
     </form>
   );
 };

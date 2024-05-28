@@ -12,7 +12,7 @@ function DeleteProduct(props: Props) {
     deleteProduct(props.id);
   }
 
-  return <Button onClick={handleRemoval}>Ta bort</Button>;
+  return <Button onClick={handleRemoval}>Remove</Button>;
 }
 
 export default DeleteProduct;
