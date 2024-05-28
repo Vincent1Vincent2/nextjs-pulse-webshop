@@ -113,6 +113,7 @@ const OrderForm = () => {
     }, 0);
   }
 
+  console.log(orderDetails);
   return (
     <div className=" ">
       <ShoppingCartIcon className=" size-10 text-white mx-auto " />

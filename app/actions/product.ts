@@ -162,3 +162,13 @@ export async function getProductsByCategoryAndSort(
   });
   return products;
 }
+
+export async function isProductInStock(productId: number, quantity: number) {
+  const product = await db.product.findUnique({where: {id: productId}});
+
+  if (product!.stock < quantity) {
+    return false;
+  } else {
+    return true;
+  }
+}

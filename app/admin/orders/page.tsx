@@ -11,7 +11,7 @@ import Image from "next/image";
 import {useEffect, useState} from "react";
 
 export default function Orders() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>();
   const [orders, setOrders] = useState<Order[]>([]);
   const [orderProducts, setOrderProducts] = useState<{
     [orderID: number]: ProductWithQuantity[];

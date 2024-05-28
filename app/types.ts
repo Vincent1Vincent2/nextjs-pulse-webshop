@@ -14,6 +14,7 @@ export type FormProduct = {
 export interface Product {
   id: number;
   name: string;
+  slug: string;
   description: string | null;
   price: number;
   image: string | null;
@@ -32,7 +33,6 @@ export interface ProductOrderDetails {
     name: string;
     description: string;
     price: number;
-    slug: string;
     image: string | null;
     stock?: number;
     deleted?: boolean | undefined;

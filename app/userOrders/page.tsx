@@ -38,6 +38,7 @@ export default function Orders() {
               name: po.product.name,
               description: po.product.description,
               price: po.product.price,
+              slug: po.product.name,
               image: po.product.image,
               deleted: po.product.deleted!,
               quantity: po.quantity,
