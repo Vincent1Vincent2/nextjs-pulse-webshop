@@ -8,6 +8,7 @@ import {OrderCreate, OrderCreateSchema} from "@/app/zodSchemas/order";
 import {CartItem} from "@/data";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Address} from "@prisma/client";
+import {ShoppingCartIcon} from "lucide-react";
 import Image from "next/image";
 import {useEffect, useState} from "react";
 import {Controller, useForm} from "react-hook-form";
@@ -115,6 +116,15 @@ const OrderForm = () => {
   console.log(orderDetails);
   return (
     <div className=" ">
+      <ShoppingCartIcon className=" size-10 text-white mx-auto " />
+      {cart.length !== 0 ? (
+        <p className="text-xl font-bold text-white text-center m-4">
+          Your Cart
+        </p>
+      ) : (
+        <p className="  text-white text-center m-4">Your cart is empty</p>
+      )}
+
       <div className="flex  flex-col justify-between my-2 items-center bg-neutral-100 p-10 rounded-sm max-w-5xl mx-auto">
         {edit ? (
           <EditAddressForm
