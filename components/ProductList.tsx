@@ -27,8 +27,14 @@ export default function ProductList({slug}: ProductListProps) {
   return (
     <>
       <div>
-        <button onClick={() => setSortOrder("asc")}>Lowest to Highest</button>
-        <button onClick={() => setSortOrder("desc")}>Highest to Lowest</button>
+        <label htmlFor="sortOrder">Price: </label>
+        <select
+          id="sortOrder"
+          onChange={e => setSortOrder(e.target.value as "asc" | "desc")}
+        >
+          <option value="asc">Lowest to Highest</option>
+          <option value="desc">Highest to Lowest</option>
+        </select>
       </div>
       <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-2">
         {products.map(({id, name, image, price}) => (
