@@ -2,7 +2,7 @@ import {BadgeCheckIcon, StarIcon, TruckIcon} from "lucide-react";
 
 export default function Features() {
   return (
-    <div className="sticky top-24 w-full left-0 bg-gradient-to-r from-orange-500 to-black-500 py-2 z-40 ">
+    <div className=" hidden sm:block sm:sticky top-24 w-full left-0 bg-gradient-to-r from-orange-500 to-black-500 py-2 z-40 ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-around items-center text-white">
         <FeatureItem
           icon={<TruckIcon className="h-6 w-6" />}
