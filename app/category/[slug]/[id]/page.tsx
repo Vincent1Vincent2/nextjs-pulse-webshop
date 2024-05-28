@@ -26,13 +26,13 @@ export default async function CategoryPage({params}: PageProps) {
 
   return (
     <>
-      <h1 className="flex justify-center text-4xl font-bold mb-6 py-4" data-cy="category-name">
+      <h1 className="flex justify-center text-4xl font-bold mb-6 py-4">
         {category.name}
       </h1>
 
-    <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+    <div className="md:grid md:grid-cols-2 lg:grid-cols-3 p-6 gap-8">
       {products.map(product => (
-        <Card key={product.id} className="flex flex-col" data-cy="product">
+        <Card key={product.id} className="py-5 px-10 flex flex-col" data-cy="product">
           <CardHeader>
             <CardTitle className="flex justify-center" data-cy="product-title">
               {product.name}
@@ -44,8 +44,8 @@ export default async function CategoryPage({params}: PageProps) {
               <Image
                 src={product.image!}
                 alt="product image"
-                width={150}
-                height={150}
+                width={200}
+                height={200}
               />
             </CardContent>
           </Link>

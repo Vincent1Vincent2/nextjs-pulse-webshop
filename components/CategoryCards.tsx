@@ -27,9 +27,13 @@ export default function CategoryCards() {
   return (
     <div className="bg-black py-10 flex flex-col items-center">
       <div className="text-white text-2xl font-bold mb-10">Shop By Category</div>
-      <div className="flex flex-wrap justify-center gap-40 px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-20">
         {categories.map((category) => (
-          <Link href={`/category/${category.name}/${category.id}`} key={category.id} className="flex items-center text-center justify-center border border-orange-400 text-orange-400 rounded-md h-40 w-40 transform transition duration-500 hover:scale-105">
+          <Link
+            href={`/category/${category.name}/${category.id}`}
+            key={category.id}
+            className="flex items-center text-center justify-center border border-orange-400 text-orange-400 rounded-md h-40 w-40 transform transition duration-500 hover:scale-125"
+          >
             <span className="text-lg font-medium">{category.name}</span>
           </Link>
         ))}
