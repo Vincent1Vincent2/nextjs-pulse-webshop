@@ -141,10 +141,23 @@ export async function getProductsByCategory(categoryName: string) {
   return products;
 }
 
-export async function getProductsByPrice(productPrice: number) {
+export async function getProductsByCategoryAndSort(
+  categoryName: string,
+  sortOrder: "asc" | "desc",
+) {
   const products = await db.product.findMany({
     where: {
-      price: productPrice,
+      categories: {
+        some: {
+          name: categoryName,
+        },
+      },
+    },
+    include: {
+      categories: true,
+    },
+    orderBy: {
+      price: sortOrder,
     },
   });
   return products;
