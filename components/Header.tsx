@@ -31,14 +31,26 @@ export default function Header({session}: {session: any}) {
   return (
     <div>
       <header
-        className={`fixed z-50 w-full flex justify-between items-center p-5 text-white md:px-10 transition-all duration-300 ${
+        className={`fixed z-50 w-full flex justify-between items-center p-5 pb-8 text-white md:px-10 transition-all duration-300 ${
           isScrolled ? "bg-black/80" : "bg-transparent"
         }`}
       >
-        <div className="flex gap-4 items-center">
-          <Link href={"/"}>
+        <div className="flex gap-4 items-center justify-between">
+          <Link href={"/"} className="hidden sm:block">
             <Logo />
           </Link>
+          <div className="md:hidden mt-2">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="focus:outline-none"
+            >
+              {isMenuOpen ? (
+                <XIcon data-cy="menu-close-icon" width={24} height={24} />
+              ) : (
+                <MenuIcon data-cy="menu-open-icon" width={24} height={24} />
+              )}
+            </button>
+          </div>
           <Link href={"/"} className="text-3xl font-bold">
             Pulse
           </Link>
@@ -60,18 +72,6 @@ export default function Header({session}: {session: any}) {
           <Link data-cy="cart-link" href={"/checkout"}>
             <CartIcon />
           </Link>
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="focus:outline-none"
-            >
-              {isMenuOpen ? (
-                <XIcon data-cy="menu-close-icon" width={24} height={24} />
-              ) : (
-                <MenuIcon data-cy="menu-open-icon" width={24} height={24} />
-              )}
-            </button>
-          </div>
         </div>
       </header>
       {isMenuOpen && (

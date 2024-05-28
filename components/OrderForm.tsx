@@ -214,45 +214,49 @@ const OrderForm = () => {
       </form>
 
       {orderDetails && (
-        <div className="flex flex-col mx-5">
-          <h2 className="self-center">Order Details</h2>
-          <p className="self-center">Order ID: {orderDetails.order?.id}</p>
-          <h3 className="font-medium">Products</h3>
-          <ul>
-            {orderDetails.productOrders.map(po => {
-              return (
-                <div
-                  key={po.productId}
-                  className="flex justify-between mx-5 my-2 items-center"
-                >
-                  <div className="flex items-center">
-                    <Image
-                      src={po.product.image!}
-                      alt="product image"
-                      width={150}
-                      height={150}
-                    />
-                    <span className="flex flex-col self-baseline">
-                      <label className="text-xl">{po.product.name}</label>
-                      <label>
-                        {po.product.price.toString() + " "}
-                        SEK
-                      </label>
-                      <label className="w-3/4">{po.product.description}</label>
-                    </span>
-                  </div>
+        <div className="flex flex-col mx-auto bg-white mt-10 p-6 rounded-md shadow-md max-w-5xl text-black">
+          <h2 className="self-center text-2xl font-bold mb-4">Order Details</h2>
+          <p className="self-center text-xl mb-4">
+            Order ID: {orderDetails.order?.id}
+          </p>
+          <h3 className="text-lg font-semibold mb-5 border-b border-gray-400">
+            Products
+          </h3>
+          <ul className="mb-4">
+            {orderDetails.productOrders.map(po => (
+              <div
+                key={po.productId}
+                className="flex justify-between my-2 items-center"
+              >
+                <div className="flex flex-col sm:flex-row items-center gap-10 my-2">
+                  <Image
+                    src={po.product.image!}
+                    alt="product image"
+                    width={100}
+                    height={100}
+                    className="rounded-md"
+                  />
+                  <span className="flex flex-col self-baseline">
+                    <label className="text-lg font-semibold">
+                      {po.product.name}
+                    </label>
+                    <label>{po.product.price.toString() + " "} Kr</label>
+                    <label className="text-sm">{po.product.description}</label>
+                  </span>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </ul>
-          <h3>Total</h3>
-          <p>
+          <h3 className="text-lg font-semibold border-t border-gray-400">
+            Total
+          </h3>
+          <p className="text-xl">
             {orderDetails.productOrders.reduce(
               (acc, po) =>
                 acc + parseFloat(po.product.price.toString()) * po.quantity,
               0,
-            ) + " "}
-            Sek
+            ) + " "}{" "}
+            Kr
           </p>
         </div>
       )}

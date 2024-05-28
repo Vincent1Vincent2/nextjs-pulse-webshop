@@ -24,7 +24,7 @@ export default function Home() {
             <h1 className=" text-2xl sm:text-3xl md:text-5xl font-bold max-w-md md:max-w-2xl">
               Elevate Your Performance with Pulse
             </h1>
-            <button className="bg-black sm:bg-transparent mt-8 md:mt-16 border border-orange-400 text-orange-400 rounded-md px-4 py-2 w-48 hover:bg-slate-900/65 hover:text-orange-300 self-center sm:self-start">
+            <button className="bg-black/80 sm:bg-transparent mt-8 md:mt-16 border border-orange-400 text-orange-400 rounded-md px-4 py-2 w-48 hover:bg-slate-900/65 hover:text-orange-300 self-center sm:self-start">
               Shop now
             </button>
           </div>

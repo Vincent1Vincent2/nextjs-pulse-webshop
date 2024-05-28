@@ -41,7 +41,7 @@ export default function Footer() {
                 className="h-12 mx-auto lg:mx-0"
               />
             </div>
-            <p className="mb-4">Lorem ipsum dolor sit amet</p>
+            <p className="mb-4 ml-1 text-lg font-bold">Follow Us</p>
             <div className="flex justify-center lg:justify-start space-x-4">
               <a href="#" className="text-orange-400 hover:text-orange-300">
                 <Facebook />
