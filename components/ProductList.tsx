@@ -17,7 +17,13 @@ interface ProductListProps {
 }
 
 export default function ProductList({slug}: ProductListProps) {
-  const [products, setProducts] = useState([]);
+  interface Product {
+    id: number;
+    name: string;
+    price: number;
+    image: string | null;
+  }
+  const [products, setProducts] = useState<Product[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   useEffect(() => {

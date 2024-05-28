@@ -1,4 +1,5 @@
 import CategoryForm from "@/components/CategoryForm";
+import {PropsWithChildren} from "react";
 
 export default function CategoryLayout(props: PropsWithChildren) {
   return (
