@@ -16,7 +16,7 @@ function AddToCartButton(props: Props) {
   }
 
   return (
-    <Button onClick={handleBuy} data-cy="product-buy-button">
+    <Button className="text-color-black bg-transparent border-2 border-orange-400 transition duration-500 hover:scale-125 hover:bg-transparent shadow-lg transform active:scale-75 transition-transform" onClick={handleBuy} data-cy="product-buy-button">
       Add to cart
     </Button>
   );

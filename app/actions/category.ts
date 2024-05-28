@@ -15,3 +15,11 @@ export async function saveCategory(formData: CategoryCreate) {
 export async function getCategories() {
   return await db.category.findMany();
 }
+
+export async function getCategoryBySlug(name: string) {
+  return await db.category.findUnique({
+    where: {
+      name,
+    },
+  });
+}
