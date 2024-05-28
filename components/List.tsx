@@ -31,7 +31,7 @@ export function List() {
           href={`/category/${category.name}/${category.id}`}
           key={category.id}
         >
-          <li className="hover:cursor-pointer text-black py-2 px-5 border-b border-gray-200 hover:bg-gray-200 transition-all">
+          <li className="text-sm hover:cursor-pointer text-white p-2 bg-stone-700 hover:bg-stone-600 w-32 justify-center text-center bg-opacity-50 hover:bg-opacity-50">
             {category.name}
           </li>
         </Link>
