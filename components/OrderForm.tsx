@@ -113,8 +113,8 @@ const OrderForm = () => {
   }
 
   return (
-    <div>
-      <div className="flex flex-col items-center py-5">
+    <div className=" ">
+      <div className="flex  flex-col justify-between my-2 items-center bg-neutral-100 p-10 rounded-sm max-w-5xl mx-auto">
         {edit ? (
           <EditAddressForm
             address={address![0]}
@@ -122,17 +122,19 @@ const OrderForm = () => {
             onCancel={() => setEdit(false)}
           />
         ) : (
-          <div className="flex flex-col py-5">
-            <h2 className="py-5 text-xl">Delivery Address</h2>
+          <div className="flex flex-col sm:flex-row py-2 bg-neutral-100 w-full justify-between items-center">
+            <h2 className=" text-xl font-bold text-center rounded-sm p-8">
+              Delivery Address
+            </h2>
             {address && (
-              <ul className="flex flex-col items-center gap-3 ">
+              <ul className="flex flex-col sm:flex-row items-center gap-5 ">
                 <li>{address[0].streetAdress}</li>
                 <li>{address[0].zipCode}</li>
                 <li>{address[0].city}</li>
               </ul>
             )}
             <button
-              className=" rounded-xl my-5 bg-neutral-200 hover:bg-neutral-100 py-0.5 px-6"
+              className=" rounded-sm m-5 bg-orange-400 hover:bg-orange-300 text-white py-2 px-6"
               onClick={() => setEdit(true)}
             >
               Edit Address
@@ -141,7 +143,7 @@ const OrderForm = () => {
         )}
       </div>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <div className="flex flex-col ">
+        <div className="flex flex-col max-w-5xl mx-auto bg-neutral-100">
           {cart.map((product, index) => (
             <div key={product.id}>
               <input
@@ -151,7 +153,7 @@ const OrderForm = () => {
                   valueAsNumber: true,
                 })}
               />
-              <div className="flex justify-between mx-5 my-2 items-center bg-neutral-100 p-10 rounded-lg">
+              <div className="flex justify-between my-2 items-center bg-white text-black p-10 rounded-sm max-w-5xl mx-auto">
                 <div className="flex gap-5 flex-wrap">
                   <Image
                     src={product.image!}
@@ -181,18 +183,20 @@ const OrderForm = () => {
               </div>
             </div>
           ))}
-          <p className="mx-10 mt-5">
-            {" "}
-            Totalt {" " + totalForProduct(cart) + " "}SEK
-          </p>
-
+          <div className="flex justify-between items-center mt-4 p-8 border-t border-gray-400 ">
+            <p className="text-xl">Total:</p>
+            <p className="text-lg">
+              {" "}
+              {totalForProduct(cart).toFixed(2)} {"\u00A0"} Kr
+            </p>
+          </div>
           {errors.ProductOrder && <span>{errors.ProductOrder.message}</span>}
           {cart.length > 0 ? (
             <button
-              className="border self-center border-black w-1/3 my-4 hover:bg-black hover:bg-opacity-5 "
+              className="self-center bg-orange-400 hover:bg-orange-300 w-96 my-8 py-2 rounded-sm text-white"
               type="submit"
             >
-              Buy
+              BUY NOW
             </button>
           ) : null}
         </div>
@@ -237,7 +241,7 @@ const OrderForm = () => {
                 acc + parseFloat(po.product.price.toString()) * po.quantity,
               0,
             ) + " "}
-            sek
+            Sek
           </p>
         </div>
       )}
