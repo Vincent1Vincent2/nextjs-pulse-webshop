@@ -33,7 +33,7 @@ export default function SignInPage() {
   }, [searchParams]);
 
   return (
-    <div className="flex flex-col gap-4 justify-center items-center m-40 p-10 w-96 mx-auto bg-slate-800/50 rounded-sm">
+    <div className="flex flex-col gap-4 justify-center items-center m-40 p-10 sm:w-96 mx-auto bg-slate-800/50 rounded-sm">
       <h1 className="text-2xl font-bold text-gray-200">Sign In</h1>
       <p className="text-gray-300 text-sm">Sign in with one of the providers</p>
       {Object.values(providerMap).map(provider => (

@@ -36,12 +36,12 @@ export default function DropdownMenu({session}: {session: any}) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <MenuItems className="absolute -right-20 z-10 mt-5 w-56 origin-top-right rounded-sm bg-stone-900/90  ">
           <div className="py-1">
             <MenuItem>
               <Link
                 href="#"
-                className="hover:bg-gray-100 text-gray-900 block px-4 py-2 text-sm"
+                className="hover:bg-stone-800 text-white block px-4 py-2 text-sm"
               >
                 Account settings
               </Link>
@@ -49,7 +49,7 @@ export default function DropdownMenu({session}: {session: any}) {
             <MenuItem>
               <Link
                 href={"/userOrders"}
-                className="hover:bg-gray-100 text-gray-900 block px-4 py-2 text-sm"
+                className="hover:bg-stone-800 text-white block px-4 py-2 text-sm"
               >
                 Order History
               </Link>
@@ -57,7 +57,7 @@ export default function DropdownMenu({session}: {session: any}) {
             <MenuItem>
               <Link
                 href="#"
-                className="hover:bg-gray-100 text-gray-900 block px-4 py-2 text-sm"
+                className="hover:bg-stone-800 text-white block px-4 py-2 text-sm"
               >
                 Wish List
               </Link>
@@ -66,7 +66,7 @@ export default function DropdownMenu({session}: {session: any}) {
               <MenuItem>
                 <Link
                   href="/admin"
-                  className="hover:bg-gray-100 text-gray-900 block px-4 py-2 text-sm"
+                  className="hover:bg-stone-800 text-white block px-4 py-2 text-sm"
                 >
                   Admin Dashboard
                 </Link>
@@ -74,7 +74,7 @@ export default function DropdownMenu({session}: {session: any}) {
             )}
             <MenuItem>
               <form action={SignOutUser}>
-                <button className="bg-gray-100 hover:bg-gray-200 text-gray-900 block px-4 py-2 text-sm w-full text-left">
+                <button className="bg-stone-800 hover:bg-stone-600 text-white block px-4 py-2 text-sm w-full text-left">
                   Sign Out
                 </button>
               </form>
