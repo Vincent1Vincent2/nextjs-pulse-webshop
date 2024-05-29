@@ -22,7 +22,8 @@ export default function DropdownMenu({session}: {session: any}) {
             className="h-full w-full rounded-full object-cover object-center m-1"
             src="/profile-img.jpg"
             alt="user-image"
-            layout="fill"
+            height={40}
+            width={40}
           />
         </div>
       </MenuButton>
