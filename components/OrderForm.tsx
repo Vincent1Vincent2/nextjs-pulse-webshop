@@ -30,6 +30,7 @@ const OrderForm = () => {
   const [address, setAddress] = useState<Address[] | null>(null);
   const [errorType, setErrorType] = useState<string | null>(null);
   const [edit, setEdit] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const onAddressCreated = (createdAddressId: number) => {
     setAddressId(createdAddressId);
@@ -80,10 +81,15 @@ const OrderForm = () => {
         }
         console.error("Error fetching address:", error);
       }
+      setLoading(false);
     }
 
     fetchAddress();
   }, []);
+
+  if (loading) {
+    return <p className="text-center text-white">Loading...</p>;
+  }
 
   if (errorType === "SignInRequired") {
     return (
