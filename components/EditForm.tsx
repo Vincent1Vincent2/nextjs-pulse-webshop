@@ -1,22 +1,22 @@
 "use client";
-import { getCategories } from "@/app/actions/category";
-import { productCreate } from "@/app/actions/product";
-import { ProductCreate, ProductCreateSchema } from "@/app/zodSchemas/product";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Category } from "@prisma/client";
-import { useEffect, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import {getCategories} from "@/app/actions/category";
+import {productCreate} from "@/app/actions/product";
+import {ProductCreate, ProductCreateSchema} from "@/app/zodSchemas/product";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Category} from "@prisma/client";
+import {useEffect, useState} from "react";
+import {useFieldArray, useForm} from "react-hook-form";
 
 const EditForm = () => {
   const form = useForm<ProductCreate>({
     resolver: zodResolver(ProductCreateSchema),
   });
   const {
-    formState: { errors },
+    formState: {errors},
     control,
   } = form;
 
-  const { fields, append, remove } = useFieldArray({
+  const {fields, append, remove} = useFieldArray({
     control,
     name: "categories",
   });
@@ -62,7 +62,7 @@ const EditForm = () => {
               defaultValue=""
             >
               <option value="">Select a category</option>
-              {categories?.map((category) => (
+              {categories?.map(category => (
                 <option key={category.id} value={category.name}>
                   {category.name}
                 </option>
@@ -73,7 +73,7 @@ const EditForm = () => {
             </button>
           </div>
         ))}
-        <button type="button" onClick={() => append({ name: "" })}>
+        <button type="button" onClick={() => append({name: "", slug: ""})}>
           Add Category
         </button>
       </div>

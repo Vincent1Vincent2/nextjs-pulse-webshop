@@ -1,5 +1,10 @@
 import {BadgeCheckIcon, StarIcon, TruckIcon} from "lucide-react";
 
+interface FeatureItemProps {
+  icon: any;
+  text: string;
+}
+
 export default function Features() {
   return (
     <div className=" hidden sm:block sm:sticky top-24 w-full left-0 bg-gradient-to-r from-orange-500 to-black-500 py-2 z-40 ">
@@ -21,7 +26,7 @@ export default function Features() {
   );
 }
 
-function FeatureItem({icon, text}) {
+function FeatureItem({icon, text}: FeatureItemProps) {
   return (
     <div className="flex items-center space-x-2">
       {icon}

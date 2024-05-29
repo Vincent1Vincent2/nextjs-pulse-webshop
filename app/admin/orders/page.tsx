@@ -44,6 +44,7 @@ export default function Orders() {
               description: po.product.description,
               price: po.product.price,
               image: po.product.image,
+              slug: po.product.slug,
               deleted: po.product.deleted!,
               quantity: po.quantity,
             }));
