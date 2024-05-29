@@ -30,9 +30,9 @@ export default function Home() {
               to="categories"
               smooth={true}
               duration={500}
-              className="bg-black/80 sm:bg-transparent mt-8 md:mt-16 border border-orange-400 text-orange-400 rounded-md px-4 py-2 w-48 hover:bg-slate-900/65 hover:text-orange-300 self-center sm:self-start cursor-pointer"
+              className="bg-black/80 sm:bg-transparent mt-8 md:mt-16 border border-orange-400 text-orange-400 rounded-sm px-4 py-2 w-48 hover:bg-slate-900/65 hover:text-orange-300 self-center sm:self-start cursor-pointer text-center"
             >
-              Shop now
+              Shop Now
             </ScrollLink>
           </div>
         </div>
