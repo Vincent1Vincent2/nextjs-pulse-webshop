@@ -1,12 +1,14 @@
 "use client";
 import {getCategories} from "@/app/actions/category";
+import {Category} from "@prisma/client";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 
-interface Category {
-  id: number;
-  name: string;
-}
+// interface Category {
+//   id: number;
+//   slug: string;
+//   name: string;
+// }
 
 export function List() {
   const [categories, setCategories] = useState<Category[]>([]);

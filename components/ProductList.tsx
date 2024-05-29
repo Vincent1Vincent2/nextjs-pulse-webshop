@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {Product} from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import {useEffect, useState} from "react";
@@ -17,18 +18,18 @@ interface ProductListProps {
 }
 
 export default function ProductList({slug}: ProductListProps) {
-  interface Product {
-    id: number;
-    name: string;
-    price: number;
-    image: string | null;
-  }
+  // interface Product {
+  //   id: number;
+  //   name: string;
+  //   price: number;
+  //   image: string | null;
+  // }
   const [products, setProducts] = useState<Product[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   useEffect(() => {
     getProductsByCategoryAndSort(slug, sortOrder).then(setProducts);
-  }, [sortOrder]);
+  }, [sortOrder, slug]);
 
   return (
     <>
@@ -40,7 +41,10 @@ export default function ProductList({slug}: ProductListProps) {
           padding: "10px",
         }}
       >
-        <label htmlFor="sortOrder" style={{marginRight: "10px"}}>
+        <label
+          htmlFor="sortOrder"
+          style={{marginRight: "10px", color: "white"}}
+        >
           Price:{" "}
         </label>
         <select
@@ -78,7 +82,7 @@ export default function ProductList({slug}: ProductListProps) {
             </Link>
             <CardFooter className="flex justify-between items-center">
               <span data-cy="product-price">${price}</span>
-              <AddToCartButton product={{id, name, price, image}} />
+              <AddToCartButton product={{id, name, price, image, slug}} />
             </CardFooter>
           </Card>
         ))}
