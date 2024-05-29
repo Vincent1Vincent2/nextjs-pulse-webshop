@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useState } from 'react';
-import { getCategories } from "@/app/actions/category";
+import {getCategories} from "@/app/actions/category";
 import Link from "next/link";
+import {useEffect, useState} from "react";
 
 interface Category {
   id: number;
@@ -26,9 +26,11 @@ export default function CategoryCards() {
 
   return (
     <div className="bg-black py-10 flex flex-col items-center">
-      <div className="text-white text-2xl font-bold mb-10">Shop By Category</div>
+      <div className="text-white text-2xl font-bold mb-10">
+        Shop By Category
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-20">
-        {categories.map((category) => (
+        {categories.map(category => (
           <Link
             href={`/category/${category.name}/${category.id}`}
             key={category.id}
