@@ -11,9 +11,10 @@ export default function SearchBar() {
     e.preventDefault();
     if (!query.trim()) return;
 
-    const params = new URLSearchParams({query: query}).toString();
-    router.push(`/search?${params}`);
+    const params = new URLSearchParams({query: query});
+    router.push(`/search?${params}` as any);
     setQuery("");
+    setOpen(false);
   };
 
   return (
@@ -26,7 +27,7 @@ export default function SearchBar() {
       {open && (
         <form
           onSubmit={handleSearch}
-          className="absolute top-10 sm:-top-2 -right-20 sm:right-0 w-72"
+          className="absolute top-10 sm:-top-2 -right-40 sm:right-0 w-72"
         >
           <div className="flex items-center justify-between bg-black border border-orange-400 rounded-md shadow-md">
             <input
@@ -34,7 +35,7 @@ export default function SearchBar() {
               value={query}
               onChange={e => setQuery(e.target.value)}
               className="w-full px-4 py-2 bg-black rounded-md text-white text-sm focus:outline-none"
-              placeholder="Search for products or categories..."
+              placeholder="Product, category..."
             />
             <button
               type="submit"
