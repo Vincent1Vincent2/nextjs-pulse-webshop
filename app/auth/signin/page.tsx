@@ -1,7 +1,4 @@
-"use client";
-
-import {handleSignIn} from "@/app/actions/user";
-import {providerMap} from "@/auth";
+import {providerMap, signIn} from "@/auth";
 import {
   faApple,
   faDiscord,
@@ -9,8 +6,6 @@ import {
   faGoogle,
 } from "@fortawesome/free-brands-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {useSearchParams} from "next/navigation";
-import {useEffect, useState} from "react";
 
 type ProviderId = "github" | "google" | "discord" | "apple";
 
@@ -21,16 +16,8 @@ const providerIcons: Record<ProviderId, any> = {
   apple: faApple,
 };
 
-export default function SignInPage() {
-  const searchParams = useSearchParams();
-  const [callbackUrl, setCallbackUrl] = useState("/");
-
-  useEffect(() => {
-    const callback = searchParams.get("callbackUrl");
-    if (callback) {
-      setCallbackUrl(callback);
-    }
-  }, [searchParams]);
+export default function SignInPage({searchParams}: any) {
+  console.log(searchParams);
 
   return (
     <div className="flex flex-col gap-4 justify-center items-center m-40 p-10 sm:w-96 mx-auto bg-slate-800/50 rounded-sm">
@@ -39,9 +26,11 @@ export default function SignInPage() {
       {Object.values(providerMap).map(provider => (
         <form
           key={provider.id}
-          onSubmit={async e => {
-            e.preventDefault();
-            await handleSignIn(provider.id, callbackUrl);
+          action={async () => {
+            "use server";
+            await signIn(provider.id, {
+              redirectTo: searchParams.callbackUrl || "/",
+            });
           }}
           className="flex justify-center items-center gap-4"
         >

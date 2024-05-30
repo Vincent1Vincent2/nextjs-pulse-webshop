@@ -1,3 +1,4 @@
+import {getProductsByCategoryAndSort} from "@/app/actions/product";
 import ProductList from "@/components/ProductList";
 
 interface PageProps {
@@ -5,5 +6,6 @@ interface PageProps {
 }
 
 export default async function CategoryPage({params}: PageProps) {
-  return <ProductList slug={params.slug} />;
+  const products = await getProductsByCategoryAndSort(params.slug, "asc");
+  return <ProductList products={products} />;
 }

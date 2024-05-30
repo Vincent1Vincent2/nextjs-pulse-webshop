@@ -1,5 +1,5 @@
 "use client";
-import {getProductsByCategoryAndSort} from "@/app/actions/product";
+
 import AddToCartButton from "@/components/AddToCartButton";
 import {
   Card,
@@ -11,25 +11,21 @@ import {
 import {Product} from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 interface ProductListProps {
-  slug: string;
+  products: Product[];
 }
 
-export default function ProductList({slug}: ProductListProps) {
+export default function ProductList(props: ProductListProps) {
   // interface Product {
   //   id: number;
   //   name: string;
   //   price: number;
   //   image: string | null;
   // }
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>(props.products);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
-  useEffect(() => {
-    getProductsByCategoryAndSort(slug, sortOrder).then(setProducts);
-  }, [sortOrder, slug]);
 
   return (
     <>
@@ -49,7 +45,11 @@ export default function ProductList({slug}: ProductListProps) {
         </label>
         <select
           id="sortOrder"
-          onChange={e => setSortOrder(e.target.value as "asc" | "desc")}
+          onChange={e =>
+            setProducts(
+              [...products].sort((p1, p2) => (p1.price < p2.price ? 1 : -1)),
+            )
+          }
           style={{
             fontFamily: "Times New Roman",
             padding: "5px",
@@ -60,7 +60,7 @@ export default function ProductList({slug}: ProductListProps) {
         </select>
       </div>
       <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-2">
-        {products.map(({id, name, image, price}) => (
+        {products.map(({id, name, image, price, ...rest}) => (
           <Card key={id} className="flex flex-col" data-cy="product">
             <CardHeader>
               <CardTitle
@@ -82,7 +82,7 @@ export default function ProductList({slug}: ProductListProps) {
             </Link>
             <CardFooter className="flex justify-between items-center">
               <span data-cy="product-price">${price}</span>
-              <AddToCartButton product={{id, name, price, image, slug}} />
+              <AddToCartButton product={{id, name, price, image, ...rest}} />
             </CardFooter>
           </Card>
         ))}

@@ -1,7 +1,7 @@
 "use client";
-import {useEffect, useState} from "react";
 import {getCategories} from "@/app/actions/category";
 import Link from "next/link";
+import {useEffect, useState} from "react";
 
 interface Category {
   id: number;

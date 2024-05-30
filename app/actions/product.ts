@@ -142,14 +142,14 @@ export async function getProductsByCategory(categoryName: string) {
 }
 
 export async function getProductsByCategoryAndSort(
-  categoryName: string,
+  slug: string,
   sortOrder: "asc" | "desc",
 ) {
   const products = await db.product.findMany({
     where: {
       categories: {
         some: {
-          name: categoryName,
+          slug,
         },
       },
     },

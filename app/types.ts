@@ -32,6 +32,7 @@ export interface ProductOrderDetails {
     id: number;
     name: string;
     description: string;
+    slug: string;
     price: number;
     image: string | null;
     stock?: number;
