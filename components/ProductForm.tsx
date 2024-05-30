@@ -7,6 +7,7 @@ import {Category} from "@prisma/client";
 import {XIcon} from "lucide-react";
 import {useEffect, useState} from "react";
 import {useFieldArray, useForm} from "react-hook-form";
+import {toast} from "./ui/use-toast";
 
 const ProductForm = () => {
   const form = useForm<ProductCreate>({
@@ -35,6 +36,10 @@ const ProductForm = () => {
   const handleSubmit = async (data: ProductCreate) => {
     await productCreate(data);
     form.reset();
+    toast({
+      title: "Product created",
+      description: "Product has been created successfully",
+    });
   };
 
   return (

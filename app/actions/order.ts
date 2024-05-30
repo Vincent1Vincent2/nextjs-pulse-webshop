@@ -68,6 +68,7 @@ export async function orderCreate(formData: OrderCreate, addressId: number) {
         description: po.product.description,
         price: po.product.price,
         image: po.product.image,
+        slug: po.product.slug,
       },
     })),
   };
