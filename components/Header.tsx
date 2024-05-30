@@ -4,6 +4,7 @@ import {MenuIcon, XIcon} from "lucide-react";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import GuestHeader from "./GuestHeader";
+import SearchBar from "./SearchBar";
 import SignInButton from "./SignInButton";
 import DropdownMenu from "./UserMenu";
 import CartIcon from "./cartIcon";
@@ -68,6 +69,7 @@ export default function Header({session}: {session: any}) {
           </Link>
         </div>
         <div className="flex items-center gap-5">
+          <SearchBar />
           {session ? <DropdownMenu session={session} /> : <SignInButton />}
           <Link data-cy="cart-link" href={"/checkout"}>
             <CartIcon />
