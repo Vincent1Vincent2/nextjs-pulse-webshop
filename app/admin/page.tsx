@@ -20,7 +20,7 @@ export default async function AdminPage() {
           href={"/admin/orders"}
           className=" flex justify-between items-center bg-black border border-orange-400 gap-4  font-normal leading-6 text-orange-400 transition-all md:text-lg hover:text-orange-300  hover:bg-slate-900/65 px-2 py-1  md:px-5 md:py-2 rounded-sm"
         >
-          <p>User Orders</p>
+          <p>All Orders</p>
           <ArrowRightIcon className=" size-5 hover:translate-x-1 transition-all" />
         </Link>
       </div>
