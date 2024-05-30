@@ -52,7 +52,7 @@ export default function Header({session}: {session: any}) {
               )}
             </button>
           </div>
-          <Link href={"/"} className="text-3xl font-bold">
+          <Link href={"/"} className=" text-xl sm:text-3xl font-bold">
             Pulse
           </Link>
         </div>
