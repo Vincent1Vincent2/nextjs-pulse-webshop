@@ -64,7 +64,7 @@ export default function Header({session}: {session: any}) {
           <Link href="/" className="text-white hover:text-gray-300">
             Best Sellers
           </Link>
-          <Link href="/" className="text-white hover:text-gray-300">
+          <Link href="/auth/signin" className="text-white hover:text-gray-300">
             Join Our Club
           </Link>
         </div>
