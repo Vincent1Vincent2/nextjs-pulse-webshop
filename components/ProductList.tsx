@@ -18,12 +18,6 @@ interface ProductListProps {
 }
 
 export default function ProductList(props: ProductListProps) {
-  // interface Product {
-  //   id: number;
-  //   name: string;
-  //   price: number;
-  //   image: string | null;
-  // }
   const [products, setProducts] = useState<Product[]>(props.products);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
@@ -45,11 +39,20 @@ export default function ProductList(props: ProductListProps) {
         </label>
         <select
           id="sortOrder"
-          onChange={e =>
+          onChange={e => {
+            setSortOrder(e.target.value as "asc" | "desc");
             setProducts(
-              [...products].sort((p1, p2) => (p1.price < p2.price ? 1 : -1)),
-            )
-          }
+              [...products].sort((p1, p2) =>
+                e.target.value === "asc"
+                  ? p1.price < p2.price
+                    ? -1
+                    : 1
+                  : p1.price > p2.price
+                    ? -1
+                    : 1,
+              ),
+            );
+          }}
           style={{
             fontFamily: "Times New Roman",
             padding: "5px",

@@ -1,6 +1,21 @@
-# Backtick webshop
+# Pulse webshop
 
-This project i a mockup e-commerce webshop created for a school submission. Developed with nextjs, shadcn, typescript & tailwind.
+This project is an e-commerce webshop built with React and TypeScript, using the Next.js framework for server-side rendering.
+
+## Technologies Used
+
+- **React**: A JavaScript library for building user interfaces.
+- **TypeScript**: A typed superset of JavaScript that adds static types.
+- **Next.js**: A React framework for production - it gives you the best developer experience with all the features you need for production.
+- **Prisma**: An open-source database toolkit. It's used as an Object-Relational Mapping (ORM) tool to interact with the PostgreSQL database.
+- **PostgreSQL**: An open-source relational database.
+- **Neon Database**: A serverless database connection pool for PostgreSQL.
+- **Tailwind CSS**: A utility-first CSS framework for rapidly building custom user interfaces.
+- **Headless UI**: Completely unstyled, fully accessible UI components, designed to integrate beautifully with Tailwind CSS.
+- **React Hook Form**: A performant, flexible and extensible forms with easy-to-use validation.
+- **Zod**: A schema declaration and validation library.
+- **NextAuth.js**: A complete open source authentication solution for Next.js applications.
+- **Bcrypt**: A library to help you hash passwords.
 
 ## Installation
 
@@ -16,7 +31,7 @@ Once the project is installed:
 
 ## Demo link
 
-https://backtick-webshop.vercel.app/
+KOMMER SNART...
 
 ## Browser support
 
