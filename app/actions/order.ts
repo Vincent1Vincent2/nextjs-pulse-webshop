@@ -121,3 +121,19 @@ export async function getOrderProducts(orderId: number | undefined) {
   });
   return productsOrders;
 }
+
+export async function getBestSellingProducts() {
+  // Fetch all products
+  const products = await db.product.findMany({
+    include: {
+      ProductsOrders: true,
+    },
+  });
+
+  // Filter products that were ordered more than three times
+  const bestSellers = products.filter(
+    product => product.ProductsOrders.length > 3,
+  );
+
+  return bestSellers;
+}
