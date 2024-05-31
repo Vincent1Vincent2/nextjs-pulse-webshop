@@ -56,9 +56,6 @@ export default function Header({session}: {session: any}) {
           </Link>
         </div>
         <div className="hidden md:flex flex-1 justify-center space-x-14">
-          <Link href="/" className="text-white hover:text-gray-300">
-            Shop
-          </Link>
           <GuestHeader />
           <Link href="/" className="text-white hover:text-gray-300">
             Best Sellers
