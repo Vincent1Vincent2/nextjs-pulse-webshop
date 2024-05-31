@@ -1,7 +1,7 @@
 "use server";
 import {auth} from "@/auth";
 import {db} from "@/prisma/db";
-import {Prisma} from "@prisma/client";
+import {revalidatePath} from "next/cache";
 import {OrderCreate} from "../zodSchemas/order";
 
 export async function orderCreate(formData: OrderCreate, addressId: number) {
@@ -76,14 +76,14 @@ export async function orderCreate(formData: OrderCreate, addressId: number) {
 }
 
 export async function getAllOrders() {
-  // ALLA KAN KOMMA ÅT DEN HÄR!!?!?!?!?!?
-  // session.user.isAdmin???
+  //Exempel på hur vi kan säkra vår APR endpoints
+  // const session = await auth();
+  // if (!session?.user.isAdmin) return {error: "Not authorized"};
+
   return await db.order.findMany({
     include: {ProductsOrders: {include: {product: true}}, customer: true},
   });
 }
-
-export type OrderWithProductsAndCustomer = Prisma.PromiseReturnType<typeof getAllOrders>[0];
 
 export async function nonSentOrders() {
   return await db.order.findMany({
@@ -100,10 +100,12 @@ export async function sentOrders() {
 export async function markOrderSent(id: number | undefined) {
   if (!id) return null;
 
-  return await db.order.update({
+  await db.order.update({
     where: {id: id},
     data: {isSent: true},
   });
+
+  revalidatePath("/admin/orders");
 }
 // Function to fetch order details
 export async function getOrder(customerId: string | undefined) {

@@ -1,48 +1,12 @@
-"use client";
 import {authenticateUser} from "@/app/actions/authenticate";
-import {
-  OrderWithProductsAndCustomer,
-  getAllOrders,
-  markOrderSent,
-} from "@/app/actions/order";
-import {User} from "@prisma/client";
+import {getAllOrders, markOrderSent} from "@/app/actions/order";
 import Image from "next/image";
-import {useEffect, useState} from "react";
 
-export default function Orders() {
-  const [user, setUser] = useState<User | null>();
-  const [orders, setOrders] = useState<OrderWithProductsAndCustomer[]>([]);
-  const [loading, setLoading] = useState(true);
+export default async function Orders() {
+  const user = await authenticateUser();
+  const orders = await getAllOrders();
 
-  useEffect(() => {
-    async function fetchAuth() {
-      const fetchedUser = await authenticateUser();
-      setUser(fetchedUser);
-
-      if (fetchedUser) {
-        const fetchedOrders = await getAllOrders();
-        fetchedOrders[0].ProductsOrders[0].product.price;
-        setOrders(fetchedOrders);
-      }
-      setLoading(false);
-    }
-
-    fetchAuth();
-  }, []);
-
-  const handleMarkOrderSent = async (orderId: number) => {
-    await markOrderSent(orderId);
-
-    setOrders(
-      orders.map(order =>
-        order.id === orderId ? {...order, isSent: true} : order,
-      ),
-    );
-  };
-
-  if (loading) {
-    return <p className="text-center text-white">Loading...</p>;
-  }
+  // if (!user) return redirect("/login");
 
   return (
     <div className="bg-black min-h-screen text-white p-4">
@@ -108,12 +72,16 @@ export default function Orders() {
                           : "Order waiting to be shipped"}
                       </p>
                       {!order.isSent && (
-                        <button
-                          className="bg-orange-400 text-white py-2 px-4 rounded-sm text-sm"
-                          onClick={() => handleMarkOrderSent(order.id)}
+                        <form
+                          action={async () => {
+                            "use server";
+                            await markOrderSent(order.id);
+                          }}
                         >
-                          MARK AS SENT
-                        </button>
+                          <button className="bg-orange-400 text-white py-2 px-4 rounded-sm text-sm">
+                            MARK AS SENT
+                          </button>
+                        </form>
                       )}
                     </div>
                   </div>
