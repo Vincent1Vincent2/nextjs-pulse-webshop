@@ -57,7 +57,7 @@ export default function Header({session}: {session: any}) {
         </div>
         <div className="hidden md:flex flex-1 justify-center space-x-14">
           <GuestHeader />
-          <Link href="/" className="text-white hover:text-gray-300">
+          <Link href="/sale" className="text-white hover:text-gray-300">
             Best Sellers
           </Link>
           <Link href="/auth/signin" className="text-white hover:text-gray-300">
@@ -77,7 +77,7 @@ export default function Header({session}: {session: any}) {
             Shop
           </Link>
           <GuestHeader />
-          <Link href="/" className="text-white text-lg">
+          <Link href="/sale" className="text-white text-lg">
             Best Sellers
           </Link>
           <Link href="/" className="text-white text-lg">
