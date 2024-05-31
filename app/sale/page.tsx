@@ -11,7 +11,6 @@ import {getBestSellingProducts} from "../actions/order";
 
 export default async function Sales() {
   const products = await getBestSellingProducts();
-
   return (
     <>
       <div
@@ -24,7 +23,7 @@ export default async function Sales() {
           padding: "10px",
         }}
       >
-        <h2 className="text-white">Best Sellers</h2>
+        <h2 className="text-white font-xl">Best Sellers</h2>
       </div>
       <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-2">
         {products.map(({id, name, image, price, ...rest}) => (

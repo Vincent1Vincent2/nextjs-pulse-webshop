@@ -72,7 +72,7 @@ model Product {
   slug        String
   description String
   price       Float
-  image       String?
+  image       String
   stock       Int
   deleted     Boolean @default(false)
 
