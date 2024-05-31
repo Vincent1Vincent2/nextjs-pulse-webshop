@@ -38,7 +38,7 @@ export default function OrderHistory() {
               description: po.product.description,
               price: po.product.price,
               slug: po.product.slug,
-              image: po.product.image,
+              image: po.product.image!,
               deleted: po.product.deleted!,
               stock: po.product.stock!,
             }));

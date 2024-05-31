@@ -1,21 +1,17 @@
 "use client";
 import {authenticateUser} from "@/app/actions/authenticate";
 import {
+  OrderWithProductsAndCustomer,
   getAllOrders,
-  getOrderProducts,
   markOrderSent,
 } from "@/app/actions/order";
-import {ProductOrderDetails, ProductWithQuantity} from "@/app/types";
-import {Order, User} from "@prisma/client";
+import {User} from "@prisma/client";
 import Image from "next/image";
 import {useEffect, useState} from "react";
 
 export default function Orders() {
   const [user, setUser] = useState<User | null>();
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [orderProducts, setOrderProducts] = useState<{
-    [orderID: number]: ProductWithQuantity[];
-  }>({});
+  const [orders, setOrders] = useState<OrderWithProductsAndCustomer[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,33 +21,8 @@ export default function Orders() {
 
       if (fetchedUser) {
         const fetchedOrders = await getAllOrders();
-
-        if (fetchedOrders) {
-          setOrders(fetchedOrders);
-
-          const productsByOrder: {[orderID: number]: ProductWithQuantity[]} =
-            {};
-
-          for (const order of fetchedOrders) {
-            const productOrders: ProductOrderDetails[] = await getOrderProducts(
-              order.id,
-            );
-
-            // Map the ProductOrderDetails to the Product type
-            productsByOrder[order.id] = productOrders.map(po => ({
-              id: po.product.id,
-              name: po.product.name,
-              description: po.product.description,
-              price: po.product.price,
-              image: po.product.image,
-              slug: po.product.slug,
-              deleted: po.product.deleted!,
-              quantity: po.quantity,
-            }));
-          }
-
-          setOrderProducts(productsByOrder);
-        }
+        fetchedOrders[0].ProductsOrders[0].product.price;
+        setOrders(fetchedOrders);
       }
       setLoading(false);
     }
@@ -80,11 +51,11 @@ export default function Orders() {
       {user ? (
         orders.length > 0 ? (
           orders.map(order => {
-            const total =
-              orderProducts[order.id]?.reduce(
-                (sum, product) => sum + product.price * product.quantity,
-                0,
-              ) || 0;
+            const total = order.ProductsOrders.reduce(
+              (sum, orderRow) =>
+                sum + orderRow.product.price * orderRow.quantity,
+              0,
+            );
             return (
               <div
                 key={order.id}
@@ -93,64 +64,60 @@ export default function Orders() {
                 <h3 className="text-xl font-bold mb-4 border-b border-gray-200">
                   Order ID: {order.id}
                 </h3>
-                {orderProducts[order.id] ? (
-                  <div className="overflow-x-auto">
-                    <div className="min-w-[600px]">
-                      <ul>
-                        {orderProducts[order.id].map(product => (
-                          <li key={product.id} className="mb-4">
-                            <div className="flex items-center mb-2">
-                              {product.image && (
-                                <Image
-                                  width={100}
-                                  height={100}
-                                  src={product.image}
-                                  alt={product.name}
-                                  className="rounded-sm mr-4"
-                                />
-                              )}
-                              <div className="flex-1">
-                                <div className="flex justify-between items-center">
-                                  <p className="text-sm sm:text-xl text-black">
-                                    {product.name}
-                                  </p>
-                                  <p className="text-sm">{product.quantity}x</p>
-                                </div>
-                                <p className="text-sm">
-                                  {product.price.toFixed(2)} {"\u00A0"}Kr
+                <div className="overflow-x-auto">
+                  <div className="min-w-[600px]">
+                    <ul>
+                      {order.ProductsOrders.map(({product, quantity}) => (
+                        <li key={product.id} className="mb-4">
+                          <div className="flex items-center mb-2">
+                            {product.image && (
+                              <Image
+                                width={100}
+                                height={100}
+                                src={product.image}
+                                alt={product.name}
+                                className="rounded-sm mr-4"
+                              />
+                            )}
+                            <div className="flex-1">
+                              <div className="flex justify-between items-center">
+                                <p className="text-sm sm:text-xl text-black">
+                                  {product.name}
                                 </p>
+                                <p className="text-sm">{quantity}x</p>
                               </div>
+                              <p className="text-sm">
+                                {product.price.toFixed(2)} {"\u00A0"}Kr
+                              </p>
                             </div>
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
-                        <p className="text-xl">Total:</p>
-                        <p className="text-lg">
-                          {" "}
-                          {total.toFixed(2)} {"\u00A0"} Kr
-                        </p>
-                      </div>
-                      <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
-                        <p className="text-sm">
-                          {order.isSent
-                            ? "Order is on its way!"
-                            : "Order waiting to be shipped"}
-                        </p>
-                        {!order.isSent && (
-                          <button
-                            className="bg-orange-400 text-white py-2 px-4 rounded-sm text-sm"
-                            onClick={() => handleMarkOrderSent(order.id)}
-                          >
-                            MARK AS SENT
-                          </button>
-                        )}
-                      </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
+                      <p className="text-xl">Total:</p>
+                      <p className="text-lg">
+                        {" "}
+                        {total.toFixed(2)} {"\u00A0"} Kr
+                      </p>
+                    </div>
+                    <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
+                      <p className="text-sm">
+                        {order.isSent
+                          ? "Order is on its way!"
+                          : "Order waiting to be shipped"}
+                      </p>
+                      {!order.isSent && (
+                        <button
+                          className="bg-orange-400 text-white py-2 px-4 rounded-sm text-sm"
+                          onClick={() => handleMarkOrderSent(order.id)}
+                        >
+                          MARK AS SENT
+                        </button>
+                      )}
                     </div>
                   </div>
-                ) : (
-                  <p className="text-center">Loading order details...</p>
-                )}
+                </div>
               </div>
             );
           })

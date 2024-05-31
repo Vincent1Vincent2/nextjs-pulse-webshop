@@ -1,6 +1,7 @@
 "use server";
 import {auth} from "@/auth";
 import {db} from "@/prisma/db";
+import {Prisma} from "@prisma/client";
 import {OrderCreate} from "../zodSchemas/order";
 
 export async function orderCreate(formData: OrderCreate, addressId: number) {
@@ -75,33 +76,34 @@ export async function orderCreate(formData: OrderCreate, addressId: number) {
 }
 
 export async function getAllOrders() {
-  const order = await db.order.findMany({});
-  return order;
+  // ALLA KAN KOMMA ÅT DEN HÄR!!?!?!?!?!?
+  // session.user.isAdmin???
+  return await db.order.findMany({
+    include: {ProductsOrders: {include: {product: true}}, customer: true},
+  });
 }
 
+export type OrderWithProductsAndCustomer = Prisma.PromiseReturnType<typeof getAllOrders>[0];
+
 export async function nonSentOrders() {
-  const orders = await db.order.findMany({
+  return await db.order.findMany({
     where: {isSent: false},
   });
-  return orders;
 }
 
 export async function sentOrders() {
-  const orders = await db.order.findMany({
+  return await db.order.findMany({
     where: {isSent: true},
   });
-  return orders;
 }
 
 export async function markOrderSent(id: number | undefined) {
   if (!id) return null;
 
-  const order = await db.order.update({
+  return await db.order.update({
     where: {id: id},
     data: {isSent: true},
   });
-
-  return order;
 }
 // Function to fetch order details
 export async function getOrder(customerId: string | undefined) {
