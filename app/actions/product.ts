@@ -173,6 +173,7 @@ export async function isProductInStock(productId: number, quantity: number) {
   }
 }
 
+// Search products by name or category
 export async function searchProducts(query: string) {
   if (!query) {
     throw new Error("Please provide a search query.");
@@ -206,6 +207,8 @@ export async function searchProducts(query: string) {
     });
     return results;
   } catch (error) {
-    throw new Error("Error occurred while searching products. Please try again.");
+    throw new Error(
+      "Error occurred while searching products. Please try again.",
+    );
   }
 }

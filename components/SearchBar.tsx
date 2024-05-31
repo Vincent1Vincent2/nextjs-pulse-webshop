@@ -11,10 +11,9 @@ export default function SearchBar() {
     e.preventDefault();
     if (!query.trim()) return;
 
-    const params = new URLSearchParams({query: query});
-    router.push(`/search?${params}` as any);
+    router.push(`/search?query=${query}` as any);
     setQuery("");
-    setOpen(false);
+    // setOpen(false);
   };
 
   return (
@@ -27,7 +26,7 @@ export default function SearchBar() {
       {open && (
         <form
           onSubmit={handleSearch}
-          className="absolute top-10 sm:-top-2 -right-40 sm:right-0 w-72"
+          className="absolute top-10 sm:-top-2 -right-20 sm:right-0 w-72"
         >
           <div className="flex items-center justify-between bg-black border border-orange-400 rounded-md shadow-md">
             <input

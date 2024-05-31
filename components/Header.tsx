@@ -37,10 +37,10 @@ export default function Header({session}: {session: any}) {
         }`}
       >
         <div className="flex gap-4 items-center justify-between">
-          <Link href={"/"} className="hidden sm:block">
+          <Link href={"/"} className="hidden lg:block">
             <Logo />
           </Link>
-          <div className="md:hidden mt-2">
+          <div className="lg:hidden mt-2">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="focus:outline-none"
@@ -56,7 +56,7 @@ export default function Header({session}: {session: any}) {
             Pulse
           </Link>
         </div>
-        <div className="hidden md:flex flex-1 justify-center space-x-14">
+        <div className="hidden lg:flex flex-1 justify-center space-x-14">
           <Link href="/" className="text-white hover:text-gray-300">
             Shop
           </Link>
@@ -77,7 +77,7 @@ export default function Header({session}: {session: any}) {
         </div>
       </header>
       {isMenuOpen && (
-        <nav className="sm:hidden fixed top-0 left-0 w-full h-auto bg-gray-900/90 flex flex-col items-left p-4 justify-center space-y-8 z-40 text">
+        <nav className="lg:hidden fixed top-0 left-0 w-full h-auto bg-gray-900/90 flex flex-col items-left p-4 justify-center space-y-8 z-40 text">
           <Link href="/" className="text-white mt-32 text-lg">
             Shop
           </Link>
