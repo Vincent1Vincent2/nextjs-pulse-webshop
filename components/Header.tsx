@@ -56,7 +56,7 @@ export default function Header({session}: {session: any}) {
             Pulse
           </Link>
         </div>
-        <div className="hidden md:flex flex-1 justify-center space-x-14">
+        <div className="hidden lg:flex flex-1 justify-center space-x-14">
           <GuestHeader />
           <Link href="/sale" className="text-white hover:text-gray-300">
             Best Sellers

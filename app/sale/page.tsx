@@ -1,12 +1,4 @@
-import AddToCartButton from "@/components/AddToCartButton";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import Image from "next/image";
+import ProductCard from "@/components/ProductCard";
 import {getBestSellingProducts} from "../actions/order";
 
 export default async function Sales() {
@@ -23,27 +15,20 @@ export default async function Sales() {
           padding: "10px",
         }}
       >
-        <h2 className="text-white font-xl">Best Sellers</h2>
+        <h2 className="text-white font-xl mt-5">Best Sellers</h2>
       </div>
-      <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2 max-w-7xl lg:mx-auto mx-5 mt-5">
         {products.map(({id, name, image, price, ...rest}) => (
-          <Card key={id} className="flex flex-col" data-cy="product">
-            <CardHeader>
-              <CardTitle
-                className="flex justify-center"
-                data-cy="product-title"
-              >
-                {name}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex justify-center">
-              <Image src={image} alt="product image" width={150} height={150} />
-            </CardContent>
-            <CardFooter className="flex justify-between items-center">
-              <span data-cy="product-price">${price}</span>
-              <AddToCartButton product={{id, name, price, image, ...rest}} />
-            </CardFooter>
-          </Card>
+          <ProductCard
+            key={id}
+            product={{
+              id,
+              name,
+              image,
+              price,
+              ...rest,
+            }}
+          />
         ))}
       </div>
     </>

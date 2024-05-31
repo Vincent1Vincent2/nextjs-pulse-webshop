@@ -57,18 +57,6 @@ export default function EditPage({params}: PageProps) {
     fetchCategories();
   }, []);
 
-  console.log(user?.isAdmin);
-
-  // const handleSubmit = async (data: ProductCreate) => {
-  //   console.log("in");
-  //   await productUpdate(data, product?.id);
-  //   form.reset();
-  //   toast({
-  //     title: "Product updated",
-  //     description: `Product has been updated`,
-  //   });
-  // };
-
   const handleSubmit = async (data: ProductCreate) => {
     await productUpdate(data, product?.id);
     form.reset({

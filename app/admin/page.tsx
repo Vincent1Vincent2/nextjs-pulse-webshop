@@ -3,14 +3,21 @@ import DeleteButton from "@/components/DeleteButton";
 import ProductForm from "@/components/ProductForm";
 import {ArrowRightIcon} from "lucide-react";
 import Link from "next/link";
+import {redirect} from "next/navigation";
+import {authenticateUser} from "../actions/authenticate";
 import {getCurrentProducts} from "../actions/product";
 
 export default async function AdminPage() {
   const session = await auth();
+  const user = await authenticateUser();
+
+  if (!session || !user?.isAdmin) {
+    redirect("/auth/signin");
+  }
 
   const products = await getCurrentProducts();
 
-  return session?.user.isAdmin ? (
+  return (
     <main className="bg-black min-h-screen text-white p-4 max-w-5xl mx-auto">
       <h2 className=" text-white text-2xl font-bold mt-4 block p-4 rounded-sm text-center">
         Admin Dashboard
@@ -49,10 +56,6 @@ export default async function AdminPage() {
           </div>
         </div>
       ))}
-    </main>
-  ) : (
-    <main className="bg-black min-h-screen text-white p-4 flex items-center justify-center">
-      <p className="text-center">Loading...</p>
     </main>
   );
 }

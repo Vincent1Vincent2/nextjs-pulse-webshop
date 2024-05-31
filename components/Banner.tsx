@@ -11,9 +11,11 @@ export default function Banner() {
       }}
     >
       <div className="absolute inset-0 bg-black opacity-50"></div>
-      <div className="relative max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between space-y-20 ">
-        <div className="text-white px-8">
-          <h1 className="text-4xl font-extrabold mb-8">GET THE DEALS</h1>
+      <div className="relative max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between space-y-20 ">
+        <div className="text-white px-8 text-center">
+          <h1 className=" text-2xl lg:text-4xl font-extrabold mb-8">
+            GET THE DEALS
+          </h1>
           <p className="mb-8">
             Sign up for Special Offers, Workout & Recipe Ideas
           </p>
