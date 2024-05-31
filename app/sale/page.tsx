@@ -1,4 +1,3 @@
-"use client";
 import AddToCartButton from "@/components/AddToCartButton";
 import {
   Card,
@@ -8,16 +7,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
-import {useEffect, useState} from "react";
 import {getBestSellingProducts} from "../actions/order";
-import {Product} from "../types";
 
-export default function Sales() {
-  const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    getBestSellingProducts().then(setProducts);
-  }, []);
+export default async function Sales() {
+  const products = await getBestSellingProducts();
 
   return (
     <>
@@ -34,27 +27,22 @@ export default function Sales() {
         <h2 className="text-white">Best Sellers</h2>
       </div>
       <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-2">
-        {products.map(product => (
-          <Card key={product.id} className="flex flex-col" data-cy="product">
+        {products.map(({id, name, image, price, ...rest}) => (
+          <Card key={id} className="flex flex-col" data-cy="product">
             <CardHeader>
               <CardTitle
                 className="flex justify-center"
                 data-cy="product-title"
               >
-                {product.name}
+                {name}
               </CardTitle>
             </CardHeader>
             <CardContent className="flex justify-center">
-              <Image
-                src={product.image}
-                alt="product image"
-                width={150}
-                height={150}
-              />
+              <Image src={image} alt="product image" width={150} height={150} />
             </CardContent>
             <CardFooter className="flex justify-between items-center">
-              <span data-cy="product-price">${product.price.toString()}</span>
-              <AddToCartButton product={product} />
+              <span data-cy="product-price">${price}</span>
+              <AddToCartButton product={{id, name, price, image, ...rest}} />
             </CardFooter>
           </Card>
         ))}
