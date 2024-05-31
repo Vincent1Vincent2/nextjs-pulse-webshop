@@ -172,3 +172,43 @@ export async function isProductInStock(productId: number, quantity: number) {
     return true;
   }
 }
+
+// Search products by name or category
+export async function searchProducts(query: string) {
+  if (!query) {
+    throw new Error("Please provide a search query.");
+  }
+
+  try {
+    const results = await db.product.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            categories: {
+              some: {
+                name: {
+                  contains: query,
+                  mode: "insensitive",
+                },
+              },
+            },
+          },
+        ],
+      },
+      include: {
+        categories: true,
+      },
+    });
+    return results;
+  } catch (error) {
+    throw new Error(
+      "Error occurred while searching products. Please try again.",
+    );
+  }
+}

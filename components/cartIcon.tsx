@@ -14,7 +14,7 @@ function CartIcon() {
   return (
     <div className="relative flex items-center transition-all">
       <div>
-        <ShoppingCartIcon width={35} height={35} />
+        <ShoppingCartIcon className=" size-6 sm:size-8" />
       </div>
       {cart.length > 0 && (
         <div

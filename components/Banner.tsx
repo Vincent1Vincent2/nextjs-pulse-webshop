@@ -13,7 +13,7 @@ export default function Banner() {
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="relative max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between space-y-20 ">
         <div className="text-white px-8">
-          <h1 className="text-4xl font-extrabold mb-4">GET THE DEALS</h1>
+          <h1 className="text-4xl font-extrabold mb-8">GET THE DEALS</h1>
           <p className="mb-8">
             Sign up for Special Offers, Workout & Recipe Ideas
           </p>
@@ -26,7 +26,7 @@ export default function Banner() {
                 className="focus:outline-none text-black"
               />
             </div>
-            <div className="flex items-center space-x-2 px-4 py-4 sm:py-0">
+            <div className="flex items-center space-x-2 p-4 sm:py-0">
               <PhoneIcon className="size-4 md:size-6 text-gray-500" />
               <input
                 type="tel"
@@ -40,13 +40,13 @@ export default function Banner() {
           </div>
         </div>
 
-        <div className="size-56">
+        <div className=" size-52">
           <Image
             width={100}
             height={100}
-            src="https://cdn.mmsports.se/resized/medium-2x/P/XLNT-Recovery-Passionfruit-3Pack-221216.jpg"
+            src="https://cdn.mmsports.se/resized/medium-2x/P/bsc-casein_strawberry_whey100.jpg"
             alt="Product"
-            className="w-full h-auto rounded-full"
+            className="w-full h-auto rounded-full bg-cover mb-8 sm:mb-0"
           />
         </div>
       </div>
