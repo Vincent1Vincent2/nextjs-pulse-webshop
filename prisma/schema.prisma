@@ -21,6 +21,7 @@ model User {
 
   accounts Account[]
   sessions Session[]
+  Order    Order[]
 }
 
 model Session {
@@ -72,7 +73,7 @@ model Product {
   slug        String
   description String
   price       Float
-  image       String?
+  image       String
   stock       Int
   deleted     Boolean @default(false)
 
@@ -81,12 +82,14 @@ model Product {
 }
 
 model Order {
-  id                Int              @id @default(autoincrement())
+  id                Int      @id @default(autoincrement())
   orderDate         DateTime
   deliveryAddressId Int
   customerId        String
-  isSent            Boolean          @default(false)
-  ProductsOrders    ProductsOrders[]
+  isSent            Boolean  @default(false)
+
+  ProductsOrders ProductsOrders[]
+  customer       User             @relation(fields: [customerId], references: [id])
 }
 
 model Address {

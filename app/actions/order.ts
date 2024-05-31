@@ -1,6 +1,7 @@
 "use server";
 import {auth} from "@/auth";
 import {db} from "@/prisma/db";
+import {revalidatePath} from "next/cache";
 import {OrderCreate} from "../zodSchemas/order";
 
 export async function orderCreate(formData: OrderCreate, addressId: number) {
@@ -75,33 +76,36 @@ export async function orderCreate(formData: OrderCreate, addressId: number) {
 }
 
 export async function getAllOrders() {
-  const order = await db.order.findMany({});
-  return order;
+  //Exempel på hur vi kan säkra vår APR endpoints
+  // const session = await auth();
+  // if (!session?.user.isAdmin) return {error: "Not authorized"};
+
+  return await db.order.findMany({
+    include: {ProductsOrders: {include: {product: true}}, customer: true},
+  });
 }
 
 export async function nonSentOrders() {
-  const orders = await db.order.findMany({
+  return await db.order.findMany({
     where: {isSent: false},
   });
-  return orders;
 }
 
 export async function sentOrders() {
-  const orders = await db.order.findMany({
+  return await db.order.findMany({
     where: {isSent: true},
   });
-  return orders;
 }
 
 export async function markOrderSent(id: number | undefined) {
   if (!id) return null;
 
-  const order = await db.order.update({
+  await db.order.update({
     where: {id: id},
     data: {isSent: true},
   });
 
-  return order;
+  revalidatePath("/admin/orders");
 }
 // Function to fetch order details
 export async function getOrder(customerId: string | undefined) {
@@ -120,4 +124,20 @@ export async function getOrderProducts(orderId: number | undefined) {
     },
   });
   return productsOrders;
+}
+
+export async function getBestSellingProducts() {
+  // Fetch all products
+  const products = await db.product.findMany({
+    include: {
+      ProductsOrders: true,
+    },
+  });
+
+  // Filter products that were ordered more than three times
+  const bestSellers = products.filter(
+    product => product.ProductsOrders.length > 3,
+  );
+
+  return bestSellers;
 }
