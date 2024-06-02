@@ -16,7 +16,7 @@ function AddToCartButton(props: Props) {
   }
 
   return (
-    <Button onClick={handleBuy} data-cy="product-buy-button">
+    <Button onClick={handleBuy} className="rounded-sm m-5 bg-orange-400 hover:bg-orange-300 text-white" data-cy="product-buy-button">
       Add to cart
     </Button>
   );
