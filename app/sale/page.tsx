@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
+import Link from "next/link";
 import {getBestSellingProducts} from "../actions/order";
 
 export default async function Sales() {
@@ -36,9 +37,16 @@ export default async function Sales() {
                 {name}
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex justify-center">
-              <Image src={image} alt="product image" width={150} height={150} />
-            </CardContent>
+            <Link href={`/product/${name}/${id}`}>
+              <CardContent className="flex justify-center">
+                <Image
+                  src={image}
+                  alt="product image"
+                  width={150}
+                  height={150}
+                />
+              </CardContent>
+            </Link>
             <CardFooter className="flex justify-between items-center">
               <span data-cy="product-price">${price}</span>
               <AddToCartButton product={{id, name, price, image, ...rest}} />
