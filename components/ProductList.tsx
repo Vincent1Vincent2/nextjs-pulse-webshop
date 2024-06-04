@@ -1,17 +1,8 @@
 "use client";
 
-import AddToCartButton from "@/components/AddToCartButton";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {Product} from "@prisma/client";
-import Image from "next/image";
-import Link from "next/link";
 import {useState} from "react";
+import ProductCard from "./ProductCard";
 
 interface ProductListProps {
   products: Product[];
@@ -23,14 +14,7 @@ export default function ProductList(props: ProductListProps) {
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          fontFamily: "Times New Roman",
-          padding: "10px",
-        }}
-      >
+      <div className="flex justify-end items-center mt-4 max-w-7xl lg:mx-auto mx-5">
         <label
           htmlFor="sortOrder"
           style={{marginRight: "10px", color: "white"}}
@@ -62,32 +46,18 @@ export default function ProductList(props: ProductListProps) {
           <option value="desc">Highest to Lowest</option>
         </select>
       </div>
-      <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2 max-w-7xl lg:mx-auto mx-5 mt-5">
         {products.map(({id, name, image, price, ...rest}) => (
-          <Card key={id} className="flex flex-col" data-cy="product">
-            <CardHeader>
-              <CardTitle
-                className="flex justify-center"
-                data-cy="product-title"
-              >
-                {name}
-              </CardTitle>
-            </CardHeader>
-            <Link href={`/product/${name}/${id}`}>
-              <CardContent className="flex justify-center">
-                <Image
-                  src={image || "/placeholder-image.jpg"}
-                  alt="product image"
-                  width={150}
-                  height={150}
-                />
-              </CardContent>
-            </Link>
-            <CardFooter className="flex justify-between items-center">
-              <span data-cy="product-price">${price}</span>
-              <AddToCartButton product={{id, name, price, image, ...rest}} />
-            </CardFooter>
-          </Card>
+          <ProductCard
+            key={id}
+            product={{
+              id,
+              name,
+              image,
+              price,
+              ...rest,
+            }}
+          />
         ))}
       </div>
     </>
