@@ -1,24 +1,10 @@
 "use client";
-import {getCategories} from "@/app/actions/category";
-import {Category} from "@prisma/client";
+import {categoriesAtom} from "@/app/utils/atoms";
+import {useAtomValue} from "jotai";
 import Link from "next/link";
-import {useEffect, useState} from "react";
 
 export function List() {
-  const [categories, setCategories] = useState<Category[]>([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categories = await getCategories();
-        setCategories(categories);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
+  const categories = useAtomValue(categoriesAtom);
 
   return (
     <>
