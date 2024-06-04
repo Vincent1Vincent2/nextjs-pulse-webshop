@@ -75,10 +75,9 @@ export default function Header({session}: {session: any}) {
       </header>
       {isMenuOpen && (
         <nav className="lg:hidden fixed top-0 left-0 w-full h-auto bg-gray-900/90 flex flex-col items-left p-4 justify-center space-y-8 z-40 text">
-          <Link href="/" className="text-white mt-32 text-lg">
-            Shop
-          </Link>
-          <GuestHeader />
+          <div className="text-white mt-32 text-lg">
+            <GuestHeader />
+          </div>
           <Link href="/sale" className="text-white text-lg">
             Best Sellers
           </Link>
