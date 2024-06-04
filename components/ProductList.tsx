@@ -65,42 +65,39 @@ export default function ProductList(props: ProductListProps) {
         </select>
       </div>
       <div className="flex flex-col items-center">
-        <div className="py-4 text-center text-white text-4xl font-semibold rounded-md">
+        <div className="py-8 text-center text-white text-4xl font-semibold rounded-md">
           {props.currentCategory.name}
         </div>
         <div className="flex justify-center w-full mt-4">
-          <div className="md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center gap-6 px-10">
+          <div className="md:grid md:grid-cols-2 lg:grid-cols-4 xl:grid.cols-4 gap-4 justify-items-center gap-6 px-10">
             {products.map(({id, name, image, price, ...rest}) => (
-              <Card
-                key={id}
-                className="flex flex-col px-10rem"
-                data-cy="product"
-              >
-                <CardHeader>
-                  <CardTitle
-                    className="flex justify-center"
-                    data-cy="product-title"
-                  >
-                    {name}
-                  </CardTitle>
-                </CardHeader>
-                <Link href={`/product/${name}/${id}`}>
-                  <CardContent className="flex justify-center">
-                    <Image
-                      src={image || "/placeholder-image.jpg"}
-                      alt="product image"
-                      width={350}
-                      height={350}
-                    />
-                  </CardContent>
-                </Link>
-                <CardFooter className="flex justify-between items-center m-4">
-                  <span data-cy="product-price">${price}</span>
-                  <AddToCartButton
-                    product={{id, name, price, image, ...rest}}
-                  />
-                </CardFooter>
-              </Card>
+            <Card key={id} className="w-96" data-cy="product">
+            <Link href={`/product/${name}/${id}`}>
+            <CardHeader className="h-96">
+            <CardTitle
+             className="flex justify-center text-lg"
+             data-cy="product-title"
+             >
+             {name}
+           </CardTitle>
+           <Image
+           src={image || "/placeholder-image.jpg"}
+           alt="product image"
+           width={350}
+           height={350}
+           />
+           </CardHeader>
+           </Link>
+           <CardContent>
+      
+           <CardFooter className="pt-5 flex justify-between">
+            <span data-cy="product-price">${price}</span>
+            <AddToCartButton
+             product={{id, name, price, image, ...rest}}
+           />
+           </CardFooter>
+           </CardContent>
+           </Card>
             ))}
           </div>
         </div>
@@ -108,3 +105,4 @@ export default function ProductList(props: ProductListProps) {
     </>
   );
 }
+
