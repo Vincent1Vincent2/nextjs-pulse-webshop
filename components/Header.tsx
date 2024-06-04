@@ -1,6 +1,7 @@
 import {MenuIcon, XIcon} from "lucide-react";
 import Link from "next/link";
 import GuestHeader from "./GuestHeader";
+
 import ScrollHandler from "./ScrollHandler";
 import SearchBar from "./SearchBar";
 import SignInButton from "./SignInButton";
