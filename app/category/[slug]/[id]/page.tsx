@@ -1,4 +1,5 @@
 import {getProductsByCategoryAndSort} from "@/app/actions/product";
+import {getCategoryBySlug, getCategories} from "@/app/actions/category";
 import ProductList from "@/components/ProductList";
 
 interface PageProps {
@@ -6,6 +7,22 @@ interface PageProps {
 }
 
 export default async function CategoryPage({params}: PageProps) {
-  const products = await getProductsByCategoryAndSort(params.slug, "asc");
-  return <ProductList products={products} />;
+  const {slug} = params;
+  const [products, category, categories] = await Promise.all([
+    getProductsByCategoryAndSort(slug, "asc"),
+    getCategoryBySlug(slug),
+    getCategories(),
+  ]);
+
+  if (!category) {
+    return <div>Category not found</div>;
+  }
+
+  return (
+    <ProductList
+      products={products}
+      currentCategory={category}
+      categories={categories}
+    />
+  );
 }

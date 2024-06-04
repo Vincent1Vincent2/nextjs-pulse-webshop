@@ -1,8 +1,8 @@
 "use server";
-import {auth} from "@/auth";
-import {db} from "@/prisma/db";
-import {Product} from "@prisma/client";
-import {ProductCreate} from "../zodSchemas/product";
+import { auth } from "@/auth";
+import { db } from "@/prisma/db";
+import { Product } from "@prisma/client";
+import { ProductCreate } from "../zodSchemas/product";
 
 export async function productCreate(formData: ProductCreate) {
   const session = await auth();
@@ -162,6 +162,7 @@ export async function getProductsByCategoryAndSort(
   });
   return products;
 }
+
 
 export async function isProductInStock(productId: number, quantity: number) {
   const product = await db.product.findUnique({where: {id: productId}});

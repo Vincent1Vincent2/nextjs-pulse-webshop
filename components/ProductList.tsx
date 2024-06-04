@@ -8,20 +8,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Category, Product } from "@prisma/client";
+import {Category, Product} from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import {useState} from "react";
 
 interface ProductListProps {
   products: Product[];
-  category: Category[];
+  currentCategory: Category;
+  categories: Category[];
 }
 
 export default function ProductList(props: ProductListProps) {
   const [products, setProducts] = useState<Product[]>(props.products);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [Category] = useState<Category[]>(props.category);
+
   return (
     <>
       <div
@@ -34,13 +35,13 @@ export default function ProductList(props: ProductListProps) {
       >
         <label
           htmlFor="sortOrder"
-          style={{ marginRight: "10px", color: "white" }}
+          style={{marginRight: "10px", color: "white"}}
         >
           Price:{" "}
         </label>
         <select
           id="sortOrder"
-          onChange={(e) => {
+          onChange={e => {
             setSortOrder(e.target.value as "asc" | "desc");
             setProducts(
               [...products].sort((p1, p2) =>
@@ -49,9 +50,9 @@ export default function ProductList(props: ProductListProps) {
                     ? -1
                     : 1
                   : p1.price > p2.price
-                  ? -1
-                  : 1
-              )
+                    ? -1
+                    : 1,
+              ),
             );
           }}
           style={{
@@ -64,15 +65,15 @@ export default function ProductList(props: ProductListProps) {
         </select>
       </div>
       <div className="flex flex-col items-center">
-        <div className="bg-gray-200 py-4 text-center text-xl font-semibold rounded-md" style={{ width: '50%', maxWidth: '400px', height: '100px' }}>
-          {}
+        <div className="py-4 text-center text-white text-4xl font-semibold rounded-md">
+          {props.currentCategory.name}
         </div>
         <div className="flex justify-center w-full mt-4">
-          <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
-            {products.map(({ id, name, image, price, ...rest }) => (
+          <div className="md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center gap-6 px-10">
+            {products.map(({id, name, image, price, ...rest}) => (
               <Card
                 key={id}
-                className="flex flex-col w-[400px] h-[600px] py-6 m-4"
+                className="flex flex-col px-10rem"
                 data-cy="product"
               >
                 <CardHeader>
@@ -88,14 +89,16 @@ export default function ProductList(props: ProductListProps) {
                     <Image
                       src={image || "/placeholder-image.jpg"}
                       alt="product image"
-                      width={350} // Adjusted image size
+                      width={350}
                       height={350}
                     />
                   </CardContent>
                 </Link>
                 <CardFooter className="flex justify-between items-center m-4">
                   <span data-cy="product-price">${price}</span>
-                  <AddToCartButton product={{ id, name, price, image, ...rest }} />
+                  <AddToCartButton
+                    product={{id, name, price, image, ...rest}}
+                  />
                 </CardFooter>
               </Card>
             ))}
