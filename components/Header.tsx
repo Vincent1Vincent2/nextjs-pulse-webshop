@@ -1,9 +1,7 @@
-"use client";
-
 import {MenuIcon, XIcon} from "lucide-react";
 import Link from "next/link";
-import {useEffect, useState} from "react";
 import GuestHeader from "./GuestHeader";
+import ScrollHandler from "./ScrollHandler";
 import SearchBar from "./SearchBar";
 import SignInButton from "./SignInButton";
 import DropdownMenu from "./UserMenu";
@@ -11,23 +9,7 @@ import CartIcon from "./cartIcon";
 import Logo from "./ui/logo";
 
 export default function Header({session}: {session: any}) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const {isScrolled, isMenuOpen, toggleMenu} = ScrollHandler();
 
   return (
     <div>
@@ -41,10 +23,7 @@ export default function Header({session}: {session: any}) {
             <Logo />
           </Link>
           <div className="lg:hidden mt-2">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="focus:outline-none"
-            >
+            <button onClick={toggleMenu} className="focus:outline-none">
               {isMenuOpen ? (
                 <XIcon data-cy="menu-close-icon" width={24} height={24} />
               ) : (
