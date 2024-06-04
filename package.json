@@ -7,13 +7,15 @@
   "scripts": {
     "dev": "next dev --port 5173",
     "build": "next build",
+    "vercel-build": "prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
     "types": "tsc --noEmit",
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",
     "studio": "prisma studio",
-    "seed": "prisma db seed"
+    "seed": "prisma db seed",
+    "postinstall": "prisma generate"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -28,6 +30,7 @@
     "@prisma/adapter-neon": "^5.14.0",
     "@prisma/adapter-pg": "^5.14.0",
     "@prisma/client": "^5.14.0",
+    "@prisma/extension-accelerate": "^1.1.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",

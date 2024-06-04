@@ -12,6 +12,7 @@ import {Category, Product} from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import {useState} from "react";
+import ProductCard from "./ProductCard";
 
 interface ProductListProps {
   products: Product[];
@@ -25,14 +26,7 @@ export default function ProductList(props: ProductListProps) {
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          fontFamily: "Times New Roman",
-          padding: "10px",
-        }}
-      >
+      <div className="flex justify-end items-center mt-4 max-w-7xl lg:mx-auto mx-5">
         <label
           htmlFor="sortOrder"
           style={{marginRight: "10px", color: "white"}}
