@@ -37,7 +37,7 @@ export default function Header({session}: {session: any}) {
             Pulse
           </Link>
         </div>
-        <div className="hidden md:flex flex-1 justify-center space-x-14">
+        <div className="hidden lg:flex flex-1 justify-center space-x-14">
           <GuestHeader />
           <Link href="/sale" className="text-white hover:text-gray-300">
             Best Sellers
@@ -56,10 +56,9 @@ export default function Header({session}: {session: any}) {
       </header>
       {isMenuOpen && (
         <nav className="lg:hidden fixed top-0 left-0 w-full h-auto bg-gray-900/90 flex flex-col items-left p-4 justify-center space-y-8 z-40 text">
-          <Link href="/" className="text-white mt-32 text-lg">
-            Shop
-          </Link>
-          <GuestHeader />
+          <div className="text-white mt-32 text-lg">
+            <GuestHeader />
+          </div>
           <Link href="/sale" className="text-white text-lg">
             Best Sellers
           </Link>

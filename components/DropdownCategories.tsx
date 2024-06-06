@@ -25,7 +25,7 @@ export default function Dropdown() {
       {seen && (
         <ul
           onMouseLeave={() => setSeen(false)}
-          className="absolute top-full left-0 w-full flex justify-center z-10"
+          className="absolute top-0 lg:top-full left-32 w-full flex flex-col lg:flex-row justify-center z-10"
         >
           <List />
         </ul>

@@ -1,13 +1,13 @@
 "use server";
-import {auth} from "@/auth";
 import {db} from "@/prisma/db";
 import {revalidatePath} from "next/cache";
 import {OrderCreate} from "../zodSchemas/order";
+import {authenticateUser} from "./authenticate";
 
 export async function orderCreate(formData: OrderCreate, addressId: number) {
-  const session = await auth();
-  const user = await db.user.findUnique({where: {id: session?.user.id}});
-  if (!user) {
+  const user = await authenticateUser();
+
+  if (!user?.isAdmin) {
     throw new Error("User not found");
   }
   // Use a transaction to ensure atomicity
@@ -80,24 +80,44 @@ export async function getAllOrders() {
   // const session = await auth();
   // if (!session?.user.isAdmin) return {error: "Not authorized"};
 
+  const user = await authenticateUser();
+  if (!user?.isAdmin) {
+    throw new Error("Not authorized");
+  }
+
   return await db.order.findMany({
     include: {ProductsOrders: {include: {product: true}}, customer: true},
   });
 }
 
 export async function nonSentOrders() {
+  const user = await authenticateUser();
+  if (!user?.isAdmin) {
+    throw new Error("Not authorized");
+  }
+
   return await db.order.findMany({
     where: {isSent: false},
   });
 }
 
 export async function sentOrders() {
+  const user = await authenticateUser();
+  if (!user?.isAdmin) {
+    throw new Error("Not authorized");
+  }
+
   return await db.order.findMany({
     where: {isSent: true},
   });
 }
 
 export async function markOrderSent(id: number | undefined) {
+  const user = await authenticateUser();
+  if (!user?.isAdmin) {
+    throw new Error("Not authorized");
+  }
+
   if (!id) return null;
 
   await db.order.update({
@@ -109,6 +129,11 @@ export async function markOrderSent(id: number | undefined) {
 }
 // Function to fetch order details
 export async function getOrder(customerId: string | undefined) {
+  const user = await authenticateUser();
+  if (!user?.isAdmin) {
+    throw new Error("Not authorized");
+  }
+
   const order = await db.order.findMany({
     where: {customerId: customerId},
   });
@@ -117,6 +142,11 @@ export async function getOrder(customerId: string | undefined) {
 
 // Function to fetch products and quantities associated with the order
 export async function getOrderProducts(orderId: number | undefined) {
+  const user = await authenticateUser();
+  if (!user?.isAdmin) {
+    throw new Error("Not authorized");
+  }
+
   const productsOrders = await db.productsOrders.findMany({
     where: {orderId: orderId},
     include: {
