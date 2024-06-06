@@ -53,6 +53,8 @@ export async function orderCreate(formData: OrderCreate, addressId: number) {
     return order;
   });
 
+  revalidatePath("/admin/orders");
+
   return {
     order: {
       id: result.id,
