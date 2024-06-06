@@ -46,6 +46,13 @@ export default async function AdminPage() {
             <li className="text-lg font-bold my-4 ">{p.name}</li>
             <li className="text-md">{p.description}</li>
           </ul>
+          {p.stock > 0 ? (
+            <p className="font-semibold text-green-600 my-2">
+              In Stock - {p.stock}
+            </p>
+          ) : (
+            <p className="text-red-600">Not in Stock</p>
+          )}
           <div className="flex gap-4 mt-4">
             <DeleteButton id={p.id} />
             <Link href={`/admin/edit-product/${p.id}`}>
