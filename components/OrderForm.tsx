@@ -210,7 +210,7 @@ const OrderForm = () => {
           {errors.ProductOrder && <span>{errors.ProductOrder.message}</span>}
           {cart.length > 0 ? (
             <button
-              className="self-center bg-orange-400 hover:bg-orange-300 w-96 my-8 py-2 rounded-sm text-white"
+              className="self-center bg-orange-400 hover:bg-orange-300 w-48 sm:w-96 my-8 py-2 rounded-sm text-white"
               type="submit"
             >
               BUY NOW

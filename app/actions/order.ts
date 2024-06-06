@@ -7,9 +7,10 @@ import {authenticateUser} from "./authenticate";
 export async function orderCreate(formData: OrderCreate, addressId: number) {
   const user = await authenticateUser();
 
-  if (!user?.isAdmin) {
+  if (!user) {
     throw new Error("User not found");
   }
+
   // Use a transaction to ensure atomicity
   const result = await db.$transaction(async prisma => {
     // Create the order and its associated product orders
@@ -130,7 +131,7 @@ export async function markOrderSent(id: number | undefined) {
 // Function to fetch order details
 export async function getOrder(customerId: string | undefined) {
   const user = await authenticateUser();
-  if (!user?.isAdmin) {
+  if (!user) {
     throw new Error("Not authorized");
   }
 
@@ -143,7 +144,7 @@ export async function getOrder(customerId: string | undefined) {
 // Function to fetch products and quantities associated with the order
 export async function getOrderProducts(orderId: number | undefined) {
   const user = await authenticateUser();
-  if (!user?.isAdmin) {
+  if (!user) {
     throw new Error("Not authorized");
   }
 
