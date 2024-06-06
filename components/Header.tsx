@@ -1,17 +1,51 @@
 "use client";
+
+import {getCategories} from "@/app/actions/category";
+import {categoriesAtom} from "@/app/utils/atoms";
+import {useSetAtom} from "jotai";
 import {MenuIcon, XIcon} from "lucide-react";
 import Link from "next/link";
 import GuestHeader from "./GuestHeader";
 
-import ScrollHandler from "./ScrollHandler";
 import SearchBar from "./SearchBar";
 import SignInButton from "./SignInButton";
 import DropdownMenu from "./UserMenu";
 import CartIcon from "./cartIcon";
 import Logo from "./ui/logo";
+import {useState, useEffect} from "react";
 
 export default function Header({session}: {session: any}) {
-  const {isScrolled, isMenuOpen, toggleMenu} = ScrollHandler();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const setCategories = useSetAtom(categoriesAtom);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categories = await getCategories();
+        setCategories(categories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, [setCategories]);
 
   return (
     <div>
