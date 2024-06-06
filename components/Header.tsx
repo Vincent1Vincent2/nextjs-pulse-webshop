@@ -1,5 +1,8 @@
 "use client";
 
+import {getCategories} from "@/app/actions/category";
+import {categoriesAtom} from "@/app/utils/atoms";
+import {useSetAtom} from "jotai";
 import {MenuIcon, XIcon} from "lucide-react";
 import Link from "next/link";
 import {useEffect, useState} from "react";
@@ -13,6 +16,7 @@ import Logo from "./ui/logo";
 export default function Header({session}: {session: any}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const setCategories = useSetAtom(categoriesAtom);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +32,19 @@ export default function Header({session}: {session: any}) {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categories = await getCategories();
+        setCategories(categories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, [setCategories]);
 
   return (
     <div>

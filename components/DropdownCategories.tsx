@@ -22,14 +22,13 @@ export default function Dropdown() {
       >
         Categories
       </span>
-      {seen && (
+      
         <ul
           onMouseLeave={() => setSeen(false)}
-          className="absolute top-0 lg:top-full left-32 w-full flex flex-col lg:flex-row justify-center z-10"
-        >
+          className={`absolute top-0 lg:top-full left-32 w-full ${seen ? "flex" : "hidden"} flex-col lg:flex-row justify-center z-10`}
+          >
           <List />
         </ul>
-      )}
     </div>
   );
 }
