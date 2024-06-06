@@ -9,32 +9,41 @@ interface ProductCardProps {
   product: Product;
 }
 
-export default function ProductCard({product}: ProductCardProps) {
+export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <Card
-      key={product.id}
-      className="flex flex-col rounded-sm"
-      data-cy="product"
-    >
-      <CardHeader>
-        <CardTitle className="flex justify-center" data-cy="product-title">
-          {product.name}
-        </CardTitle>
-      </CardHeader>
-      <Link href={`/product/${product.name}/${product.id}`}>
-        <CardContent className="flex justify-center">
-          <Image
-            src={product.image || "/placeholder-image.jpg"}
-            alt="product image"
-            width={150}
-            height={150}
-          />
-        </CardContent>
-      </Link>
-      <CardFooter className="flex justify-between items-center">
-        <span data-cy="product-price">${product.price}</span>
-        <AddToCartButton product={product} />
-      </CardFooter>
+    <Card key={product.id} className="border rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300" style={{ width: '300px', height: 'auto' }}>
+      <div className="flex flex-col h-full">
+        {/* Titel */}
+        <div className="p-4 bg-gray-100">
+          <h2 className="text-lg font-semibold overflow-hidden" data-cy="product-title">
+            {product.name}
+          </h2>
+        </div>
+        
+        {/* Bild */}
+        <Link href={`/product/${product.name}/${product.id}`} className="flex-grow">
+          <div className="flex justify-center items-center h-full">
+            <div className="relative">
+              <Image
+                src={product.image || "/placeholder-image.jpg"}
+                alt="product image"
+                width={250}
+                height={250}
+                objectFit="cover"
+              />
+            </div>
+          </div>
+        </Link>
+        
+        {/* Pris och knapp */}
+        <div className="bg-gray-100 p-4 flex justify-between items-center">
+          <span className="font-semibold pl-4" data-cy="product-price">
+            ${product.price}
+          </span>
+          <AddToCartButton product={product} />
+        </div>
+      </div>
     </Card>
   );
-}
+};
+
