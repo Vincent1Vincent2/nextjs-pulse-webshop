@@ -2,8 +2,8 @@
 import {auth} from "@/auth";
 import {db} from "@/prisma/db";
 import {Product} from "@prisma/client";
-import {ProductCreate} from "../zodSchemas/product";
 import {revalidatePath} from "next/cache";
+import {ProductCreate} from "../zodSchemas/product";
 
 export async function productCreate(formData: ProductCreate) {
   const session = await auth();
@@ -39,7 +39,7 @@ export async function productCreate(formData: ProductCreate) {
       },
     },
   });
-  revalidatePath("/products");
+  revalidatePath("/admin");
   return products;
 }
 
@@ -89,7 +89,6 @@ export async function productUpdate(
     },
   });
   revalidatePath(`/product/${id}`);
-  revalidatePath("/products");
   return products;
 }
 
