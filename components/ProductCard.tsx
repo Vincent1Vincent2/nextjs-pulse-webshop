@@ -14,8 +14,8 @@ export default function ProductCard({ product }: ProductCardProps) {
     <Card key={product.id} className="border rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300" style={{ width: '300px', height: 'auto' }}>
       <div className="flex flex-col h-full">
         {/* Titel */}
-        <div className="p-4 bg-gray-100">
-          <h2 className="text-lg font-semibold overflow-hidden" data-cy="product-title">
+        <div className="p-4 bg-gray-100 h-20">
+          <h2 className="flex justify-center text-center text-lg font-semibold overflow-hidden" data-cy="product-title">
             {product.name}
           </h2>
         </div>

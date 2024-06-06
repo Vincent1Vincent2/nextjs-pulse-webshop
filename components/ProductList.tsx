@@ -1,17 +1,9 @@
 "use client";
 
-import AddToCartButton from "@/components/AddToCartButton";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {Category, Product} from "@prisma/client";
+import { Category, Product } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import {useState} from "react";
+import { useState } from "react";
 import ProductCard from "./ProductCard";
 
 interface ProductListProps {
@@ -24,35 +16,26 @@ export default function ProductList(props: ProductListProps) {
   const [products, setProducts] = useState<Product[]>(props.products);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
+  const handleChangeSortOrder = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOrder = e.target.value as "asc" | "desc";
+    setSortOrder(selectedOrder);
+    const sortedProducts = [...products].sort((p1, p2) =>
+      selectedOrder === "asc" ? p1.price - p2.price : p2.price - p1.price
+    );
+    setProducts(sortedProducts);
+  };
+
   return (
     <>
-      <div className="flex justify-end items-center mt-4 lg:mx-auto">
-        <label
-          htmlFor="sortOrder"
-          style={{marginRight: "10px", color: "white"}}
-        >
-          Price:{" "}
+      <div className="flex justify-end items-center mt-4 lg:mx-auto pr-4">
+        <label htmlFor="sortOrder" className="mr-2 text-white">
+          Price:
         </label>
         <select
           id="sortOrder"
-          onChange={e => {
-            setSortOrder(e.target.value as "asc" | "desc");
-            setProducts(
-              [...products].sort((p1, p2) =>
-                e.target.value === "asc"
-                  ? p1.price < p2.price
-                    ? -1
-                    : 1
-                  : p1.price > p2.price
-                    ? -1
-                    : 1,
-              ),
-            );
-          }}
-          style={{
-            fontFamily: "Times New Roman",
-            padding: "5px",
-          }}
+          value={sortOrder}
+          onChange={handleChangeSortOrder}
+          className="bg-white text-black p-1 rounded"
         >
           <option value="asc">Lowest to Highest</option>
           <option value="desc">Highest to Lowest</option>
@@ -62,22 +45,21 @@ export default function ProductList(props: ProductListProps) {
         <div className="py-8 text-center text-white text-4xl font-semibold rounded-md">
           {props.currentCategory.name}
         </div>
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 max-w-7xl lg:mx-auto mx-5 mt-5">
-        {products.map(({id, name, image, price, ...rest}) => (
-          <ProductCard
-            key={id}
-            product={{
-              id,
-              name,
-              image,
-              price,
-              ...rest,
-            }}
-          />
-        ))}
-      </div>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mt-5 pb-20">
+          {products.map(({ id, name, image, price, ...rest }) => (
+            <ProductCard
+              key={id}
+              product={{
+                id,
+                name,
+                image,
+                price,
+                ...rest,
+              }}
+            />
+          ))}
+        </div>
       </div>
     </>
   );
 }
-
