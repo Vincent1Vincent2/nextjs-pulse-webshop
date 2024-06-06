@@ -14,7 +14,16 @@ export default async function Sales() {
   const products = await getBestSellingProducts();
   return (
     <>
-      <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <h2 style={{color: "#fff"}}>Best seller</h2>
+      </div>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2 max-w-7xl lg:mx-auto mx-5 mt-5">
         {products.map(({id, name, image, price, ...rest}) => (
           <Card key={id} className="flex flex-col" data-cy="product">
             <CardHeader>
