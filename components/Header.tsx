@@ -5,14 +5,13 @@ import {categoriesAtom} from "@/app/utils/atoms";
 import {useSetAtom} from "jotai";
 import {MenuIcon, XIcon} from "lucide-react";
 import Link from "next/link";
+import {useEffect, useState} from "react";
 import GuestHeader from "./GuestHeader";
-
 import SearchBar from "./SearchBar";
 import SignInButton from "./SignInButton";
 import DropdownMenu from "./UserMenu";
 import CartIcon from "./cartIcon";
 import Logo from "./ui/logo";
-import {useState, useEffect} from "react";
 
 export default function Header({session}: {session: any}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -59,7 +58,10 @@ export default function Header({session}: {session: any}) {
             <Logo />
           </Link>
           <div className="lg:hidden mt-2">
-            <button onClick={toggleMenu} className="focus:outline-none">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="focus:outline-none"
+            >
               {isMenuOpen ? (
                 <XIcon data-cy="menu-close-icon" width={24} height={24} />
               ) : (
