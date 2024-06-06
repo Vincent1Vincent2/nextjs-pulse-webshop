@@ -7,9 +7,10 @@ import {authenticateUser} from "./authenticate";
 export async function orderCreate(formData: OrderCreate, addressId: number) {
   const user = await authenticateUser();
 
-  if (!user?.isAdmin) {
+  if (!user) {
     throw new Error("User not found");
   }
+
   // Use a transaction to ensure atomicity
   const result = await db.$transaction(async prisma => {
     // Create the order and its associated product orders
