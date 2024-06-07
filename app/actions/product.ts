@@ -2,6 +2,7 @@
 import {auth} from "@/auth";
 import {db} from "@/prisma/db";
 import {Product} from "@prisma/client";
+import {revalidatePath} from "next/cache";
 import {ProductCreate} from "../zodSchemas/product";
 
 export async function productCreate(formData: ProductCreate) {
@@ -38,7 +39,7 @@ export async function productCreate(formData: ProductCreate) {
       },
     },
   });
-
+  revalidatePath("/admin");
   return products;
 }
 
@@ -87,7 +88,7 @@ export async function productUpdate(
       },
     },
   });
-
+  revalidatePath(`/product/${id}`);
   return products;
 }
 
@@ -110,6 +111,7 @@ export async function deleteProduct(id: number) {
       where: {id: id},
       data: {deleted: true},
     });
+    revalidatePath("/products");
     console.log("Product marked as deleted.");
   } catch (error) {
     console.error("Error marking product as deleted:", error);
