@@ -15,12 +15,12 @@ This project is an e-commerce webshop built with React and TypeScript, using the
 - **React Hook Form**: A performant, flexible and extensible forms with easy-to-use validation.
 - **Zod**: A schema declaration and validation library.
 - **NextAuth.js**: A complete open source authentication solution for Next.js applications.
-- **Bcrypt**: A library to help you hash passwords.
+- **Joti**: State Managment
 
 ## Installation
 
 1. Install a runtime if don't have one; such as Node.js
-2. Clone this repository into an empty folder using a integrated terminal: "git clone https://github.com/plugga-tech/nextjs-webbshop-ts-backtick.git"
+2. Clone this repository into an empty folder using a integrated terminal: "git clone https://github.com/Vincent1Vincent2/nextjs-pulse-webshop.git"
 3. Install your runtimes modules into the project using for example "npm install" in your integrated terminal.
 
 ## Usage
@@ -31,7 +31,7 @@ Once the project is installed:
 
 ## Demo link
 
-KOMMER SNART...
+https://nextjs-pulse-webshop.vercel.app/
 
 ## Browser support
 
