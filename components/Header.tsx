@@ -4,6 +4,7 @@ import {getCategories} from "@/app/actions/category";
 import {categoriesAtom} from "@/app/utils/atoms";
 import {useSetAtom} from "jotai";
 import {MenuIcon, XIcon} from "lucide-react";
+import {useSession} from "next-auth/react";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import GuestHeader from "./GuestHeader";
@@ -13,7 +14,8 @@ import DropdownMenu from "./UserMenu";
 import CartIcon from "./cartIcon";
 import Logo from "./ui/logo";
 
-export default function Header({session}: {session: any}) {
+export default function Header() {
+  const {data: session} = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const setCategories = useSetAtom(categoriesAtom);
