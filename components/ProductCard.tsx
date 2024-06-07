@@ -12,8 +12,13 @@ export default function ProductCard({product}: ProductCardProps) {
   return (
     <Card
       key={product.id}
-      className="border rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300"
-      style={{width: "300px", height: "auto"}}
+      className="border rounded-lg overflow-hidden shadow-md hover:shadow-lg"
+      style={{
+        width: "100%",
+        maxWidth: "300px",
+        margin: "5px",
+        height: "400px",
+      }}
     >
       <div className="flex flex-col h-full">
         {/* Title */}
@@ -31,22 +36,21 @@ export default function ProductCard({product}: ProductCardProps) {
           href={`/product/${product.name}/${product.id}`}
           className="flex-grow"
         >
-          <div className="flex justify-center backdrop-blur-sm bg-white/30 items-center h-full">
-            <div className="relative">
-              <Image
-                src={product.image || "/placeholder-image.jpg"}
-                alt="product image"
-                width={250}
-                height={250}
-                objectFit="cover"
-              />
-            </div>
+          <div className="flex justify-center items-center h-48">
+            <Image
+              src={product.image || "/placeholder-image.jpg"}
+              alt="product image"
+              layout="intrinsic"
+              width={250}
+              height={250}
+              className="object-contain"
+            />
           </div>
         </Link>
 
         {/* Price and Button */}
         <div className="p-4 flex justify-between items-center">
-          <span className="font-semibold pl-6" data-cy="product-price">
+          <span className="font-semibold" data-cy="product-price">
             ${product.price}
           </span>
           <AddToCartButton product={product} />
