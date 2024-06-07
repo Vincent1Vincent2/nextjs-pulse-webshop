@@ -1,5 +1,4 @@
 "use client";
-
 import {toast} from "@/components/ui/use-toast";
 import {CartItem} from "@/data";
 import {Product} from "@prisma/client";
@@ -25,7 +24,6 @@ const CartContext = createContext<ContextValue>({} as ContextValue);
 export function CartProvider(props: PropsWithChildren) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
 
   const addToCart = async (product: Product) => {
     //Find index of cart item

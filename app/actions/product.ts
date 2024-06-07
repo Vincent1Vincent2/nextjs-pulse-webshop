@@ -38,7 +38,7 @@ export async function productCreate(formData: ProductCreate) {
       },
     },
   });
-
+  revalidatePath("/admin");
   return products;
 }
 
@@ -87,12 +87,19 @@ export async function productUpdate(
       },
     },
   });
-
+  revalidatePath(`/product/${id}`);
   return products;
 }
 
 export async function getCurrentProducts() {
-  const products = await db.product.findMany({where: {deleted: false}});
+  const products = await db.product.findMany({
+    where: {
+      deleted: false,
+    },
+    orderBy: {
+      id: "desc",
+    },
+  });
 
   return products;
 }
@@ -110,6 +117,7 @@ export async function deleteProduct(id: number) {
       where: {id: id},
       data: {deleted: true},
     });
+    revalidatePath("/products");
     console.log("Product marked as deleted.");
   } catch (error) {
     console.error("Error marking product as deleted:", error);
