@@ -1,9 +1,7 @@
 "use client";
 
-import { Category, Product } from "@prisma/client";
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
+import {Category, Product} from "@prisma/client";
+import {useState} from "react";
 import ProductCard from "./ProductCard";
 
 interface ProductListProps {
@@ -20,14 +18,14 @@ export default function ProductList(props: ProductListProps) {
     const selectedOrder = e.target.value as "asc" | "desc";
     setSortOrder(selectedOrder);
     const sortedProducts = [...products].sort((p1, p2) =>
-      selectedOrder === "asc" ? p1.price - p2.price : p2.price - p1.price
+      selectedOrder === "asc" ? p1.price - p2.price : p2.price - p1.price,
     );
     setProducts(sortedProducts);
   };
 
   return (
     <>
-      <div className="flex justify-end items-center mt-4 lg:mx-auto pr-4">
+      <div className="flex justify-end items-center mt-4">
         <label htmlFor="sortOrder" className="mr-2 text-white">
           Price:
         </label>
@@ -45,8 +43,8 @@ export default function ProductList(props: ProductListProps) {
         <div className="py-8 text-center text-white text-4xl font-semibold rounded-md">
           {props.currentCategory.name}
         </div>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mt-5 pb-20">
-          {products.map(({ id, name, image, price, ...rest }) => (
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mt-5 pb-20 px-10">
+          {products.map(({id, name, image, price, ...rest}) => (
             <ProductCard
               key={id}
               product={{
