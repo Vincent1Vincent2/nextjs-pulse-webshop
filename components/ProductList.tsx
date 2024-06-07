@@ -43,7 +43,7 @@ export default function ProductList(props: ProductListProps) {
         <div className="py-8 text-center text-white text-4xl font-semibold rounded-md">
           {props.currentCategory.name}
         </div>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mt-5 pb-20 px-10">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-5 pb-20 px-10">
           {products.map(({id, name, image, price, ...rest}) => (
             <ProductCard
               key={id}

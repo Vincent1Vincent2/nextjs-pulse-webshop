@@ -12,8 +12,8 @@ export default function ProductCard({product}: ProductCardProps) {
   return (
     <Card
       key={product.id}
-      className="border rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300"
-      style={{width: "300px", height: "auto"}}
+      className="border rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300 w-82 ld:w-[300px] h-auto items-center"
+      // style={{width: "300px", height: "auto"}}
     >
       <div className="flex flex-col h-full">
         {/* Title */}
@@ -45,7 +45,7 @@ export default function ProductCard({product}: ProductCardProps) {
         </Link>
 
         {/* Price and Button */}
-        <div className="p-4 flex justify-between items-center">
+        <div className="p-2 flex justify-between items-center">
           <span className="font-semibold pl-6" data-cy="product-price">
             ${product.price}
           </span>
