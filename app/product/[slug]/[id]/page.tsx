@@ -1,4 +1,4 @@
-import {getProduct} from "@/app/actions/product";
+import {getCurrentProducts, getProduct} from "@/app/actions/product";
 import AddToCartButton from "@/components/AddToCartButton";
 import {
   Card,
@@ -10,6 +10,14 @@ import {
 import {ChevronLeft} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
+export async function generateStaticParams() {
+  const products = await getCurrentProducts();
+  return products.map(product => ({
+    slug: product.slug, // Ensure 'slug' is the correct key for your category identifier
+    id: product.id.toString(),
+  }));
+}
 
 interface PageProps {
   params: {
