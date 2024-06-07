@@ -5,6 +5,7 @@ import type {Metadata} from "next";
 import {Inter} from "next/font/google";
 import CartProvider from "./contexts/CartContext";
 
+import {SessionProvider} from "next-auth/react";
 import "./globals.css";
 import {LayoutProps} from "./types";
 
@@ -20,12 +21,14 @@ export default function RootLayout({children}: LayoutProps) {
   return (
     <html lang="en">
       <body className={`min-h-screen flex flex-col ${inter.className}`}>
-        <CartProvider>
-          <Navbar />
-          <main className="flex-1 mt-20">{children}</main>
-          <Footer />
-          <Toaster />
-        </CartProvider>
+        <SessionProvider>
+          <CartProvider>
+            <Navbar />
+            <main className="flex-1 mt-20">{children}</main>
+            <Footer />
+            <Toaster />
+          </CartProvider>
+        </SessionProvider>
       </body>
     </html>
   );
