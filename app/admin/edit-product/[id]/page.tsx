@@ -1,10 +1,17 @@
 import {authenticateUser} from "@/app/actions/authenticate";
 import {getCategories} from "@/app/actions/category";
-import {getProduct} from "@/app/actions/product";
+import {getCurrentProducts, getProduct} from "@/app/actions/product";
 import EditForm from "@/components/EditForm";
 import {ArrowRightIcon} from "lucide-react";
 import Link from "next/link";
 import {redirect} from "next/navigation";
+
+export async function generateStaticParams() {
+  const products = await getCurrentProducts();
+  return products.map(product => ({
+    id: product.id.toString(),
+  }));
+}
 
 interface EditProductPageProps {
   params: {
