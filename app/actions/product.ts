@@ -93,7 +93,14 @@ export async function productUpdate(
 }
 
 export async function getCurrentProducts() {
-  const products = await db.product.findMany({where: {deleted: false}});
+  const products = await db.product.findMany({
+    where: {
+      deleted: false,
+    },
+    orderBy: {
+      id: "desc",
+    },
+  });
 
   return products;
 }

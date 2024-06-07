@@ -74,7 +74,7 @@ export default function OrderHistory() {
                       <div>
                         <strong>{product.name}</strong>
                         <p>{product.description}</p>
-                        <p>Price: {product.price.toString()}</p>
+                        <p>Price: {product.price.toString()} kr</p>
                         {product.image && (
                           <Image
                             width={100}

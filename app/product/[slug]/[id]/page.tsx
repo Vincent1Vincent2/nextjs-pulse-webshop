@@ -59,7 +59,7 @@ export default async function ProductPage({params}: PageProps) {
                 {product.description}
               </CardDescription>
               <CardDescription className="self-start" data-cy="product-price">
-                ${product.price.toString()}
+                {product.price.toString()} kr
               </CardDescription>
             </div>
 

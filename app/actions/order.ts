@@ -45,6 +45,7 @@ export async function orderCreate(formData: OrderCreate, addressId: number) {
       if (product.stock < po.quantity) {
         throw new Error(`Insufficient stock for product ${product.name}`);
       }
+      console.log(po.quantity);
       await prisma.product.update({
         where: {id: po.productId},
         data: {stock: product.stock - po.quantity},
@@ -54,7 +55,8 @@ export async function orderCreate(formData: OrderCreate, addressId: number) {
     return order;
   });
 
-  revalidatePath("/admin/orders");
+  // Revalidate the path or perform any other necessary actions
+  // revalidatePath("/admin/orders");
 
   return {
     order: {

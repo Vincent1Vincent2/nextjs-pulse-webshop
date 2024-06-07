@@ -1,7 +1,6 @@
 import {Product} from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import AddToCartButton from "./AddToCartButton";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "./ui/card";
 
@@ -32,7 +31,7 @@ export default function ProductCard({product}: ProductCardProps) {
         </CardContent>
       </Link>
       <CardFooter className="flex justify-between items-center">
-        <span data-cy="product-price">${product.price}</span>
+        <span data-cy="product-price">{product.price} kr</span>
         <AddToCartButton product={product} />
       </CardFooter>
     </Card>
