@@ -1,8 +1,7 @@
 // Import necessary functions and components
 
-import {getCategories} from "@/app/actions/category";
+import {getCategories, getCategoryBySlug} from "@/app/actions/category";
 import {getProductsByCategoryAndSort} from "@/app/actions/product";
-import {getCategoryBySlug, getCategories} from "@/app/actions/category";
 import ProductList from "@/components/ProductList";
 
 // Function to generate static parameters for dynamic routes

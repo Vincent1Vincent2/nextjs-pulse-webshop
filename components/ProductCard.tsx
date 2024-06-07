@@ -43,7 +43,7 @@ export default function ProductCard({product}: ProductCardProps) {
               layout="intrinsic"
               width={250}
               height={250}
-              className="object-contain"
+              className="object-cover"
             />
           </div>
         </Link>
