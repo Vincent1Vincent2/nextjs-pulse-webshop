@@ -46,6 +46,7 @@ export default async function AdminPage() {
             <li className="text-lg font-bold my-4 ">{p.name}</li>
             <li className="text-md">{p.description}</li>
           </ul>
+          <p>{p.price} kr</p>
           {p.stock > 0 ? (
             <p className="font-semibold text-green-600 my-2">
               In Stock - {p.stock}
